@@ -26,3 +26,11 @@ Albert:
     - label: "Email"
       icon: "fas fa-fw fa-envelope-square"
       url: "mailto:albert.mugish@netfoundry.io"
+Dan:
+  name        : "Dan Wilding"
+#  bio         : "I ordered what?"
+  avatar      : "/assets/images/profile-dan.jpg"
+  links:
+    - label: "Email"
+      icon: "fas fa-fw fa-envelope-square"
+      url: "mailto:dan.wilding@netfoundry.io"
