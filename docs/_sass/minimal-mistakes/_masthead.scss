@@ -10,6 +10,11 @@
   -webkit-animation-delay: 0.15s;
   animation-delay: 0.15s;
   z-index: 20;
+  background: #020024;
+  background: -moz-linear-gradient(108deg, #020024 0%, #033590 100%);
+  background: -webkit-linear-gradient(108deg, #020024 0%, #033590 100%);
+  background: linear-gradient(108deg, #020024 0%, #033590 100%);
+
 
 
   &__inner-wrap {
