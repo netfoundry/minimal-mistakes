@@ -548,9 +548,7 @@ The following long-term support download links are copied from [the Ziti documen
 
 This is a utility that will securely generate a unique cryptographic identity for Tunneler. Enroller is a portable binary and may be executed where it is downloaded.
 
-[Windows](https://netfoundry-clients.s3-us-west-1.amazonaws.com/ziti/0.5.8-2554/ziti-enroller.exe){: .btn .btn--danger .btn--large}
-[MacOS](https://netfoundry-clients.s3-us-west-1.amazonaws.com/ziti/0.5.8-2554/ziti-enroller-mac.tar.gz){: .btn .btn--warning .btn--large}
-[Linux](https://netfoundry-clients.s3-us-west-1.amazonaws.com/ziti/0.5.8-2554/ziti-enroller-linux.tar.gz){: .btn .btn--success .btn--large}
+{% include ziti-enroller-lts.md %}
 
 ```bash
 ❯ ./ziti-enroller version
@@ -581,9 +579,7 @@ You could do this in Vi with the following commands.
 
 This is an app NetFoundry built with an LTS version of the [Ziti endpoint SDK](https://ziti.dev/). It will tunnel IP packets to the service via the AppWAN. You could also use any app that you built with a Ziti endpoint SDK. Tunneler is a portable binary and may be executed where it is downloaded.
 
-[Windows](https://netfoundry-clients.s3-us-west-1.amazonaws.com/ziti/0.5.8-2554/ziti-tunnel.exe){: .btn .btn--danger .btn--large}
-[MacOS](https://netfoundry-clients.s3-us-west-1.amazonaws.com/ziti/0.5.8-2554/ziti-tunnel-mac.tar.gz){: .btn .btn--warning .btn--large}
-[Linux](https://netfoundry-clients.s3-us-west-1.amazonaws.com/ziti/0.5.8-2554/ziti-tunnel-linux.tar.gz){: .btn .btn--success .btn--large}
+{% include ziti-tunneler-lts.md %}
 
 ```bash
 ❯ ./ziti-tunneler version
