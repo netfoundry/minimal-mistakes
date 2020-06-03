@@ -4,27 +4,13 @@ permalink: /help/
 toc: true
 ---
 
+<!-- 
 ## Search
 
+Google site search
 <script async src="https://cse.google.com/cse.js?cx=012487269132852934767:xsww2ydkdoy"></script>
 <div class="gcse-search"></div>
 
-<!-- ## Web Forum
-Talk to other developers and maintainers with an email to *api-help@netfoundry.io* or through [Google Groups on the web](https://groups.google.com/a/netfoundry.io/d/forum/api-help). Log in to the forum to search others' posts with any Google ID.
- -->
-<!-- <iframe id="forum_embed"
-  src="javascript:void(0)"
-  scrolling="no"
-  frameborder="0"
-  width="900"
-  height="700">
-</iframe>
-<script type="text/javascript">
-  document.getElementById('forum_embed').src =
-     'https://groups.google.com/a/netfoundry.io/forum/embed/?place=forum/api-help'
-     + '&showsearch=true&showpopout=true&showtabs=false'
-     + '&parenturl=' + encodeURIComponent(window.location.href);
-</script>
  -->
 
 ## Customer Support
