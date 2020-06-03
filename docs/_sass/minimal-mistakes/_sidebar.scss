@@ -19,6 +19,9 @@
   @include breakpoint($large) {
     float: left;
     width: calc(#{$right-sidebar-width-narrow} - 1em);
+    opacity: 1;
+    -webkit-transition: opacity 0.2s ease-in-out;
+    transition: opacity 0.2s ease-in-out;
 
     &.sticky {
       overflow-y: auto;
@@ -49,9 +52,9 @@
 
   p,
   li {
-    font-family: 'Open Sans';
-    font-size: .8em;
-    line-height: 2.5;
+    font-family: $sans-serif;
+    font-size: .9em;
+    line-height: 1.5;
   }
 
   img {

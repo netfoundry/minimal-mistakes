@@ -10,8 +10,8 @@ header:
     - btn_class: "btn--primary"
       label: "LEARN MORE"
       url: "/v1/guides/introduction/"
-excerpt: >
-  Documentation and Tools
+title: "Netfoundry API"
+excerpt: "Documentation and Tools"
 feature_row:
   - image_path: /assets/images/supporthub.jpg
     alt: "Support Hub"
