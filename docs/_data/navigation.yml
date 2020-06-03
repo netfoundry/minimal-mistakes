@@ -2,10 +2,10 @@
 # v1 horizontal nav
 main:
   - title: "Guides"
-    url: /guides/
+    url: /v1/guides/
     description: "intro, manuals, tutorials"
   - title: "Reference"
-    url: /reference/
+    url: /v1/reference/
     description: "specification &amp; reference"
   - title: "Playground"
     url: /v1/playground/

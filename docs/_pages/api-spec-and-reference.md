@@ -1,6 +1,7 @@
 ---
 title: Definition &amp; References
-permalink: /reference/
+permalink: /v1/reference/
+redirect_from: /reference/
 toc: true
 ---
 
