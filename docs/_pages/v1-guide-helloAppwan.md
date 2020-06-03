@@ -536,13 +536,64 @@ Add the service to the AppWAN.
 }
 ```
 
-### Install Ziti Tunneler
+### Ziti LTS
 
-This is an app NetFoundry built with a [Ziti endpoint SDK](https://ziti.dev/). It will tunnel IP packets to the service via the AppWAN. You could also use any app that you built with a Ziti endpoint SDK.
+NetFoundry API v1 works with Ziti long-term support (LTS) enroller, tunneler, and endpoint SDKs. These are Ziti v0.5 ingredients.
 
-### Install Ziti Enroller
+For Ziti LTS you will need to run Enroller to generate an identity file from the one-time key that is one of the Tunneler's client endpoint attributes, and then you will provide the path to that identity file when running Tunneler.
 
-This is a utility that will securely generate a unique cryptographic identity for Tunneler.
+The following long-term support download links are copied from [the Ziti documentation](https://openziti.github.io/ziti/downloads/overview.html#previous).
 
-### Enroll Tunneler
+#### Ziti Enroller
 
+This is a utility that will securely generate a unique cryptographic identity for Tunneler. Enroller is a portable binary and may be executed where it is downloaded.
+
+[Windows](https://netfoundry-clients.s3-us-west-1.amazonaws.com/ziti/0.5.8-2554/ziti-enroller.exe){: .btn .btn--danger .btn--large}
+[MacOS](https://netfoundry-clients.s3-us-west-1.amazonaws.com/ziti/0.5.8-2554/ziti-enroller-mac.tar.gz){: .btn .btn--warning .btn--large}
+[Linux](https://netfoundry-clients.s3-us-west-1.amazonaws.com/ziti/0.5.8-2554/ziti-enroller-linux.tar.gz){: .btn .btn--success .btn--large}
+
+```bash
+❯ ./ziti-enroller version
+0.5.8-2554
+
+❯ ./ziti-enroller --jwt ./kbTunneler25.jwt
+```
+
+The JWT file must be created without a newline at EOF and the JWT is on a single line. In the example below note the absence of a `$` character at EOF denoting the trailing newline that is commonly added by ASCII editors.
+
+```bash
+❯ cat -A kbTunneler25.jwt
+eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbSI6Im90dCIsImV4cCI6MTU5MDYxMTAyNiwiaXNzIjoiaHR0cHM6Ly81NC4yMDkuMTEwLjEyNTo0NDMiLCJqdGkiOiJjNzc0NmU3Ni0xZGE2LTQ0YmItYmU2ZS1mNWNkNjIzNjk3ZTkiLCJzdWIiOiIyZTg3NjU4MS04Y2FkLTRhNzctOGE2OS00YmMyMDA2MjQ4NWUifQ.HPJXKhYd8_UPolRkjZCvjYwOPMUK1VEoCoU_lYam4Wn0fXVxu_ST-IadRlYfjSW8mAxGDZC7A3uDXm9PG-l7X3yYwRRGVVz7Rm-IJ1kK0RE_yVXWAZj12lIzfqLa83MT5nsE8llpPb8wvTV2vkiA16TYriF8ZiBNhF8uOt6wgCDkrihcA7ZU5hgEXnxE388LcPAnToOP-fnGq5_fOE9S3anZzz7njFOh2BUhUCKfcW7SNY4kr5nidN9L7AKlAQT3wTcc4CInNmc2KeFuVO8cUT_sZZvliZU0FYVTGstVgZYuZEpCncyY1gIi2LqwO1GN5y7IP3HGSd_gTFrOd1v1CQ
+```
+
+You could do this in Vi with the following commands.
+
+```vi
+:set paste
+(press "i" for insert mode and paste the JWT from your clipboard)
+(ESC to return to command mode)
+:set binary
+:set noeol
+:wq
+```
+
+#### Ziti Tunneler
+
+This is an app NetFoundry built with an LTS version of the [Ziti endpoint SDK](https://ziti.dev/). It will tunnel IP packets to the service via the AppWAN. You could also use any app that you built with a Ziti endpoint SDK. Tunneler is a portable binary and may be executed where it is downloaded.
+
+[Windows](https://netfoundry-clients.s3-us-west-1.amazonaws.com/ziti/0.5.8-2554/ziti-tunnel.exe){: .btn .btn--danger .btn--large}
+[MacOS](https://netfoundry-clients.s3-us-west-1.amazonaws.com/ziti/0.5.8-2554/ziti-tunnel-mac.tar.gz){: .btn .btn--warning .btn--large}
+[Linux](https://netfoundry-clients.s3-us-west-1.amazonaws.com/ziti/0.5.8-2554/ziti-tunnel-linux.tar.gz){: .btn .btn--success .btn--large}
+
+```bash
+❯ ./ziti-tunneler version
+0.5.8-2554
+
+❯ ./ziti-tunnel proxy kbSvc26:8080 --identity kbTunneler25.json --verbose
+```
+
+The effect of this command is for Tunneler to bind to localhost:8080 and begin listening for connections. We'll test this by sending a request to that port along with a `Host` header so that the responding service will know which web site we're asking for.
+
+```bash
+❯ http GET http:localhost:8080 host=wttr.in
+```
