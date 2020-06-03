@@ -8,7 +8,7 @@ toc: true
 
 ## Audience
 
-This is for you if you're ready to create a functioning AppWAN. I'll assume you're acquainted with [the foundational concepts](/help#foundational-concepts) and have an API token from Auth0. Learn more in the [authentication guide](/v1/guides/authentication/).
+This is for you if you're ready to create a functioning AppWAN. I'll assume you're acquainted with [the foundational concepts](/help#foundational-concepts) and have an API token from Auth0. You can go back to the [authentication guide](/v1/guides/authentication/) if you need to get that token.
 
 RapidAPI subscribers may take the same steps except you will not need to provision a new network.
 {: .notice--success}
@@ -99,7 +99,7 @@ http POST https://gateway.production.netfoundry.io/rest/v1/networks \
 
 #### Terminating Endpoint Request
 
-We need to tell NetFoundry which region is near the service. This improve performance. We'll extract the ID of "GENERIC Canada East1", and use that ID in the following request to create the endpoint.
+We need to tell NetFoundry which region is near the service to optimize performance. We'll extract the ID of "GENERIC Canada East1", and use that ID in the following request to create the endpoint.
 
 ```bash
 ❯ http GET https://gateway.production.netfoundry.io/rest/v1/geoRegions \
