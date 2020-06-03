@@ -595,5 +595,5 @@ This is an app NetFoundry built with an LTS version of the [Ziti endpoint SDK](h
 The effect of this command is for Tunneler to bind to localhost:8080 and begin listening for connections. We'll test this by sending a request to that port along with a `Host` header so that the responding service will know which web site we're asking for.
 
 ```bash
-❯ http GET http:localhost:8080 host=wttr.in
+❯ http GET http:localhost:8080 "Host: wttr.in"
 ```
