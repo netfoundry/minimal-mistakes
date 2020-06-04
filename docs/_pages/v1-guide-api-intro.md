@@ -34,9 +34,9 @@ This RESTful API transacts meaningful HTTP verbs and request paths and parameter
 
 You'll find the [API definition and reference](/reference/) here. You can also browse the available API endpoints with contextual descriptions and example requests and responses in [the playground](/v1/playground/) which is running Swagger UI.
 
-### Links
+### Hypermedia Links
 
-The API responds with hypertext links in a `_links` map for navigation. With this you can avoid the brittleness of hard-coding URL paths in your implementation.
+The API responds with `_links` map for navigation. With this you can avoid the brittleness of hard-coding URL paths in your implementation.
 
 For example, a request like `GET /rest/v1/organizations` might return a list of one in `_embedded.organizations`. This is a great starting place because your implementation could then navigate to the "networks" link which is list of all networks in this organization a.k.a. "network group".
 
