@@ -15,10 +15,10 @@ RapidAPI subscribers may take the same steps except you will not need to provisi
 
 ## How to Build an AppWAN
 
-1. Create a NetFoundry network.
+1. Create a network.
 2. Create a terminating endpoint.
 3. Create a service.
-4. Create a gateway endpoint.
+4. Create a bridge gateway.
 5. Create a client endpoint.
 6. Create an empty AppWAN, and add
     1. the client and gateway endpoints and
@@ -554,14 +554,18 @@ This is a utility that will securely generate a unique cryptographic identity fo
 ❯ ./ziti-enroller version
 0.5.8-2554
 
-❯ ./ziti-enroller --jwt ./kbTunneler25.jwt
+❯ http --download --output kbTunneler25.jwt GET \
+    https://gateway.production.netfoundry.io/rest/v1/networks/3716d78d-084a-446c-9ac4-5f63ba7b569d/endpoints/4543075e-22e6-46db-a2e5-b934ea1dec19/downloadRegistrationKey \
+    "Authorization: Bearer ${NETFOUNDRY_API_TOKEN}"
+
+❯ ./ziti-enroller --jwt kbTunneler25.jwt
 ```
 
-The JWT file must be created without a newline at EOF and the JWT is on a single line. In the example below note the absence of a `$` character at EOF denoting the trailing newline that is commonly added by ASCII editors.
+The method shown above will create a valid JWT file. The JWT file must be created without a newline at EOF and the JWT is on a single line. In the example below note the absence of a `$` character at EOF denoting the trailing newline that is commonly added by ASCII editors if you were to paste the value from the console in a GUI.
 
 ```bash
 ❯ cat -A kbTunneler25.jwt
-eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbSI6Im90dCIsImV4cCI6MTU5MDYxMTAyNiwiaXNzIjoiaHR0cHM6Ly81NC4yMDkuMTEwLjEyNTo0NDMiLCJqdGkiOiJjNzc0NmU3Ni0xZGE2LTQ0YmItYmU2ZS1mNWNkNjIzNjk3ZTkiLCJzdWIiOiIyZTg3NjU4MS04Y2FkLTRhNzctOGE2OS00YmMyMDA2MjQ4NWUifQ.HPJXKhYd8_UPolRkjZCvjYwOPMUK1VEoCoU_lYam4Wn0fXVxu_ST-IadRlYfjSW8mAxGDZC7A3uDXm9PG-l7X3yYwRRGVVz7Rm-IJ1kK0RE_yVXWAZj12lIzfqLa83MT5nsE8llpPb8wvTV2vkiA16TYriF8ZiBNhF8uOt6wgCDkrihcA7ZU5hgEXnxE388LcPAnToOP-fnGq5_fOE9S3anZzz7njFOh2BUhUCKfcW7SNY4kr5nidN9L7AKlAQT3wTcc4CInNmc2KeFuVO8cUT_sZZvliZU0FYVTGstVgZYuZEpCncyY1gIi2LqwO1GN5y7IP3HGSd_gTFrOd1v1CQ
+eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbSI6Im90dCIsImV4cCI6MTU5MTQwNzcwMSwiaXNzIjoiaHR0cHM6Ly81NC4xNTYuMjQzLjI6MTA4MCIsImp0aSI6IjhhMDQxN2VhLWE2MDQtMTFlYS1hYWEwLTAyYzhlMjg4Yjg5NSIsInN1YiI6IjE4ZjJkNzhjLTY2MTItNGUzYi1hNjM2LTk5ZGI1MzM4OGRhOSJ9.h10SpFrEfV1IbYeJUZmJ3IcN5ADyyv_7OMaAyLyk-QcTLBmO0pIFoWNhwzc9lyr9KO35-x2pVU8fVaScKE58WavpuPRqjc25n0FAFj47chzy9_v8K7s94j7th31OK29rF3cbmfpoIKHAktUpI7IzZK7QoN21f36afKc8sFI1mN6FlO934ZjGEU9Gvl1UXkZAVWXm6dzfOwe8TpUgBNey71s15StLoQk35SQ3w2yG6oLAR5M0f_QiCU9gJH0DSySdwsPt-USxURHZRtDQHG26TG6GB3olcIr_iwLwoa9G7tLO3yl_NxNpRag4xhVIjzh29OLNeXM0EfELPFsy1zcCUw
 ```
 
 You could do this in Vi with the following commands.
@@ -579,13 +583,24 @@ You could do this in Vi with the following commands.
 
 This is an app NetFoundry built with an LTS version of the [Ziti endpoint SDK](https://ziti.dev/). It will tunnel IP packets to the service via the AppWAN. You could also use any app that you built with a Ziti endpoint SDK. Tunneler is a portable binary and may be executed where it is downloaded.
 
+Tunneler is typically run in one of three modes.
+
+proxy
+:  run-as a normal user and listen for the named AppWAN-Service pair on a TCP port >1024. This is the mode used in the example below.
+
+tproxy
+:  run-as root and transparently proxy using iptables
+
+tun
+:  run-as root and intercept traffic that arrives on a provided tunnel interface
+
 {% include ziti-tunneler-lts.md %}
 
 ```bash
 ❯ ./ziti-tunneler version
 0.5.8-2554
 
-❯ ./ziti-tunnel proxy kbSvc26:8080 --identity kbTunneler25.json --verbose
+❯ ./ziti-tunnel proxy kbAppWan27-kbSvc26:8080 --identity kbTunneler25.json --verbose
 ```
 
 The effect of this command is for Tunneler to bind to localhost:8080 and begin listening for connections. We'll test this by sending a request to that port along with a `Host` header so that the responding service will know which web site we're asking for.
