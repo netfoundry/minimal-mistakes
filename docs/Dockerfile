@@ -43,5 +43,5 @@ RUN gem install github-pages --version 204 && \
 #RUN apk del gcc g++ binutils bison perl nodejs make curl && \
 #    rm -rf /var/cache/apk/*
 
-CMD ["bundle install && bundle exec jekyll serve -d /_site --watch --force_polling -H 0.0.0.0 -P 4000"]
+CMD ["bundle install && bundle exec jekyll serve -d /_site --watch --drafts --force_polling -H 0.0.0.0 -P 4000"]
 ENTRYPOINT ["sh", "-c"]
