@@ -47,6 +47,14 @@ You could do this with [AWS Console](https://console.aws.amazon.com/secretsmanag
 
 ```bash
 ❯ aws secretsmanager create-secret --name /prod/exampleCredential
+❯ read -s EXAMPLE_CREDENTIAL
+# paste from clipboard and press ENTER
+❯ aws secretsmanager put-secret-value --secret-id /prod/exampleCredential --secret-string ${EXAMPLE_CREDENTIAL}
+# or
+cat > ./exampleCredential.txt
+# paste from clipboard and press ENTER
+# then press ctrl-d to send EOF
+❯ aws secretsmanager put-secret-value --secret-id /prod/exampleCredential --secret-string file://exampleCredential.txt
 ```
 
 ### Write an IAM Policy
