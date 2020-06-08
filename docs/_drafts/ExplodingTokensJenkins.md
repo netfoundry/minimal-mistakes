@@ -1,0 +1,104 @@
+---
+title: Exploding Tokens for Jenkins
+excerpt: Sometimes temporary trust is enough.
+tags:
+    - devops
+    - jenkins
+    - aws-sts
+    - aws-secrets
+    - security
+author: Ken
+toc: false
+classes: wide
+last_updated: June 9, 2019
+---
+
+There is a dimensional difference between a security model wherein an authentication token expires and one where it does not. Here is a practical way to achieve temporary trust for privileged Jenkins pipelines using the Security Token Service and Secrets Manager from Amazon Web Services.
+
+## The Gist
+
+1. Put a permanent credential in AWS Secrets Manager.
+2. Write an IAM policy that allows you to read that secret.
+3. Write a Jenkins Pipeline that prompts for your temporary credential from AWS Security Token Service.
+
+## The Why
+
+### Limited Trust in the Line of Sight Analogy
+
+*How does a temporary credential improve security?*
+
+I know I can trust my robots to execute a program, and as long as the robot is in my line-of-sight I have some reason to think it's still running my program. I could make a key for my robot that only opens the doors that robot needs to open, or I could give the robot a copy of my own key. Either way, things get dicey when someone else takes possession of that key, especially if it unlocks the same doors just as well for the thief if it did for my robot. I'll feel a lot better about entrusting the key to a robot if the key only works in my line-of-sight, or only until a particular time.
+
+### Jenkins Credentials Plugin
+
+*What is the motivation for improving the security of secrets stored in Jenkins?*
+
+It is a feature of [the extremely popular Credentials Plugin](https://plugins.jenkins.io/credentials/) to make several types of secrets available in pipelines as environment variables. The confidentiality of these secrets is not modulated by Jenkins's own access controls, and it is not necessary to be a Jenkins administrator nor even a Jenkins user at all to access any secret stored in Jenkins. It is only necessary to push malicious code to any repository that is configured for jobs in Jenkins. Obscuring this is not a viable strategy. Permanent (not automatically "rotated") infrastructure-critical secrets are too frequently stored encrypted-at-rest on the master node which are trivially exfiltrated en masse by any job that is able to run on the master where the plaintext is available, and any one secret may be trivially obtained by any job on any node where the credential ID is known (the ID is not a secret).
+
+It is easy enough to limit the risk of the en masse exfiltration of the entire plaintext of Jenkins secrets. That exploit would require either login access to the host or running a malicious job on the master node. You could configure the master node to have zero workers and carefully control login access via SSH. This does not prevent a malicious job running on any node from obtaining any secret when the ID is known.
+
+## The How
+
+### Store a Secret in AWS
+
+You could do this with [AWS Console](https://console.aws.amazon.com/secretsmanager/home?region=us-east-1#/listSecrets) or CLI. You could use a `/` separated value for the "name" parameter if you wish to write IAM policies that apply based on a partial match.
+
+```bash
+❯ aws secretsmanager create-secret --name /prod/exampleCredential
+```
+
+### Write an IAM Policy
+
+```json
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "ExamplePolicy",
+            "Effect": "Allow",
+            "Action": "secretsmanager:GetSecretValue",
+            "Resource": "arn:aws:secretsmanager:us-east-1:*:secret:/prod/*"
+        }
+    ]
+}
+```
+
+### Jenkins Declarative Pipeline
+
+Define a function to prompt the pipeline operator to input a temporary credential.
+
+```groovy
+// You could use this as a Jenkins globally shared library (example shown for a file named /vars/getTempCreds.groovy) or at the top of a single pipeline's Jenkinsfile to define the function for use in that particular job (commented def line).
+// def getTempCreds() {
+def call(params) {
+    def command = 'aws sts get-session-token | jq -r ".Credentials|.SessionToken+\\\":\\\"+.AccessKeyId+\\\":\\\"+.SecretAccessKey"'
+    sh(script: "echo '${command}'", label: "Expand to view STS command to retrieve temporary token")
+    def message = "Please enter temporary AWS session token.\nTo retrieve this key, issue STS command above from CLI (requires jq command-line JSON processor)\n"
+    temp_creds = input   message: "${message}",
+            ok: 'Submit',
+            parameters: [ password(name: 'tempCred') ]
+    return temp_creds
+}
+```
+
+Assign the output of the function to a variable you can use to get the secret from AWS.
+
+```groovy
+def temp_creds = getTempCreds
+def aws_session_token = temp_creds['tempCred'].toString().split(':')[0]
+def aws_access_key_id = temp_creds['tempCred'].toString().split(':')[1]
+def aws_secret_access_key = temp_creds['tempCred'].toString().split(':')[2]
+
+withEnv(["AWS_SESSION_TOKEN=${aws_session_token}",
+            "AWS_ACCESS_KEY_ID=${aws_access_key_id}",
+            "AWS_SECRET_ACCESS_KEY=${aws_secret_access_key}"]){
+    sh (label: "Use the Example Secret",
+        script: """
+            set -e -u -x -o pipefail
+            aws --region us-east-1 secretsmanager get-secret-value --secret-id /prod/exampleCredential | jq -r .SecretString
+        """,
+        returnStdout: false
+    )
+}
+
+```
