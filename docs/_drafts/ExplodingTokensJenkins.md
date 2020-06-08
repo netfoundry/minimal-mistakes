@@ -5,7 +5,7 @@ tags:
     - devops
     - jenkins
     - aws-sts
-    - aws-secrets
+    - aws-secretsmanager
     - security
 author: Ken
 toc: false
@@ -23,7 +23,7 @@ There is a dimensional difference between a security model wherein an authentica
 
 ## The Why
 
-### Limited Trust in the Line of Sight Analogy
+### The Line of Sight Analogy
 
 *How does a temporary credential improve security?*
 
@@ -38,6 +38,8 @@ It is a feature of [the extremely popular Credentials Plugin](https://plugins.je
 It is easy enough to limit the risk of the en masse exfiltration of the entire plaintext of Jenkins secrets. That exploit would require either login access to the host or running a malicious job on the master node. You could configure the master node to have zero workers and carefully control login access via SSH. This does not prevent a malicious job running on any node from obtaining any secret when the ID is known.
 
 ## The How
+
+The result of these steps is to entrust a session token to Jenkins which has all of the powers of your own AWS IAM user credential for the next 15 minutes.
 
 ### Store a Secret in AWS
 
@@ -71,7 +73,7 @@ Define a function to prompt the pipeline operator to input a temporary credentia
 // You could use this as a Jenkins globally shared library (example shown for a file named /vars/getTempCreds.groovy) or at the top of a single pipeline's Jenkinsfile to define the function for use in that particular job (commented def line).
 // def getTempCreds() {
 def call(params) {
-    def command = 'aws sts get-session-token | jq -r ".Credentials|.SessionToken+\\\":\\\"+.AccessKeyId+\\\":\\\"+.SecretAccessKey"'
+    def command = 'aws sts get-session-token --duration-seconds 900 | jq -r ".Credentials|.SessionToken+\\\":\\\"+.AccessKeyId+\\\":\\\"+.SecretAccessKey"'
     sh(script: "echo '${command}'", label: "Expand to view STS command to retrieve temporary token")
     def message = "Please enter temporary AWS session token.\nTo retrieve this key, issue STS command above from CLI (requires jq command-line JSON processor)\n"
     temp_creds = input   message: "${message}",
@@ -92,13 +94,27 @@ def aws_secret_access_key = temp_creds['tempCred'].toString().split(':')[2]
 withEnv(["AWS_SESSION_TOKEN=${aws_session_token}",
             "AWS_ACCESS_KEY_ID=${aws_access_key_id}",
             "AWS_SECRET_ACCESS_KEY=${aws_secret_access_key}"]){
-    sh (label: "Use the Example Secret",
+    sh (label: "Do something with exampleCredential",
         script: """
             set -e -u -x -o pipefail
-            aws --region us-east-1 secretsmanager get-secret-value --secret-id /prod/exampleCredential | jq -r .SecretString
+            EXAMPLE_CREDENTIAL=$(aws --region us-east-1 secretsmanager get-secret-value --secret-id /prod/exampleCredential | jq -r .SecretString)
+            if [[ ! -z ${EXAMPLE_CREDENTIAL:-} ]]; then
+                # do something with EXAMPLE_CREDENTIAL
+            else
+                echo "ERROR: failed to get exampleCredential from Secrets Manager" >&2
+                exit 1
+            fi
         """,
         returnStdout: false
     )
 }
 
+```
+
+### A Least-Privilege Enhancement
+
+You could improve upon this by granting permission to read the secret to an IAM role, and modifying the command to obtain the session token. This would grant only the powers of that role to Jenkins temporarily rather than all the powers of your human credential.
+
+```bash
+❯ aws sts assume-role --role-arn arn:aws:iam::{AWS_ACCOUNT_ID}:role/{IAM_ROLE_NAME} --role-session-name {ARBITRARY_UNIQUE_SESSION_NAME}
 ```
