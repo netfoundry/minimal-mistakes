@@ -42,7 +42,8 @@
   (twitter, $twitter-color),
   (linkedin, $linkedin-color),
   (reddit, $reddit-color),
-  (hackernews, $hackernews-color);
+  (hackernews, $hackernews-color),
+  (whatsapp, $whatsapp-color);
 
   @each $buttoncolor, $color in $buttoncolors {
     &--#{$buttoncolor} {
