@@ -3,8 +3,8 @@ title: Early Bug Detection using Pull Request Builds
 tags:
     - devops
     - jenkins
-    - qa
-    - ci
+    - quality-assurance
+    - continuous-integration
     - kubernetes
 author: Albert
 excerpt: One of the biggest headaches any Devops Engineer faces is how to ensure bugs are not introduced into working software.

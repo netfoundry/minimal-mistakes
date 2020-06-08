@@ -3,6 +3,8 @@ title: "Hello, AppWAN!"
 permalink: /v1/guides/hello-appwan/
 sidebar:
     nav: v1guides
+tags:
+  - hello-appwan
 toc: true
 ---
 
