@@ -7,19 +7,26 @@ toc: true
 
 ## OpenAPI
 
+OpenAPI is a specification for describing a REST API as a data structure and is represented as JSON or YAML. With this you could generate a client for your preferred programming language or import it as a collection of requests in [Postman](https://www.postman.com/).
+
 [JSON](/assets/openapi-3.0.json){: .btn .btn--info .btn--x-large} &nbsp;
 <!-- TODO: link to latest definition
 [JSON](https://gateway.production.netfoundry.io/rest/v1/docs/openapi-3.0.json){: .btn .btn--info .btn--x-large} &nbsp;
   -->
 [YAML](https://gateway.production.netfoundry.io/rest/v1/docs/openapi-3.0.yml){: .btn .btn--info .btn--x-large}
 
-You can use this OpenAPI (formerly Swagger) definition to [generate a client](https://swagger.io/tools/swagger-codegen/) for your preferred programming language.
+### Client Generators
+[OpenAPITools Generator](https://openapi-generator.tech/){: .btn .btn--info .btn--x-large} &nbsp;
+[Swagger Codegen](https://swagger.io/tools/swagger-codegen/){: .btn .btn--info .btn--x-large} &nbsp;
 
-You can also work with this description of operations as a collection of requests in [Postman](https://www.postman.com/) by importing the definition file linked above.
-
-## Reference
+## HTML Reference
 [HTTP REST Docs](https://gateway.production.netfoundry.io/rest/v1/docs/index.html){: .btn .btn--info .btn--x-large}
 <!-- [API v2 Reference](https://gateway.sandbox.netfoundry.io/rest/v2/docs/index.html) -->
+
+## Experimental HTML References
+[OpenAPITools HTML2](/v1/reference/html2/){: .btn .btn--info .btn--x-large} &nbsp;
+[Spectacle](/v1/reference/spectacle/){: .btn .btn--info .btn--x-large} &nbsp;
+[ReDoc](/v1/reference/redoc/){: .btn .btn--info .btn--x-large} &nbsp;
 
 ## Quick Reference
 
