@@ -6,8 +6,8 @@ tags:
     - ziti-lts
 author: Ken
 excerpt: Build a functioning AppWAN with HTTPie and Ziti LTS.
-toc: true
+toc: false
 last_updated: June 5, 2019
 ---
 
-### This content has been permanently transplanted to [the guides section](/v1/guides/hello-appwan/).
+### This content grew up and became a [full grown guide](/v1/guides/hello-appwan/)!
