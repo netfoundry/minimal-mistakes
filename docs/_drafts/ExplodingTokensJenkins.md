@@ -4,26 +4,35 @@ excerpt: Sometimes temporary trust is enough.
 tags:
     - devops
     - jenkins
+    - security
     - aws-sts
     - aws-secretsmanager
-    - security
 author: Ken
 toc: false
 classes: wide
 last_updated: June 9, 2019
+header:
+    image: /assets/images/hourglass-header.jpg
 ---
 
-There is a dimensional difference between a security model wherein an authentication token expires and one where it does not. Here is a practical way to achieve temporary trust for privileged Jenkins pipelines using the Security Token Service and Secrets Manager from Amazon Web Services.
+What if you didn't have to store your credentials in Jenkins?
 
-## The Gist
+```json
+{
+  "Credentials": {
+    "AccessKeyId": "ASIA6KNZ4A2TGDT5I75G",
+    "SecretAccessKey": "D+MtTRHTuC/eOwkr1naWtFe05EbWAzjbK4O1DOCK",
+    "SessionToken": "IQoJb3JpZ2luX2VjEI3//////////wEaCXVzLWVhc3QtMSJHMEUCIQCkQv+wVdob1OW4fT7HQJFQsraUwE96dJA1X/KV2Bz38gIgOeoUdqtJ6eWonoB63778bW1S1heqDevSAooRgw9WDe8qrQEI9f//////////ARABGgw5ODQ0NzQxOTE1MjYiDMXBhLjvwVG4a3Y11iqBAZQrlxW5bgFRxWZeop6m5GagnQS7IOoAVRpH4PKGwX3myXutcrrYABGP3wGlf7ckDfO9yRX4IwLmvC+IoeoUjboin3jzvgBZqn8MG5PLUWoxsL+pSlV9jmnIi+HDFFvPW1EDEyBs0CuoRxeww22k2/iAo42xCdyC/ObEdo5H68anWzCtu/r2BTreAQZDnR3xJjuaf2EuRDjUg9jOI2LTV2ZjIyP5T9XxMx4yrSWpLRxhuy+dF+ZoIOtaU3ZJfwhQGPK6ycikLeRYPAK6j5RYss3OrdtuTYicbQ1U92AqlR29MWtRX0Ln74rj79W36e2E9ACmkrTFnZnrrMs//eweib53W1iraFaQ9l2snEfRusaXtvniKrtdWp3hYD5HNNP4xVOUM+bNzlpyKkUlVQSwA+pM7gBdk0YE7/ES3BxJaKe4ZVeG6G9E0qV59lq9xyTpm/LjmnVWZA+l+pCfncnez9kHPZMmUZFDUw==",
+    "Expiration": "2020-06-08T20:36:01Z"
+  }
+}
+```
 
-1. Put a permanent credential in AWS Secrets Manager.
-2. Write an IAM policy that allows you to read that secret.
-3. Write a Jenkins Pipeline that prompts for your temporary credential from AWS Security Token Service.
+<i class="fas fa-hand-point-up"></i> &nbsp; Here are my real AWS credentials with administrator privileges that expired 15 minutes after I obtained them from Amazon's Security Token Service (STS). What follows is a reflection on why you too might decide that some credentials really shouldn't be stored in Jenkins, and a walk through one alternative.
 
 ## The Why
 
-The rationale is that an interactive prompt for a credential with a very short lifetime enables a simple workflow where specific code changes can be reviewed and authorized by a human admin. These may then be automatically deployed by Jenkins without granting enduring powers to that automation and, by extension, all of the other contributors of code in that domain.
+There's obvious value in automation, and Jenkins is an extremely capable general-purpose automation tool. That competence can lead to overloading i.e. overlapping and potentially colliding interests. In my experience, the life cycle of a job often began with an administrator scripting a repetitive task. The final handoff of that task to Jenkins means not only codifying the process, but also entrusting the admin's credentials to Jenkins. The problem with storing a powerful credential in Jenkins is that it's available to **all** of the codebases that Jenkins works with, not just the intended codebase.
 
 ### The Line of Sight Analogy
 
@@ -40,6 +49,12 @@ It is a feature of [the extremely popular Credentials Plugin](https://plugins.je
 Obscuring this is not a viable strategy. Permanent (not automatically and routinely "rotated") infrastructure-critical secrets are too frequently stored encrypted-at-rest on the master node. This entire repository of secrets are trivially lifted by any job that is able to run on the master because the plaintext is available there. Additionally, any one secret may be trivially obtained by any job on any node where the credential ID is known.
 
 It is easy enough to limit the risk of theft of the entire plaintext of Jenkins secrets. That exploit would require either login access to the host or running a malicious job on the master node. You could configure the master node to have zero workers and carefully control login access via SSH. This does not prevent a malicious job running on any node from obtaining any secret when the ID is known. The ID is not a secret.
+
+## The Gist
+
+1. Put a permanent credential in AWS Secrets Manager.
+2. Write an IAM policy that allows you to read that secret.
+3. Write a Jenkins Pipeline that prompts for your temporary credential from AWS Security Token Service.
 
 ## The How
 
