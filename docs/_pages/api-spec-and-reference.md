@@ -7,7 +7,7 @@ toc: true
 
 ## OpenAPI
 
-OpenAPI is a specification for describing a REST API as a data structure and is represented as JSON or YAML. With this you could generate a client for your preferred programming language or import it as a collection of requests in [Postman](https://www.postman.com/).
+OpenAPI is a specification for describing a REST API as a data structure and is represented as JSON or YAML. With this you could generate a client for your preferred programming language or import it as a collection of requests in [Postman](https://learning.postman.com/docs/postman/collections/working-with-openAPI/).
 
 [JSON](/assets/openapi-3.0.json){: .btn .btn--info .btn--x-large} &nbsp;
 <!-- TODO: link to latest definition
