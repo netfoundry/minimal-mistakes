@@ -5,6 +5,10 @@ redirect_from: /reference/
 toc: true
 ---
 
+## HTML Reference
+[HTTP REST Docs](https://gateway.production.netfoundry.io/rest/v1/docs/index.html){: .btn .btn--info .btn--x-large}
+<!-- [API v2 Reference](https://gateway.sandbox.netfoundry.io/rest/v2/docs/index.html) -->
+
 ## OpenAPI
 
 OpenAPI is a specification for describing a REST API as a data structure and is represented as JSON or YAML. With this you could generate a client for your preferred programming language or import it as a collection of requests in [Postman](https://learning.postman.com/docs/postman/collections/working-with-openAPI/).
@@ -18,15 +22,6 @@ OpenAPI is a specification for describing a REST API as a data structure and is 
 ### Client Generators
 [OpenAPITools Generator](https://openapi-generator.tech/){: .btn .btn--info .btn--x-large} &nbsp;
 [Swagger Codegen](https://swagger.io/tools/swagger-codegen/){: .btn .btn--info .btn--x-large} &nbsp;
-
-## HTML Reference
-[HTTP REST Docs](https://gateway.production.netfoundry.io/rest/v1/docs/index.html){: .btn .btn--info .btn--x-large}
-<!-- [API v2 Reference](https://gateway.sandbox.netfoundry.io/rest/v2/docs/index.html) -->
-
-## Experimental HTML References
-[OpenAPITools HTML2](/v1/reference/html2/){: .btn .btn--info .btn--x-large} &nbsp;
-[Spectacle](/v1/reference/spectacle/){: .btn .btn--info .btn--x-large} &nbsp;
-[ReDoc](/v1/reference/redoc/){: .btn .btn--info .btn--x-large} &nbsp;
 
 ## Quick Reference
 
@@ -123,3 +118,9 @@ GCPCPEGW
 
 ALICPEGW
 : Cloud Gateway from the Alibaba marketplace offer.
+
+## Experimental HTML References
+[OpenAPITools HTML2](/v1/reference/html2/){: .btn .btn--info .btn--x-large} &nbsp;
+[Spectacle](/v1/reference/spectacle/){: .btn .btn--info .btn--x-large} &nbsp;
+[ReDoc](/v1/reference/redoc/){: .btn .btn--info .btn--x-large} &nbsp;
+
