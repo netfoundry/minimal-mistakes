@@ -13,7 +13,7 @@ toc: true
   -->
 [YAML](https://gateway.production.netfoundry.io/rest/v1/docs/openapi-3.0.yml){: .btn .btn--info .btn--x-large}
 
-You can use this OpenAPI (formerly Swagger) definition to [generate a client](https://swagger.io/tools/swagger-codegen/) for your preferred programming language.
+You can use this OpenAPI definition to generate a client for your preferred programming language using tools like [OpenAPI Generator](https://openapi-generator.tech/) and [Swagger Codegen](https://swagger.io/tools/swagger-codegen/).
 
 You can also work with this description of operations as a collection of requests in [Postman](https://www.postman.com/) by importing the definition file linked above.
 
