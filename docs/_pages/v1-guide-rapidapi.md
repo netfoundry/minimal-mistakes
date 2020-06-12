@@ -7,15 +7,29 @@ toc: true
 classes: wide
 ---
 
-## Subscribing via RapidAPI
+<script type="text/javascript" src="/assets/scripts/gifffer.min.js"></script>
+<script>
+    window.onload = function() {
+    Gifffer();
+    }
+</script>
 
-You may subscribe to the NetFoundry API through RapidAPI. This replaces the client code, authentication token, and billing relationship you would otherwise have with NetFoundry; and enables
-    1. lower or no-cost entry to building NetFoundry AppWANs, and
-    2. building integrations by accessing multiple RapidAPI marketplace offers with the same authentication token.
+## RapidAPI Vs Direct
+
+You may subscribe to the NetFoundry API through RapidAPI. The HTTP requests you send via RapidAPI are the same as you would send directly to NetFoundry, but the URL and headers are different. This replaces the client code, authentication token, and billing relationship you would otherwise have with NetFoundry; and enables
+1. lower or no-cost entry to building NetFoundry AppWANs, and
+2. building integrations by accessing multiple RapidAPI marketplace offers with the same authentication token.
 
 ## RapidAPI Marketplace
 
-RapidAPI provides code samples for many programming languages for all of the APIs, such as the NetFoundry API, in their marketplace. Some developers find this is an accelerated path to leveraging just one or several of the numerous available APIs in their own application. We're excited about the potential ease of integrating multiple APIs and the ease of onboarding we can offer through this platform.
+RapidAPI provides code samples for many programming languages for all of the APIs, such as the NetFoundry API, in their marketplace. Some developers find this is an accelerated path to leveraging just one or several of the numerous available APIs in their own application.
+
+**It's easier than ever to get an AppWAN up and running!**
+{: .text-center}
+
+<img class="align-center" data-gifffer="/assets/images/LetsGoExcited.gif" data-gifffer-alt="Best Day Ever"/>
+
+## Subscribe Now
 
 You may click below to connect through RapidAPI to NetFoundry's API and paste code snippets they provide in your IDE to start building right away. After you subscribe through RapidAPI you'll use [RapidAPI's guides](https://docs.rapidapi.com/) to connect to authenticated and wrap your HTTP requests for the NetFoundry API. Beyond that you'll use the same concepts and order of operations to manage your AppWANs.
 
@@ -24,9 +38,20 @@ As a RapidAPI subscriber you will not need a separate Auth0 login or an account 
 
 [![RapidAPI Marketplace](/assets/images/connect-on-rapidapi.png)](https://rapidapi.com/netfoundryinc-netfoundryinc-default/api/netfoundry-programmable-zero-trust-connectivity)
 
-## Build an AppWAN with RapidAPI
+## How to Build an AppWAN with RapidAPI
 
-### Discover Network
+The result of these examples is functioning AppWAN which publishes an HTTP weather service to your client. All of the components except the client are public and hosted by NetFoundry. You could self-host any or all of these components to achieve other goals such as making your server invisible to the internet.
+
+### Workspace
+
+These examples make use of three tools that are available for all major OSs:
+1. [HTTPie (command-line HTTP client)](https://httpie.org/) and 
+1. [`jq` (command-line JSON processor)](https://stedolan.github.io/jq/) running in 
+1. [BASH](https://www.gnu.org/software/bash/).
+
+With these installed and your RapidAPI token assigned to environment variable `RAPID_API_KEY` you are ready to go! You may obtain your token from the code snippets shown in RapidAPI after you subscribe to NetFoundry.
+
+### Discover the RapidAPI Network
 
 We'll need this ID later to compose requests.
 

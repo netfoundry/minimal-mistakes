@@ -15,8 +15,9 @@ This is for you if you're ready to create a functioning AppWAN. I'll assume you'
 RapidAPI subscribers may take the same steps except you will not need to provision a new network.
 {: .notice--success}
 
-## How to Build an AppWAN
+## Overview
 
+1. Your workspace
 1. Create a network.
 2. Create a terminating endpoint.
 3. Create a service.
@@ -30,12 +31,18 @@ RapidAPI subscribers may take the same steps except you will not need to provisi
 
 The result of these request examples is an AppWAN that allows Tunneler to initiate connections to a service. You could substitute any service, even one that is not public.
 
+### Set up Your Workspace
+
+These examples, like those in the [authentication guide](/v1/guides/authentication/), make use of [HTTPie (command-line HTTP client)](https://httpie.org/) and [`jq` (command-line JSON processor)](https://stedolan.github.io/jq/).
+
+If you have your API authentication token assigned to environment variable `NETFOUNDRY_API_TOKEN` then you're ready to go!
+
 ### Create Network
 
 **Request**
 
 ```bash
-http POST https://gateway.production.netfoundry.io/rest/v1/networks \
+❯ http POST https://gateway.production.netfoundry.io/rest/v1/networks \
   "Authorization: Bearer ${NETFOUNDRY_API_TOKEN}" \
   name=exampleNetwork11
 ```
