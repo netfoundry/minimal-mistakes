@@ -1,5 +1,5 @@
 ---
-title: "Hello, AppWAN!"
+title: "Hello, AppWAN"
 permalink: /v1/guides/hello-appwan/
 sidebar:
     nav: v1guides
@@ -99,9 +99,14 @@ http POST https://gateway.production.netfoundry.io/rest/v1/networks \
 
 ### Terminating Endpoint
 
+The terminating endpoint is a "gateway" type of endpoint. Traffic flows through gateways from clients to services. For the sake of simplicity; you could use a public, hosted endpoint as shown in this example; or you could use `endpointType=VCPEGW` and self-host your own terminating endpoint with [the virtual machine images](https://netfoundry.io/resources/support/downloads/networkversion6/#gateways) that we provide. If you self-host then you'll need to log in as `nfadmin` and run the registration command on your VM using the one-time key that is an attribute of your terminating endpoint like `sudo nfnreg {one time key}`. Here's [an article in our Support Hub](https://support.netfoundry.io/hc/en-us/articles/360016129312-Create-a-NetFoundry-Gateway-VM-on-Your-Own-Equipment) about self-hosted gateway registration.
+
+First-boot registration is automated for all hosted gateways and for some cloud providers when launching a self-hosted gateway through the web console.
+{: .notice--info}
+
 #### Terminating Endpoint Request
 
-We need to tell NetFoundry which region is near the service to optimize performance. We'll extract the ID of "GENERIC Canada East1", and use that ID in the following request to create the endpoint.
+We need to tell NetFoundry which region is near the service to optimize for performance. This example extracts the ID of "GENERIC Canada East1", and use that ID in the following request to create the endpoint.
 
 ```bash
 ❯ http GET https://gateway.production.netfoundry.io/rest/v1/geoRegions \

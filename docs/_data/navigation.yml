@@ -28,9 +28,9 @@ v1guides:
         url: /v1/guides/introduction/
       - title: "Authentication"
         url: /v1/guides/authentication/
-      - title: "Hello, AppWAN!"
+      - title: "Hello, AppWAN"
         url: /v1/guides/hello-appwan/
-      - title: "RapidAPI"
+      - title: "Hello, RapidAPI"
         url: /v1/guides/rapidapi/
       - title: "Improve this Site"
         url: /contribute/
