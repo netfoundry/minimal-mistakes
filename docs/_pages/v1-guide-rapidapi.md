@@ -42,6 +42,9 @@ As a RapidAPI subscriber you will not need a separate Auth0 login or an account 
 
 The result of these examples is functioning AppWAN which publishes an HTTP weather service to your client. All of the components except the client are public and hosted by NetFoundry. You could self-host any or all of these components to achieve other goals such as making your server invisible to the internet.
 
+You may safely ignore caveats in info cards such as this. These are slightly more advanced alternatives and details you may find helpful the second time through when you are beginning to customize your AppWAN topology.
+{: .notice--success}
+
 ### Workspace
 
 These examples make use of three tools that are available for all major OSs:
@@ -79,7 +82,7 @@ Choose a region that is near the server you will share with endpoints.
 
 ### Create Terminating Endpoint
 
-Use the discovered network ID and georegion ID to create the terminating endpoint that will access the server on behalf of your clients and gateways. You could use a public, hosted endpoint as shown for simplicity; or you could use `endpointType=VCPEGW` and self-host your own terminating endpoint with [the virtual machine images](https://netfoundry.io/resources/support/downloads/networkversion6/#gateways) that we provide.
+Use the discovered network ID and georegion ID to create the terminating endpoint that will access the server on behalf of your clients and gateways.
 
 ```bash
 ❯ http POST https://netfoundryapi.p.rapidapi.com/networks/4a566244-d9d6-4a92-b40d-385570cfa3d1/endpoints \
@@ -90,6 +93,9 @@ Use the discovered network ID and georegion ID to create the terminating endpoin
     endpointType=GW | jq .id
 "588bfd0d-f561-4427-bddd-e7aa9de8883d"
 ```
+
+The terminating endpoint is a "gateway" type of endpoint. Traffic flows through gateways from clients to services. For the sake of simplicity; you could use a public, hosted endpoint as shown in this example; or you could use `endpointType=VCPEGW` and self-host your own terminating endpoint with [the virtual machine images](https://netfoundry.io/resources/support/downloads/networkversion6/#gateways) that we provide. If you self-host then you'll need to log in as `nfadmin` and run the registration command on your VM using the one-time key that is an attribute of your terminating endpoint like `sudo nfnreg {one time key}`. Here's [an article in our Support Hub](https://support.netfoundry.io/hc/en-us/articles/360016129312-Create-a-NetFoundry-Gateway-VM-on-Your-Own-Equipment) about self-hosted gateway registration. First-boot registration is automated for all hosted gateways and for some cloud providers when launching a self-hosted gateway through the web console.
+{: .notice--info}
 
 ### Create a Service
 
@@ -117,7 +123,7 @@ A service is a description of a server. You could use any server that is reachab
 
 ### Create the Bridge Gateway
 
-Every AppWAN needs a bridge gateway to enable Ziti clients. Choose a georegion near the client for best performance. A gateway is a type of endpoint through which traffic may flow from clients to services.
+Every AppWAN needs a bridge gateway to enable Ziti clients. Choose a georegion near the client for best performance. A gateway is a type of endpoint through which traffic may flow from clients to services. You could skip this step if you're not following the example to use a Ziti client.
 
 ```bash
 ❯ http POST https://netfoundryapi.p.rapidapi.com/networks/4a566244-d9d6-4a92-b40d-385570cfa3d1/endpoints \
@@ -142,6 +148,9 @@ Ziti is open-source software that works with NetFoundry. Ziti clients are endpoi
     geoRegionId=1d824744-0b38-425a-b1d3-6c1dd69def26 | jq .id
 "09baa7c3-869d-4816-86f0-ef7260ba1648"
 ```
+
+Use `endpointType=CL` if creating a non-Ziti standard client, which is outside the scope of this guide.
+{: .notice--info}
 
 ### Initialize an AppWAN
 
@@ -186,6 +195,9 @@ Add the ID of the service to the AppWAN with the endpoints.
     x-rapidapi-key:${RAPID_API_KEY}
 ```
 
+Alternatively, for a non-Ziti client, you will be prompted for the value of endpoint attribute `registrationKey` when you run the client app [you downloaded here](https://netfoundry.io/resources/support/downloads/networkversion6/#clients).
+{: .notice--info}
+
 ### Enroll the Client
 
 Your Ziti Tunneler needs an identity .json file. The enrollment token downloaded above is used by a utility `ziti-enroller` to generate the identity .json file.
@@ -218,3 +230,9 @@ The effect of this command is for Tunneler to bind to localhost:8080 and begin l
 ```bash
 ❯ http GET http:localhost:8080 "Host: wttr.in"
 ```
+
+We used Tunneler's `proxy` mode for the sake of simplicity, which replaces Tunnelers "intercept" capability with a TCP proxy. Know more about Ziti Tunnler by reading [the Tunneler manual](https://openziti.github.io/ziti/clients/tunneler.html).
+{: .notice--success}
+
+Be aware that NetFoundry works with Ziti LTS, and this is the manual for (latest) Ziti.
+{: .notice--warning}
