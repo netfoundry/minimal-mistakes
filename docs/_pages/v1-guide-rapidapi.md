@@ -49,6 +49,8 @@ These examples make use of three tools that are available for all major OSs:
 1. [`jq` (command-line JSON processor)](https://stedolan.github.io/jq/) running in 
 1. [BASH](https://www.gnu.org/software/bash/).
 
+HTTPie is just one of [the programming languages](https://docs.rapidapi.com/docs/getting-started-with-rapidapi-sdks) that are supported by RapidAPI!
+
 With these installed and your RapidAPI token assigned to environment variable `RAPID_API_KEY` you are ready to go! You may obtain your token from the code snippets shown in RapidAPI after you subscribe to NetFoundry.
 
 ### Discover the RapidAPI Network
