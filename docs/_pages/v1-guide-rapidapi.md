@@ -231,5 +231,7 @@ The effect of this command is for Tunneler to bind to localhost:8080 and begin l
 ❯ http GET http:localhost:8080 "Host: wttr.in"
 ```
 
+{% include wttr.in.md %}
+
 We used Tunneler's `proxy` mode for the sake of simplicity, which replaces Tunnelers "intercept" capability with a TCP proxy. Know more about Ziti Tunnler by reading [the Tunneler manual](https://openziti.github.io/ziti/clients/tunneler.html). Be aware that NetFoundry works with Ziti LTS, and this links to the manual for (latest) Ziti.
 {: .notice--success}

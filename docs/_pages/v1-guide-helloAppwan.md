@@ -622,3 +622,5 @@ The effect of this command is for Tunneler to bind to localhost:8080 and begin l
 ```bash
 ❯ http GET http:localhost:8080 "Host: wttr.in"
 ```
+
+{% include wttr.in.md %}
