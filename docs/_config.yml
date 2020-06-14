@@ -193,6 +193,12 @@ defaults:
       related: true
   # _pages
   - scope:
+      path: ""
+      type: pages
+    values:
+      layout: v1Single
+      author_profile: false
+  - scope:
       path: "_pages/v1/*"
       type: pages
     values:

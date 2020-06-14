@@ -2,7 +2,6 @@
 title: "API Versions"
 excerpt: "Explore API Versions"
 permalink: /versions/
-layout: single
 ---
 
 There are two major versions of the NetFoundry API core represented by distinct base URL paths in the API, and a simple `/vN/` in this documentation. Click a version to load the corresponding documentation.
