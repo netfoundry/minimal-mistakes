@@ -61,23 +61,44 @@ HTTPie is just one of [the programming languages](https://docs.rapidapi.com/docs
 We'll need this ID later to compose requests.
 
 ```bash
-❯ http GET https://netfoundryapi.p.rapidapi.com/networks \
-        x-rapidapi-host:netfoundryapi.p.rapidapi.com \
+❯ http GET https://netfoundry-programmable-zero-trust-connectivity.p.rapidapi.com/networks \
+        x-rapidapi-host:netfoundry-programmable-zero-trust-connectivity.p.rapidapi.com \
         x-rapidapi-key:${RAPID_API_KEY} | jq '._embedded.networks[0].id'
 
 "4a566244-d9d6-4a92-b40d-385570cfa3d1"
+
+❯ NF_NETWORK=4a566244-d9d6-4a92-b40d-385570cfa3d1
 ```
 
-### Discover a Georegion
+### Discover Georegions
+
+Multi-cloud `GENERIC` regions are preferable for availability and performance unless you have a specific need to bias for one cloud provider.
+{: .notice--info}
 
 Choose a region that is near the server you will share with endpoints.
 
 ```bash
-❯ http GET https://netfoundryapi.p.rapidapi.com/geoRegions \
-    x-rapidapi-host:netfoundryapi.p.rapidapi.com \
-    x-rapidapi-key:${RAPID_API_KEY} | jq '._embedded.geoRegions[11].id'
+❯ http GET https://netfoundry-programmable-zero-trust-connectivity.p.rapidapi.com/geoRegions \
+    x-rapidapi-host:netfoundry-programmable-zero-trust-connectivity.p.rapidapi.com \
+    x-rapidapi-key:${RAPID_API_KEY} | jq '._embedded.geoRegions[11]|{id:.id,name:.name}'
+{
+  "id": "1d824744-0b38-425a-b1d3-6c1dd69def26",
+  "name": "GENERIC Canada East2"
+}
+❯ NF_SERVICE_REGION=1d824744-0b38-425a-b1d3-6c1dd69def26
+```
 
-"1d824744-0b38-425a-b1d3-6c1dd69def26"
+Choose a region that is near the client with which you will access the service.
+
+```bash
+❯ http GET https://netfoundry-programmable-zero-trust-connectivity.p.rapidapi.com/geoRegions \
+    x-rapidapi-host:netfoundry-programmable-zero-trust-connectivity.p.rapidapi.com \
+    x-rapidapi-key:${RAPID_API_KEY} | jq '._embedded.geoRegions[14]|{id:.id,name:.name}'
+{
+  "id": "20d5c5b8-0006-43b9-99aa-503fd3931fea",
+  "name": "GENERIC US West"
+}
+❯ NF_CLIENT_REGION=20d5c5b8-0006-43b9-99aa-503fd3931fea
 ```
 
 ### Create Terminating Endpoint
@@ -85,13 +106,14 @@ Choose a region that is near the server you will share with endpoints.
 Use the discovered network ID and georegion ID to create the terminating endpoint that will access the server on behalf of your clients and gateways.
 
 ```bash
-❯ http POST https://netfoundryapi.p.rapidapi.com/networks/4a566244-d9d6-4a92-b40d-385570cfa3d1/endpoints \
-    x-rapidapi-host:netfoundryapi.p.rapidapi.com \
+❯ http POST https://netfoundry-programmable-zero-trust-connectivity.p.rapidapi.com/networks/${NF_NETWORK}/endpoints \
+    x-rapidapi-host:netfoundry-programmable-zero-trust-connectivity.p.rapidapi.com \
     x-rapidapi-key:${RAPID_API_KEY} \
     name=kbEndTerm11 \
-    geoRegionId=1d824744-0b38-425a-b1d3-6c1dd69def26 \
+    geoRegionId=${NF_SERVICE_REGION} \
     endpointType=GW | jq .id
 "588bfd0d-f561-4427-bddd-e7aa9de8883d"
+❯ NF_TERMINATING_ENDPOINT=588bfd0d-f561-4427-bddd-e7aa9de8883d
 ```
 
 The terminating endpoint is a "gateway" type of endpoint. Traffic flows through gateways from clients to services. For the sake of simplicity; you could use a public, hosted endpoint as shown in this example; or you could use `endpointType=VCPEGW` and self-host your own terminating endpoint with [the virtual machine images](https://netfoundry.io/resources/support/downloads/networkversion6/#gateways) that we provide. If you self-host then you'll need to log in as `nfadmin` and run the registration command on your VM using the one-time key that is an attribute of your terminating endpoint like `sudo nfnreg {one time key}`. Here's [an article in our Support Hub](https://support.netfoundry.io/hc/en-us/articles/360016129312-Create-a-NetFoundry-Gateway-VM-on-Your-Own-Equipment) about self-hosted gateway registration. First-boot registration is automated for all hosted gateways and for some cloud providers when launching a self-hosted gateway through the web console.
@@ -102,8 +124,8 @@ The terminating endpoint is a "gateway" type of endpoint. Traffic flows through 
 A service is a description of a server. You could use any server that is reachable by the terminating endpoint. The intercept IP can be the same as the real address or you could use a fictitious intercept. Clients will intercept traffic that matches this address and send it to the real network address.
 
 ```bash
-❯ http POST https://netfoundryapi.p.rapidapi.com/networks/4a566244-d9d6-4a92-b40d-385570cfa3d1/services \
-    x-rapidapi-host:netfoundryapi.p.rapidapi.com \
+❯ http POST https://netfoundry-programmable-zero-trust-connectivity.p.rapidapi.com/networks/${NF_NETWORK}/services \
+    x-rapidapi-host:netfoundry-programmable-zero-trust-connectivity.p.rapidapi.com \
     x-rapidapi-key:${RAPID_API_KEY} \
     name=kbSvc26 \
     serviceClass=CS \
@@ -117,8 +139,9 @@ A service is a description of a server. You could use any server that is reachab
     networkFirstPort=80 \
     networkLastPort=80 \
     interceptIp=5.9.243.187 \
-    endpointId=588bfd0d-f561-4427-bddd-e7aa9de8883d | jq .id
+    endpointId=${NF_TERMINATING_ENDPOINT} | jq .id
 "085349ac-aece-4cfc-aacb-2562f87413fb"
+❯ NF_SERVICE=085349ac-aece-4cfc-aacb-2562f87413fb
 ```
 
 ### Create the Bridge Gateway
@@ -126,13 +149,14 @@ A service is a description of a server. You could use any server that is reachab
 Every AppWAN needs a bridge gateway to enable Ziti clients. Choose a georegion near the client for best performance. A gateway is a type of endpoint through which traffic may flow from clients to services. You could skip this step if you're not following the example to use a Ziti client.
 
 ```bash
-❯ http POST https://netfoundryapi.p.rapidapi.com/networks/4a566244-d9d6-4a92-b40d-385570cfa3d1/endpoints \
-    x-rapidapi-host:netfoundryapi.p.rapidapi.com \
+❯ http POST https://netfoundry-programmable-zero-trust-connectivity.p.rapidapi.com/networks/${NF_NETWORK}/endpoints \
+    x-rapidapi-host:netfoundry-programmable-zero-trust-connectivity.p.rapidapi.com \
     x-rapidapi-key:${RAPID_API_KEY} \
     name=kbBridgeGw27 \
     endpointType=ZTGW \
-    geoRegionId=1d824744-0b38-425a-b1d3-6c1dd69def26 | jq .id
+    geoRegionId=${NF_CLIENT_REGION} | jq .id
 "6c96b27c-f5eb-4027-aad0-1a9dc5cb176a"
+❯ NF_BRIDGE_GW=6c96b27c-f5eb-4027-aad0-1a9dc5cb176a
 ```
 
 ### Create Your Ziti Client
@@ -140,13 +164,14 @@ Every AppWAN needs a bridge gateway to enable Ziti clients. Choose a georegion n
 Ziti is open-source software that works with NetFoundry. Ziti clients are endpoints. Endpoints send traffic to services. You could build your own app with a Ziti endpoint SDK to enable it as a client, or you could download Ziti Tunneler and use it as an intercepting proxy running on the same computer as your own app(s).
 
 ```bash
-❯ http POST https://netfoundryapi.p.rapidapi.com/networks/4a566244-d9d6-4a92-b40d-385570cfa3d1/endpoints \
-    x-rapidapi-host:netfoundryapi.p.rapidapi.com \
+❯ http POST https://netfoundry-programmable-zero-trust-connectivity.p.rapidapi.com/networks/${NF_NETWORK}/endpoints \
+    x-rapidapi-host:netfoundry-programmable-zero-trust-connectivity.p.rapidapi.com \
     x-rapidapi-key:${RAPID_API_KEY} \
     name=kbZitiCl27 \
     endpointType=ZTCL \
-    geoRegionId=1d824744-0b38-425a-b1d3-6c1dd69def26 | jq .id
+    geoRegionId=${NF_CLIENT_REGION} | jq .id
 "09baa7c3-869d-4816-86f0-ef7260ba1648"
+❯ NF_CLIENT=09baa7c3-869d-4816-86f0-ef7260ba1648
 ```
 
 Use `endpointType=CL` if creating a non-Ziti standard client, which is outside the scope of this guide.
@@ -157,11 +182,12 @@ Use `endpointType=CL` if creating a non-Ziti standard client, which is outside t
 An AppWAN is a policy that works like a permission group. Next we'll add the endpoints and the service to the empty AppWAN.
 
 ```bash
-❯ http POST https://netfoundryapi.p.rapidapi.com/networks/4a566244-d9d6-4a92-b40d-385570cfa3d1/appWans \
-    x-rapidapi-host:netfoundryapi.p.rapidapi.com \
+❯ http POST https://netfoundry-programmable-zero-trust-connectivity.p.rapidapi.com/networks/${NF_NETWORK}/appWans \
+    x-rapidapi-host:netfoundry-programmable-zero-trust-connectivity.p.rapidapi.com \
     x-rapidapi-key:${RAPID_API_KEY} \
     name=kbAw11 | jq .id
 "a088efef-f7a4-4b9a-b4de-80b6cc4025ee"
+❯ NF_APPWAN=a088efef-f7a4-4b9a-b4de-80b6cc4025ee
 ```
 
 ### Authorize the Endpoints
@@ -169,10 +195,18 @@ An AppWAN is a policy that works like a permission group. Next we'll add the end
 Add the ID of the Ziti client and the bridge gateway to the empty AppWAN.
 
 ```bash
-❯ http POST https://netfoundryapi.p.rapidapi.com/networks/4a566244-d9d6-4a92-b40d-385570cfa3d1/appWans/a088efef-f7a4-4b9a-b4de-80b6cc4025ee/endpoints \
-    x-rapidapi-host:netfoundryapi.p.rapidapi.com \
+❯ http POST https://netfoundry-programmable-zero-trust-connectivity.p.rapidapi.com/networks/${NF_NETWORK}/appWans/${NF_APPWAN}/endpoints \
+    x-rapidapi-host:netfoundry-programmable-zero-trust-connectivity.p.rapidapi.com \
     x-rapidapi-key:${RAPID_API_KEY} \
-    ids:='["6c96b27c-f5eb-4027-aad0-1a9dc5cb176a","09baa7c3-869d-4816-86f0-ef7260ba1648"]'
+    ids:='["'${NF_CLIENT}'","'${NF_BRIDGE_GW}'"]' | jq .updatedAt
+"2020-06-14T16:04:16.000+0000"
+
+# optionally compare the updated timestamp to the current time with GNU date
+❯ date -d 2020-06-14T16:04:16.000+0000
+Sun 14 Jun 2020 12:04:16 PM EDT
+
+❯ date
+Sun 14 Jun 2020 12:04:56 PM EDT
 ```
 
 ### Authorize the Service
@@ -180,18 +214,19 @@ Add the ID of the Ziti client and the bridge gateway to the empty AppWAN.
 Add the ID of the service to the AppWAN with the endpoints.
 
 ```bash
-❯ http POST https://netfoundryapi.p.rapidapi.com/networks/4a566244-d9d6-4a92-b40d-385570cfa3d1/appWans/a088efef-f7a4-4b9a-b4de-80b6cc4025ee/services \
-    x-rapidapi-host:netfoundryapi.p.rapidapi.com \
+❯ http POST https://netfoundry-programmable-zero-trust-connectivity.p.rapidapi.com/networks/${NF_NETWORK}/appWans/${NF_APPWAN}/services \
+    x-rapidapi-host:netfoundry-programmable-zero-trust-connectivity.p.rapidapi.com \
     x-rapidapi-key:${RAPID_API_KEY} \
-    ids:='["085349ac-aece-4cfc-aacb-2562f87413fb"]'
+    ids:='["'${NF_SERVICE}'"]' | jq .updatedAt
+"2020-06-14T16:08:42.000+0000"
 ```
 
 ### Download the Enrollment Token
 
 ```bash
 ❯ http --download --output kbTunneler25.jwt GET \
-    https://netfoundryapi.p.rapidapi.com/networks/4a566244-d9d6-4a92-b40d-385570cfa3d1/endpoints/09baa7c3-869d-4816-86f0-ef7260ba1648/downloadRegistrationKey \
-    x-rapidapi-host:netfoundryapi.p.rapidapi.com \
+    https://netfoundry-programmable-zero-trust-connectivity.p.rapidapi.com/networks/${NF_NETWORK}/endpoints/${NF_CLIENT}/downloadRegistrationKey \
+    x-rapidapi-host:netfoundry-programmable-zero-trust-connectivity.p.rapidapi.com \
     x-rapidapi-key:${RAPID_API_KEY}
 ```
 
@@ -221,7 +256,7 @@ Download and Run Ziti Tunneler.
 ❯ ./ziti-tunneler version
 0.5.8-2554
 
-# when running in proxy mode you must provide an identifier like "{AppWAN name}-{service name}:{localport}"
+# when running Ziti LTS in proxy mode you must provide an identifier like "{AppWAN name}-{service name}:{localport}"
 ❯ ./ziti-tunnel proxy kbAw11-kbSvc26:8080 --identity kbTunneler25.json --verbose
 ```
 
@@ -233,5 +268,5 @@ The effect of this command is for Tunneler to bind to localhost:8080 and begin l
 
 {% include wttr.in.md %}
 
-We used Tunneler's `proxy` mode for the sake of simplicity, which replaces Tunnelers "intercept" capability with a TCP proxy. Know more about Ziti Tunnler by reading [the Tunneler manual](https://openziti.github.io/ziti/clients/tunneler.html). Be aware that NetFoundry works with Ziti LTS, and this links to the manual for (latest) Ziti.
+We used Tunneler's `proxy` mode for the sake of simplicity, which replaces Tunnelers "intercept" capability with a TCP proxy which includes a built-in nameserver for domain name interception. Know more about Ziti Tunnler by reading [the Tunneler manual](https://openziti.github.io/ziti/clients/tunneler.html). NetFoundry [`/rest/v1`](/v1/) works with Ziti LTS and RapidAPI, and NetFoundry [`/core/v2`](/v2/) works with Ziti (latest). RapidAPI support for NetFoundry v2 is coming soon!
 {: .notice--success}
