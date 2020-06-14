@@ -6,8 +6,6 @@ redirect_from:
     - /v1/
     - /v1/guides/
     - /v1/guides/overview/
-    - /v2/
-    - /v2/guides/
 sidebar:
     nav: "v1guides"
 toc: true

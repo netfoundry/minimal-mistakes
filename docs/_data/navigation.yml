@@ -13,13 +13,31 @@ main:
   - title: "Blog"
     url: /blog/
     description: "What's new?"
-  # - title: "Versions"
-  #   url: /versions/
-  #   description: "Switch API version"
+  - title: "Versions"
+    url: /versions/
+    description: "Switch API version"
   - title: "Help"
     url: /help/
     description: "Get Support"
   
+    
+# v2 horizontal nav
+main2:
+  - title: "Guides"
+    url: /v2/guides/
+    description: "intro, manuals, tutorials"
+  - title: "Reference"
+    url: /v2/reference/
+  - title: "Blog"
+    url: /blog/
+    description: "What's new?"
+  - title: "Versions"
+    url: /versions/
+    description: "Switch API version"
+  - title: "Help"
+    url: /help/
+    description: "Get Support"
+    
 # guides sidebar
 v1guides:
   - title: Guides
@@ -32,8 +50,6 @@ v1guides:
         url: /v1/guides/hello-appwan/
       - title: "Hello, RapidAPI"
         url: /v1/guides/rapidapi/
-      - title: "Improve this Site"
-        url: /contribute/
 
 v2guides:
   - title: Guides
@@ -42,7 +58,5 @@ v2guides:
         url: /v2/guides/introduction/
       - title: "Authentication"
         url: /authentication/
-      - title: "Hello, AppWAN!"
-        url: /v2/guides/hello-appwan/
-      - title: "Improve this Site"
-        url: /contribute/
+      - title: "Hello, World"
+        url: /v2/guides/hello-world/

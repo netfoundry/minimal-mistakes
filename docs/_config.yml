@@ -185,7 +185,7 @@ defaults:
       path: ""
       type: posts
     values:
-      layout: single
+      layout: v1Single
       author_profile: true
       read_time: true
       comments: true
@@ -193,10 +193,16 @@ defaults:
       related: true
   # _pages
   - scope:
-      path: "_pages"
+      path: "_pages/v1/*"
       type: pages
     values:
-      layout: single
+      layout: v1Single
+      author_profile: false
+  - scope:
+      path: "_pages/v2/*"
+      type: pages
+    values:
+      layout: v2Single
       author_profile: false
 
 # Sass/SCSS

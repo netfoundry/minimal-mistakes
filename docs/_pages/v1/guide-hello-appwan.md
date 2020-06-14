@@ -12,7 +12,7 @@ toc: true
 
 This is for you if you're ready to create a functioning AppWAN. I'll assume you're acquainted with [the foundational concepts](/help#foundational-concepts) and have an API token from Auth0. You can go back to the [authentication guide](/v1/guides/authentication/) if you need to get that token.
 
-RapidAPI subscribers may take the same steps except you will not need to provision a new network.
+There's a separate guide for [getting started with RapidAPI](/v1/guides/rapidapi/)
 {: .notice--success}
 
 ## Overview
