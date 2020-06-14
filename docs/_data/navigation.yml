@@ -13,9 +13,9 @@ main:
   - title: "Blog"
     url: /blog/
     description: "What's new?"
-  - title: "Versions"
-    url: /versions/
-    description: "Switch API version"
+  # - title: "Versions"
+  #   url: /versions/
+  #   description: "Switch API version"
   - title: "Help"
     url: /help/
     description: "Get Support"
@@ -57,6 +57,6 @@ v2guides:
       - title: "Intro"
         url: /v2/guides/introduction/
       - title: "Authentication"
-        url: /authentication/
+        url: /v2/guides/authentication/
       - title: "Hello, World"
         url: /v2/guides/hello-world/
