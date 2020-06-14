@@ -14,18 +14,6 @@ This is for you if you're ready to create your first AppWAN with version 2 of th
 {: .notice--success}
  -->
 
-## Overview
-
-1. Your workspace
-2. Create a network.
-3. Create an edge router.
-4. Define an edge router policy.
-5. Define a service.
-6. Enroll a tunneler.
-7. Initialize an AppWAN, and add
-    1. the tunneler and
-    2. the service.
-
 ## By Example
 
 The result of these request examples is an AppWAN that allows Tunneler to initiate connections to a service. You could describe any server in your service definition, even one that is not public as long as the edge router is able to reach the server.
@@ -142,7 +130,7 @@ EOF
 
         ],
         "networkId": "${NF_NETWORK}",
-        "name": "kbSvc14f",
+        "name": "kbSvc14",
         "egressRouterId": "${NF_EDGE_ROUTER}",
         "clientHostName": "eth0.me",
         "clientPortRange": "80",
@@ -151,7 +139,8 @@ EOF
 }
 EOF
 "d1f6ef84-f979-4a2e-8e8f-b46c0fa1664b"
-❯ NF_SERVICE=d1f6ef84-f979-4a2e-8e8f-b46c0fa1664b
+❯ NF_SERVICE_ID=d1f6ef84-f979-4a2e-8e8f-b46c0fa1664b
+❯ NF_SERVICE_NAME=kbSvc14
 ```
 
 ### Create an AppWAN
@@ -233,10 +222,10 @@ tun
 ❯ ./ziti-tunneler version
 0.14.9
 
-❯ ./ziti-tunnel proxy kbAppWan27-kbSvc26:8080 --identity kbTunneler25.json --verbose
+❯ ./ziti/ziti-tunnel proxy --identity kbTunneler14.json ${NF_SERVICE_NAME}:8080
 ```
 
-The effect of this command is for Tunneler to bind to localhost:8080 and begin listening for connections. We'll test this by sending a request to that port along with a `Host` header so that the responding service will know which web site we're asking for.
+The effect of this command is for Tunneler to bind to localhost:8080 and begin listening for connections. We'll test this by sending a request to that port.
 
 ```bash
 ❯ http -b GET localhost:8080
@@ -249,4 +238,3 @@ Where 54.153.103.130 is the public IPv4 of your edge router that terminates the 
 ❯ http -b GET eth0.me
 69.234.67.56
 ```
-
