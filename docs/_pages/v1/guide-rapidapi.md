@@ -54,7 +54,7 @@ These examples make use of three tools that are available for all major OSs:
 
 With these installed and your RapidAPI token assigned to environment variable `RAPID_API_KEY` you are ready to go! You may obtain your token from the code snippets shown in RapidAPI after you subscribe to NetFoundry.
 
-HTTPie is just one of [the programming languages](https://docs.rapidapi.com/docs/getting-started-with-rapidapi-sdks) that are supported by RapidAPI!
+You don't have to use these shell commands if you prefer to work with [another programming language](https://docs.rapidapi.com/docs/getting-started-with-rapidapi-sdks) that is supported by RapidAPI.
 
 ### Discover the RapidAPI Network
 
