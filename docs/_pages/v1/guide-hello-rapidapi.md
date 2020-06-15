@@ -109,7 +109,7 @@ Use the discovered network ID and georegion ID to create the terminating endpoin
 ❯ http POST https://netfoundry-programmable-zero-trust-connectivity.p.rapidapi.com/networks/${NF_NETWORK}/endpoints \
     x-rapidapi-host:netfoundry-programmable-zero-trust-connectivity.p.rapidapi.com \
     x-rapidapi-key:${RAPID_API_KEY} \
-    name=kbEndTerm11 \
+    name=exampleTerminatingEndpoint \
     geoRegionId=${NF_SERVICE_REGION} \
     endpointType=GW | jq .id
 "588bfd0d-f561-4427-bddd-e7aa9de8883d"
@@ -127,7 +127,7 @@ A service is a description of a server. You could use any server that is reachab
 ❯ http POST https://netfoundry-programmable-zero-trust-connectivity.p.rapidapi.com/networks/${NF_NETWORK}/services \
     x-rapidapi-host:netfoundry-programmable-zero-trust-connectivity.p.rapidapi.com \
     x-rapidapi-key:${RAPID_API_KEY} \
-    name=kbSvc26 \
+    name=exampleService \
     serviceClass=CS \
     serviceInterceptType=IP \
     serviceType=TCP \
@@ -152,7 +152,7 @@ Every AppWAN needs a bridge gateway to enable Ziti clients. Choose a georegion n
 ❯ http POST https://netfoundry-programmable-zero-trust-connectivity.p.rapidapi.com/networks/${NF_NETWORK}/endpoints \
     x-rapidapi-host:netfoundry-programmable-zero-trust-connectivity.p.rapidapi.com \
     x-rapidapi-key:${RAPID_API_KEY} \
-    name=kbBridgeGw27 \
+    name=exampleBridgeGw \
     endpointType=ZTGW \
     geoRegionId=${NF_CLIENT_REGION} | jq .id
 "6c96b27c-f5eb-4027-aad0-1a9dc5cb176a"
@@ -167,7 +167,7 @@ Ziti is open-source software that works with NetFoundry. Ziti clients are endpoi
 ❯ http POST https://netfoundry-programmable-zero-trust-connectivity.p.rapidapi.com/networks/${NF_NETWORK}/endpoints \
     x-rapidapi-host:netfoundry-programmable-zero-trust-connectivity.p.rapidapi.com \
     x-rapidapi-key:${RAPID_API_KEY} \
-    name=kbZitiCl27 \
+    name=exampleTunneler \
     endpointType=ZTCL \
     geoRegionId=${NF_CLIENT_REGION} | jq .id
 "09baa7c3-869d-4816-86f0-ef7260ba1648"
@@ -185,7 +185,7 @@ An AppWAN is a policy that works like a permission group. Next we'll add the end
 ❯ http POST https://netfoundry-programmable-zero-trust-connectivity.p.rapidapi.com/networks/${NF_NETWORK}/appWans \
     x-rapidapi-host:netfoundry-programmable-zero-trust-connectivity.p.rapidapi.com \
     x-rapidapi-key:${RAPID_API_KEY} \
-    name=kbAw11 | jq .id
+    name=exampleAppWAN | jq .id
 "a088efef-f7a4-4b9a-b4de-80b6cc4025ee"
 ❯ NF_APPWAN=a088efef-f7a4-4b9a-b4de-80b6cc4025ee
 ```
@@ -224,7 +224,7 @@ Add the ID of the service to the AppWAN with the endpoints.
 ### Download the Enrollment Token
 
 ```bash
-❯ http --download --output kbTunneler25.jwt GET \
+❯ http --download --output exampleTunneler.jwt GET \
     https://netfoundry-programmable-zero-trust-connectivity.p.rapidapi.com/networks/${NF_NETWORK}/endpoints/${NF_CLIENT}/downloadRegistrationKey \
     x-rapidapi-host:netfoundry-programmable-zero-trust-connectivity.p.rapidapi.com \
     x-rapidapi-key:${RAPID_API_KEY}
@@ -243,7 +243,7 @@ Your Ziti Tunneler needs an identity .json file. The enrollment token downloaded
 ❯ ./ziti-enroller version
 0.5.8-2554
 
-❯ ./ziti-enroller --jwt kbTunneler25.jwt
+❯ ./ziti-enroller --jwt exampleTunneler.jwt
 ```
 
 ### Run the Client
@@ -257,7 +257,7 @@ Download and Run Ziti Tunneler.
 0.5.8-2554
 
 # when running Ziti LTS in proxy mode you must provide an identifier like "{AppWAN name}-{service name}:{localport}"
-❯ ./ziti-tunnel proxy kbAw11-kbSvc26:8080 --identity kbTunneler25.json --verbose
+❯ ./ziti-tunnel proxy exampleAppWAN-exampleService:8080 --identity exampleTunneler.json --verbose
 ```
 
 The effect of this command is for Tunneler to bind to localhost:8080 and begin listening for connections. We'll test this by sending a request to that port along with a `Host` header so that the responding service will know which web site we're asking for.

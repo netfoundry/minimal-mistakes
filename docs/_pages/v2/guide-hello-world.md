@@ -68,7 +68,7 @@ This will provision the dedicated compute infrastructure of your NetFoundry netw
 ❯ http POST https://gateway.production.netfoundry.io/rest/v2/networks \
   "Authorization: Bearer ${NETFOUNDRY_API_TOKEN}" \
   locationCode="us-west-2" \
-  name="kbZtNet14b" \
+  name="exampleNetwork" \
   networkConfigMetadataId="${NF_CONFIG}" \
   networkGroupId="${NF_NETWORK_GROUP}" | jq .id
 "3559807e-617d-4c29-a434-9ea15393a582"
@@ -97,7 +97,7 @@ At this time edge routers must be homed in an AWS datacenter if hosted by NetFou
         "attributes": [
                 "#all"
         ],
-        "name": "kbEdge14l",
+        "name": "exampleEdgeRouter",
         "dataCenterId": "${NF_SERVICE_DC}",
         "linkListener": true
 }
@@ -121,7 +121,7 @@ Authorize endpoints with matching `endpointAttributes` to dial via edge routers 
                 "#all"
         ],
         "networkId": "${NF_NETWORK}",
-        "name": "kbPolicy14b"
+        "name": "exampleEdgeRouterPolicy"
 }
 EOF
 "e8a534a1-d4bc-4570-86c0-1288fb2ced65"
@@ -143,7 +143,7 @@ Describe a server. Endpoints will be authorized to access this service if they h
 
         ],
         "networkId": "${NF_NETWORK}",
-        "name": "kbSvc14",
+        "name": "exampleService",
         "egressRouterId": "${NF_EDGE_ROUTER}",
         "clientHostName": "eth0.me",
         "clientPortRange": "80",
@@ -153,7 +153,7 @@ Describe a server. Endpoints will be authorized to access this service if they h
 EOF
 "d1f6ef84-f979-4a2e-8e8f-b46c0fa1664b"
 ❯ NF_SERVICE_ID=d1f6ef84-f979-4a2e-8e8f-b46c0fa1664b
-❯ NF_SERVICE_NAME=kbSvc14
+❯ NF_SERVICE_NAME=exampleService
 ```
 
 ### Create an AppWAN
@@ -171,7 +171,7 @@ Authorize endpoints with matching tags in `endpointAttributes` to access service
         "endpointAttributes": [
                 "#all"
         ],
-        "name": "kbAw14b"
+        "name": "exampleAppWAN"
 }
 EOF
 "6085ad2f-4adf-470c-a315-23f30b9aacae"
@@ -193,7 +193,7 @@ The tags in `attributes` are used to authorize this endpoint to access services 
         "enrollmentMethod": {
                 "ott": true
         },
-        "name": "kbTunneler14b"
+        "name": "exampleTunneler"
 }
 EOF
 "345a13a6-ef47-42b5-bd45-c6aa2328d52d"
@@ -211,11 +211,11 @@ Enroller a utility that will securely generate a unique cryptographic identity f
 0.14.9
 
 ❯ http GET https://gateway.production.netfoundry.io/rest/v2/endpoints/${NF_TUNNELER} \
-  "Authorization: Bearer ${NETFOUNDRY_API_TOKEN}" | jq -r '.jwt' > kbTunneler14.jwt
+  "Authorization: Bearer ${NETFOUNDRY_API_TOKEN}" | jq -r '.jwt' > exampleTunneler.jwt
 
-❯ ./ziti-enroller --jwt kbTunneler14.jwt
+❯ ./ziti-enroller --jwt exampleTunneler.jwt
 INFO[0000] generating P-384 key
-enrolled successfully. identity file written to: ../kbTunneler14.json
+enrolled successfully. identity file written to: exampleTunneler.json
 ```
 
 ### Run Tunneler as a Proxy
@@ -239,7 +239,7 @@ tun
 ❯ ./ziti-tunneler version
 0.14.9
 
-❯ ./ziti/ziti-tunnel proxy --identity kbTunneler14.json ${NF_SERVICE_NAME}:8080
+❯ ./ziti/ziti-tunnel proxy --identity exampleTunneler.json ${NF_SERVICE_NAME}:8080
 ```
 
 The effect of this command is for Tunneler to bind to localhost:8080 and begin listening for connections. We'll test this by sending a request to that port.

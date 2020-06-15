@@ -127,7 +127,7 @@ We'll use the ID of the network we created in the request path, and the ID of th
 ```bash
 http POST https://gateway.production.netfoundry.io/rest/v1/networks/3716d78d-084a-446c-9ac4-5f63ba7b569d/endpoints \
   "Authorization: Bearer ${NETFOUNDRY_API_TOKEN}" \
-name=kbEndTerm26 \
+name=exampleTerminatingEndpoint \
 geoRegionId=1d824744-0b38-425a-b1d3-6c1dd69def26 \
 endpointType=GW
 ```
@@ -199,7 +199,7 @@ This is to describe the server for which you wish to manage access through an Ap
 ```bash
 ❯ http POST https://gateway.production.netfoundry.io/rest/v1/networks/3716d78d-084a-446c-9ac4-5f63ba7b569d/services \
   "Authorization: Bearer ${NETFOUNDRY_API_TOKEN}" \
-  name=kbSvc26 \
+  name=exampleService \
   serviceClass=CS \
   serviceInterceptType=IP \
   serviceType=TCP \
@@ -258,7 +258,7 @@ This is to describe the server for which you wish to manage access through an Ap
   "interceptExcludePorts" : null,
   "createdAt" : "2020-05-29T21:24:47.923+0000",
   "updatedAt" : "2020-05-29T21:24:47.923+0000",
-  "name" : "kbSvc26",
+  "name" : "exampleService",
   "interceptPorts" : {
     "include" : [ ],
     "exclude" : [ ]
@@ -291,7 +291,7 @@ Ziti clients require a dedicated bridge gateway for each AppWAN. Later we'll add
 ```bash
 ❯ http POST https://gateway.production.netfoundry.io/rest/v1/networks/3716d78d-084a-446c-9ac4-5f63ba7b569d/endpoints \
   "Authorization: Bearer ${NETFOUNDRY_API_TOKEN}" \
-  name=kbBridgeGw27 \
+  name=exampleBridgeGw \
   endpointType=ZTGW \
   geoRegionId=1d824744-0b38-425a-b1d3-6c1dd69def26
 ```
@@ -337,7 +337,7 @@ Ziti clients require a dedicated bridge gateway for each AppWAN. Later we'll add
     "geoRegionId": "1d824744-0b38-425a-b1d3-6c1dd69def26",
     "haEndpointType": null,
     "id": "4728677b-ade6-438d-ae52-144d6adbdc88",
-    "name": "kbBridgeGw27",
+    "name": "exampleBridgeGw",
     "networkId": "3716d78d-084a-446c-9ac4-5f63ba7b569d",
     "o365BreakoutNextHopIp": null,
     "ownerIdentityId": "40deb1ba-d18f-4480-9d63-e2c6e7812caf",
@@ -361,7 +361,7 @@ This is your Ziti client. We'll install Tunneler and enroll it with the one-time
 ```bash
 ❯ http POST https://gateway.production.netfoundry.io/rest/v1/networks/3716d78d-084a-446c-9ac4-5f63ba7b569d/endpoints \
   "Authorization: Bearer ${NETFOUNDRY_API_TOKEN}" \
-  name=kbZitiCl27 \
+  name=exampleTunneler \
   endpointType=ZTCL \
   geoRegionId=1d824744-0b38-425a-b1d3-6c1dd69def26
 ```
@@ -407,7 +407,7 @@ This is your Ziti client. We'll install Tunneler and enroll it with the one-time
     "geoRegionId": "1d824744-0b38-425a-b1d3-6c1dd69def26",
     "haEndpointType": null,
     "id": "ebeaecae-ce3f-4a68-8cb9-01b7eb87124c",
-    "name": "kbZitiCl27",
+    "name": "exampleTunneler",
     "networkId": "3716d78d-084a-446c-9ac4-5f63ba7b569d",
     "o365BreakoutNextHopIp": null,
     "ownerIdentityId": "40deb1ba-d18f-4480-9d63-e2c6e7812caf",
@@ -431,7 +431,7 @@ Initialize an empty AppWAN
 ```bash
 ❯ http POST https://gateway.production.netfoundry.io/rest/v1/networks/3716d78d-084a-446c-9ac4-5f63ba7b569d/appWans \
   "Authorization: Bearer ${NETFOUNDRY_API_TOKEN}" \
-  name=kbAppWan27
+  name=exampleAppWAN
 ```
 
 #### Create AppWAN Response
@@ -457,7 +457,7 @@ Initialize an empty AppWAN
     },
     "createdAt": "2020-05-29T22:09:22.583+0000",
     "id": "1c46ae3a-39cf-4ff3-bbbf-243fde329de2",
-    "name": "kbAppWan27",
+    "name": "exampleAppWAN",
     "networkId": null,
     "ownerIdentityId": "40deb1ba-d18f-4480-9d63-e2c6e7812caf",
     "status": 100,
@@ -500,7 +500,7 @@ Add the client and bridge gateway to the AppWAN.
     },
     "createdAt": "2020-05-29T22:09:22.000+0000",
     "id": "1c46ae3a-39cf-4ff3-bbbf-243fde329de2",
-    "name": "kbAppWan27",
+    "name": "exampleAppWAN",
     "networkId": "3716d78d-084a-446c-9ac4-5f63ba7b569d",
     "ownerIdentityId": "40deb1ba-d18f-4480-9d63-e2c6e7812caf",
     "status": 600,
@@ -543,7 +543,7 @@ Add the service to the AppWAN.
     },
     "createdAt": "2020-05-29T22:29:38.000+0000",
     "id": "1c46ae3a-39cf-4ff3-bbbf-243fde329de2",
-    "name": "kbAppWan27",
+    "name": "exampleAppWAN",
     "networkId": "3716d78d-084a-446c-9ac4-5f63ba7b569d",
     "ownerIdentityId": "40deb1ba-d18f-4480-9d63-e2c6e7812caf",
     "status": 600,
@@ -569,17 +569,17 @@ This is a utility that will securely generate a unique cryptographic identity fo
 ❯ ./ziti-enroller version
 0.5.8-2554
 
-❯ http --download --output kbTunneler25.jwt GET \
+❯ http --download --output exampleTunneler.jwt GET \
     https://gateway.production.netfoundry.io/rest/v1/networks/3716d78d-084a-446c-9ac4-5f63ba7b569d/endpoints/4543075e-22e6-46db-a2e5-b934ea1dec19/downloadRegistrationKey \
     "Authorization: Bearer ${NETFOUNDRY_API_TOKEN}"
 
-❯ ./ziti-enroller --jwt kbTunneler25.jwt
+❯ ./ziti-enroller --jwt exampleTunneler.jwt
 ```
 
 The method shown above will create a valid JWT file. The JWT file must be created without a newline at EOF and the JWT is on a single line. In the example below note the absence of a `$` character at EOF denoting the trailing newline that is commonly added by ASCII editors if you were to paste the value from the console in a GUI.
 
 ```bash
-❯ cat -A kbTunneler25.jwt
+❯ cat -A exampleTunneler.jwt
 eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbSI6Im90dCIsImV4cCI6MTU5MTQwNzcwMSwiaXNzIjoiaHR0cHM6Ly81NC4xNTYuMjQzLjI6MTA4MCIsImp0aSI6IjhhMDQxN2VhLWE2MDQtMTFlYS1hYWEwLTAyYzhlMjg4Yjg5NSIsInN1YiI6IjE4ZjJkNzhjLTY2MTItNGUzYi1hNjM2LTk5ZGI1MzM4OGRhOSJ9.h10SpFrEfV1IbYeJUZmJ3IcN5ADyyv_7OMaAyLyk-QcTLBmO0pIFoWNhwzc9lyr9KO35-x2pVU8fVaScKE58WavpuPRqjc25n0FAFj47chzy9_v8K7s94j7th31OK29rF3cbmfpoIKHAktUpI7IzZK7QoN21f36afKc8sFI1mN6FlO934ZjGEU9Gvl1UXkZAVWXm6dzfOwe8TpUgBNey71s15StLoQk35SQ3w2yG6oLAR5M0f_QiCU9gJH0DSySdwsPt-USxURHZRtDQHG26TG6GB3olcIr_iwLwoa9G7tLO3yl_NxNpRag4xhVIjzh29OLNeXM0EfELPFsy1zcCUw
 ```
 
@@ -615,7 +615,7 @@ tun
 ❯ ./ziti-tunneler version
 0.5.8-2554
 
-❯ ./ziti-tunnel proxy kbAppWan27-kbSvc26:8080 --identity kbTunneler25.json --verbose
+❯ ./ziti-tunnel proxy exampleAppWAN-exampleService:8080 --identity exampleTunneler.json --verbose
 ```
 
 The effect of this command is for Tunneler to bind to localhost:8080 and begin listening for connections. We'll test this by sending a request to that port along with a `Host` header so that the responding service will know which web site we're asking for.
