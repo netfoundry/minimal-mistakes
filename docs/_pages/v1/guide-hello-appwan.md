@@ -1,22 +1,24 @@
 ---
-title: "Hello, AppWAN!"
+title: "Hello, AppWAN"
 permalink: /v1/guides/hello-appwan/
 sidebar:
     nav: v1guides
 tags:
   - hello-appwan
 toc: true
+classes: wide
 ---
 
 ## Audience
 
 This is for you if you're ready to create a functioning AppWAN. I'll assume you're acquainted with [the foundational concepts](/help#foundational-concepts) and have an API token from Auth0. You can go back to the [authentication guide](/v1/guides/authentication/) if you need to get that token.
 
-RapidAPI subscribers may take the same steps except you will not need to provision a new network.
+There's a separate guide for [getting started with RapidAPI](/v1/guides/rapidapi/)
 {: .notice--success}
 
-## How to Build an AppWAN
+## Overview
 
+1. Your workspace
 1. Create a network.
 2. Create a terminating endpoint.
 3. Create a service.
@@ -30,14 +32,20 @@ RapidAPI subscribers may take the same steps except you will not need to provisi
 
 The result of these request examples is an AppWAN that allows Tunneler to initiate connections to a service. You could substitute any service, even one that is not public.
 
+### Set up Your Workspace
+
+These examples, like those in the [authentication guide](/v1/guides/authentication/), make use of [HTTPie (command-line HTTP client)](https://httpie.org/) and [`jq` (command-line JSON processor)](https://stedolan.github.io/jq/).
+
+If you have your API authentication token assigned to environment variable `NETFOUNDRY_API_TOKEN` then you're ready to go!
+
 ### Create Network
 
 **Request**
 
 ```bash
-http POST https://gateway.production.netfoundry.io/rest/v1/networks \
+❯ http POST https://gateway.production.netfoundry.io/rest/v1/networks \
   "Authorization: Bearer ${NETFOUNDRY_API_TOKEN}" \
-  name=exampleNetwork11
+  name=exampleNetwork
 ```
 
 **Response**
@@ -46,7 +54,7 @@ http POST https://gateway.production.netfoundry.io/rest/v1/networks \
 {
   "createdAt": "2020-05-27T15:49:23.000+0000",
   "updatedAt": "2020-05-27T15:49:24.000+0000",
-  "name": "exampleNetwork11",
+  "name": "exampleNetwork",
   "caName": "CA_de67d725-b63f-4c2f-8c8c-073390cb3bed",
   "productFamily": "ZITI_ENABLED",
   "productVersion": "6.1.1-58266265",
@@ -99,9 +107,14 @@ http POST https://gateway.production.netfoundry.io/rest/v1/networks \
 
 ### Terminating Endpoint
 
+The terminating endpoint is a "gateway" type of endpoint. Traffic flows through gateways from clients to services. For the sake of simplicity; you could use a public, hosted endpoint as shown in this example; or you could use `endpointType=VCPEGW` and self-host your own terminating endpoint with [the virtual machine images](https://netfoundry.io/resources/support/downloads/networkversion6/#gateways) that we provide. If you self-host then you'll need to log in as `nfadmin` and run the registration command on your VM using the one-time key that is an attribute of your terminating endpoint like `sudo nfnreg {one time key}`. Here's [an article in our Support Hub](https://support.netfoundry.io/hc/en-us/articles/360016129312-Create-a-NetFoundry-Gateway-VM-on-Your-Own-Equipment) about self-hosted gateway registration.
+
+First-boot registration is automated for all hosted gateways and for some cloud providers when launching a self-hosted gateway through the web console.
+{: .notice--info}
+
 #### Terminating Endpoint Request
 
-We need to tell NetFoundry which region is near the service to optimize performance. We'll extract the ID of "GENERIC Canada East1", and use that ID in the following request to create the endpoint.
+We need to tell NetFoundry which region is near the service to optimize for performance. This example extracts the ID of "GENERIC Canada East1", and use that ID in the following request to create the endpoint.
 
 ```bash
 ❯ http GET https://gateway.production.netfoundry.io/rest/v1/geoRegions \
@@ -114,7 +127,7 @@ We'll use the ID of the network we created in the request path, and the ID of th
 ```bash
 http POST https://gateway.production.netfoundry.io/rest/v1/networks/3716d78d-084a-446c-9ac4-5f63ba7b569d/endpoints \
   "Authorization: Bearer ${NETFOUNDRY_API_TOKEN}" \
-name=kbEndTerm26 \
+name=exampleTerminatingEndpoint \
 geoRegionId=1d824744-0b38-425a-b1d3-6c1dd69def26 \
 endpointType=GW
 ```
@@ -186,7 +199,7 @@ This is to describe the server for which you wish to manage access through an Ap
 ```bash
 ❯ http POST https://gateway.production.netfoundry.io/rest/v1/networks/3716d78d-084a-446c-9ac4-5f63ba7b569d/services \
   "Authorization: Bearer ${NETFOUNDRY_API_TOKEN}" \
-  name=kbSvc26 \
+  name=exampleService \
   serviceClass=CS \
   serviceInterceptType=IP \
   serviceType=TCP \
@@ -245,7 +258,7 @@ This is to describe the server for which you wish to manage access through an Ap
   "interceptExcludePorts" : null,
   "createdAt" : "2020-05-29T21:24:47.923+0000",
   "updatedAt" : "2020-05-29T21:24:47.923+0000",
-  "name" : "kbSvc26",
+  "name" : "exampleService",
   "interceptPorts" : {
     "include" : [ ],
     "exclude" : [ ]
@@ -278,7 +291,7 @@ Ziti clients require a dedicated bridge gateway for each AppWAN. Later we'll add
 ```bash
 ❯ http POST https://gateway.production.netfoundry.io/rest/v1/networks/3716d78d-084a-446c-9ac4-5f63ba7b569d/endpoints \
   "Authorization: Bearer ${NETFOUNDRY_API_TOKEN}" \
-  name=kbBridgeGw27 \
+  name=exampleBridgeGw \
   endpointType=ZTGW \
   geoRegionId=1d824744-0b38-425a-b1d3-6c1dd69def26
 ```
@@ -324,7 +337,7 @@ Ziti clients require a dedicated bridge gateway for each AppWAN. Later we'll add
     "geoRegionId": "1d824744-0b38-425a-b1d3-6c1dd69def26",
     "haEndpointType": null,
     "id": "4728677b-ade6-438d-ae52-144d6adbdc88",
-    "name": "kbBridgeGw27",
+    "name": "exampleBridgeGw",
     "networkId": "3716d78d-084a-446c-9ac4-5f63ba7b569d",
     "o365BreakoutNextHopIp": null,
     "ownerIdentityId": "40deb1ba-d18f-4480-9d63-e2c6e7812caf",
@@ -348,7 +361,7 @@ This is your Ziti client. We'll install Tunneler and enroll it with the one-time
 ```bash
 ❯ http POST https://gateway.production.netfoundry.io/rest/v1/networks/3716d78d-084a-446c-9ac4-5f63ba7b569d/endpoints \
   "Authorization: Bearer ${NETFOUNDRY_API_TOKEN}" \
-  name=kbZitiCl27 \
+  name=exampleTunneler \
   endpointType=ZTCL \
   geoRegionId=1d824744-0b38-425a-b1d3-6c1dd69def26
 ```
@@ -394,7 +407,7 @@ This is your Ziti client. We'll install Tunneler and enroll it with the one-time
     "geoRegionId": "1d824744-0b38-425a-b1d3-6c1dd69def26",
     "haEndpointType": null,
     "id": "ebeaecae-ce3f-4a68-8cb9-01b7eb87124c",
-    "name": "kbZitiCl27",
+    "name": "exampleTunneler",
     "networkId": "3716d78d-084a-446c-9ac4-5f63ba7b569d",
     "o365BreakoutNextHopIp": null,
     "ownerIdentityId": "40deb1ba-d18f-4480-9d63-e2c6e7812caf",
@@ -418,7 +431,7 @@ Initialize an empty AppWAN
 ```bash
 ❯ http POST https://gateway.production.netfoundry.io/rest/v1/networks/3716d78d-084a-446c-9ac4-5f63ba7b569d/appWans \
   "Authorization: Bearer ${NETFOUNDRY_API_TOKEN}" \
-  name=kbAppWan27
+  name=exampleAppWAN
 ```
 
 #### Create AppWAN Response
@@ -444,7 +457,7 @@ Initialize an empty AppWAN
     },
     "createdAt": "2020-05-29T22:09:22.583+0000",
     "id": "1c46ae3a-39cf-4ff3-bbbf-243fde329de2",
-    "name": "kbAppWan27",
+    "name": "exampleAppWAN",
     "networkId": null,
     "ownerIdentityId": "40deb1ba-d18f-4480-9d63-e2c6e7812caf",
     "status": 100,
@@ -487,7 +500,7 @@ Add the client and bridge gateway to the AppWAN.
     },
     "createdAt": "2020-05-29T22:09:22.000+0000",
     "id": "1c46ae3a-39cf-4ff3-bbbf-243fde329de2",
-    "name": "kbAppWan27",
+    "name": "exampleAppWAN",
     "networkId": "3716d78d-084a-446c-9ac4-5f63ba7b569d",
     "ownerIdentityId": "40deb1ba-d18f-4480-9d63-e2c6e7812caf",
     "status": 600,
@@ -530,7 +543,7 @@ Add the service to the AppWAN.
     },
     "createdAt": "2020-05-29T22:29:38.000+0000",
     "id": "1c46ae3a-39cf-4ff3-bbbf-243fde329de2",
-    "name": "kbAppWan27",
+    "name": "exampleAppWAN",
     "networkId": "3716d78d-084a-446c-9ac4-5f63ba7b569d",
     "ownerIdentityId": "40deb1ba-d18f-4480-9d63-e2c6e7812caf",
     "status": 600,
@@ -556,17 +569,17 @@ This is a utility that will securely generate a unique cryptographic identity fo
 ❯ ./ziti-enroller version
 0.5.8-2554
 
-❯ http --download --output kbTunneler25.jwt GET \
+❯ http --download --output exampleTunneler.jwt GET \
     https://gateway.production.netfoundry.io/rest/v1/networks/3716d78d-084a-446c-9ac4-5f63ba7b569d/endpoints/4543075e-22e6-46db-a2e5-b934ea1dec19/downloadRegistrationKey \
     "Authorization: Bearer ${NETFOUNDRY_API_TOKEN}"
 
-❯ ./ziti-enroller --jwt kbTunneler25.jwt
+❯ ./ziti-enroller --jwt exampleTunneler.jwt
 ```
 
 The method shown above will create a valid JWT file. The JWT file must be created without a newline at EOF and the JWT is on a single line. In the example below note the absence of a `$` character at EOF denoting the trailing newline that is commonly added by ASCII editors if you were to paste the value from the console in a GUI.
 
 ```bash
-❯ cat -A kbTunneler25.jwt
+❯ cat -A exampleTunneler.jwt
 eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbSI6Im90dCIsImV4cCI6MTU5MTQwNzcwMSwiaXNzIjoiaHR0cHM6Ly81NC4xNTYuMjQzLjI6MTA4MCIsImp0aSI6IjhhMDQxN2VhLWE2MDQtMTFlYS1hYWEwLTAyYzhlMjg4Yjg5NSIsInN1YiI6IjE4ZjJkNzhjLTY2MTItNGUzYi1hNjM2LTk5ZGI1MzM4OGRhOSJ9.h10SpFrEfV1IbYeJUZmJ3IcN5ADyyv_7OMaAyLyk-QcTLBmO0pIFoWNhwzc9lyr9KO35-x2pVU8fVaScKE58WavpuPRqjc25n0FAFj47chzy9_v8K7s94j7th31OK29rF3cbmfpoIKHAktUpI7IzZK7QoN21f36afKc8sFI1mN6FlO934ZjGEU9Gvl1UXkZAVWXm6dzfOwe8TpUgBNey71s15StLoQk35SQ3w2yG6oLAR5M0f_QiCU9gJH0DSySdwsPt-USxURHZRtDQHG26TG6GB3olcIr_iwLwoa9G7tLO3yl_NxNpRag4xhVIjzh29OLNeXM0EfELPFsy1zcCUw
 ```
 
@@ -602,7 +615,7 @@ tun
 ❯ ./ziti-tunneler version
 0.5.8-2554
 
-❯ ./ziti-tunnel proxy kbAppWan27-kbSvc26:8080 --identity kbTunneler25.json --verbose
+❯ ./ziti-tunnel proxy exampleAppWAN-exampleService:8080 --identity exampleTunneler.json --verbose
 ```
 
 The effect of this command is for Tunneler to bind to localhost:8080 and begin listening for connections. We'll test this by sending a request to that port along with a `Host` header so that the responding service will know which web site we're asking for.
@@ -610,3 +623,5 @@ The effect of this command is for Tunneler to bind to localhost:8080 and begin l
 ```bash
 ❯ http GET http:localhost:8080 "Host: wttr.in"
 ```
+
+{% include wttr.in.md %}

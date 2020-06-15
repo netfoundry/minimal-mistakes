@@ -103,15 +103,6 @@ author:
 # Site Footer
 footer:
   links:
-    - label: "NetFoundry"
-      icon: "fas fa-home"
-      url: "https://netfoundry.io/"
-    - label: "Privacy"
-      icon: "fas fa-shield-alt"
-      url: "https://www.netfoundry.io/privacy-policy"
-    - label: "Terms"
-      icon: "fas fa-balance-scale"
-      url: "https://www.netfoundry.io/legal-items"
     - label: "Twitter"
       icon: "fab fa-fw fa-twitter-square"
       url: "https://twitter.com/netfoundry"
@@ -194,7 +185,7 @@ defaults:
       path: ""
       type: posts
     values:
-      layout: single
+      layout: v1Single
       author_profile: true
       read_time: true
       comments: true
@@ -202,10 +193,22 @@ defaults:
       related: true
   # _pages
   - scope:
-      path: "_pages"
+      path: ""
       type: pages
     values:
-      layout: single
+      layout: v1Single
+      author_profile: false
+  - scope:
+      path: "_pages/v1/*"
+      type: pages
+    values:
+      layout: v1Single
+      author_profile: false
+  - scope:
+      path: "_pages/v2/*"
+      type: pages
+    values:
+      layout: v2Single
       author_profile: false
 
 # Sass/SCSS

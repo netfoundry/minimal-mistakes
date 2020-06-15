@@ -1,11 +1,3 @@
----
-permalink: /v1/guides/authentication/
-title: "Authentication"
-sidebar:
-    nav: v1guides
-toc: true
----
-
 ## Audience
 
 This is aimed at NetFoundry customers and [trial users](https://nfconsole.io/signup) who will use the API directly to augment and automate their use of the NF Console.
@@ -74,26 +66,4 @@ Use your permanent credential; `client_id`, `client_secret`; to obtain an expiri
         "grant_type": "client_credentials"
     }' \
     https://netfoundry-production.auth0.com/oauth/token
-```
-
-### Use the token with an API operation
-
-Include the expiring bearer token in your request to the NetFoundry API. You could source the shell script above to make `NETFOUNDRY_API_TOKEN` available.
-
-**HTTPie**
-
-```bash
-❯ http GET https://gateway.production.netfoundry.io/rest/v1/networks \
-  "Authorization: Bearer ${NETFOUNDRY_API_TOKEN}"
-```
-
-**cURL**
-
-```bash
-❯ curl \
-    --silent \
-    --show-error \
-    --request GET \
-    --header "Authorization: Bearer ${NETFOUNDRY_API_TOKEN}" \
-    https://gateway.production.netfoundry.io/rest/v1/networks
 ```
