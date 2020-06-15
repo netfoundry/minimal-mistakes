@@ -4,6 +4,7 @@ permalink: /v2/guides/hello-world/
 sidebar:
     nav: v2guides
 toc: true
+classes: wide
 ---
 
 This guides you step by step to create an AppWAN with HTTP requests.

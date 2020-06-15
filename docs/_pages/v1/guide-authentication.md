@@ -4,6 +4,7 @@ title: "Authentication"
 sidebar:
     nav: v1guides
 toc: true
+classes: wide
 ---
 
 {% include authentication.md %}

@@ -6,6 +6,7 @@ sidebar:
 tags:
   - hello-appwan
 toc: true
+classes: wide
 ---
 
 ## Audience
