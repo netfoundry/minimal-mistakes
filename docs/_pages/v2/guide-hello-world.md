@@ -26,8 +26,10 @@ If you have your API authentication token assigned to environment variable `NETF
 
 ### Discover Network Configuration ID
 
+This is a simplistic sizing of your network's components. Use "small" for cost-conscious testing, "medium" for nominal performance.
+
 ```bash
-❯ http GET https://gateway.sandbox.netfoundry.io/rest/v1/networkConfigMetadata/ \
+❯ http GET https://gateway.production.netfoundry.io/rest/v1/networkConfigMetadata/ \
   "Authorization: Bearer ${NETFOUNDRY_API_TOKEN}" | jq '._embedded.networkConfigMetadatas[]|{name:.name,id:.id}'
 {
   "name": "small",
@@ -42,9 +44,11 @@ If you have your API authentication token assigned to environment variable `NETF
 
 ### Discover Network Group ID
 
+A network group organizes your NetFoundry networks for billing and permissions. You need to know the network group ID in order to create a network. This example filters for a particular group by name. In most cases there will be only one group in the list of results.
+
 <!-- TODO update organizations to fixed object reference like networkgroups -->
 ```bash
-❯ http GET https://gateway.sandbox.netfoundry.io/rest/v1/network-groups/ \
+❯ http GET https://gateway.production.netfoundry.io/rest/v1/network-groups/ \
   "Authorization: Bearer ${NETFOUNDRY_API_TOKEN}" | jq '._embedded.organizations[]|select(.name == "MYGROUP")|{name:.name,id:.id}'
 {
   "name": "MYGROUP",
@@ -55,8 +59,10 @@ If you have your API authentication token assigned to environment variable `NETF
 
 ### Create a Network
 
+This will provision the dedicated compute infrastructure of your NetFoundry network. The value of `locationCode` determines the AWS region in which your controller node is located. It is not crucial to home the controller near your clients or services for performance reasons, but you may have other reasons for preferring or avoiding a particular geographic region.
+
 ```bash
-❯ http POST https://gateway.sandbox.netfoundry.io/rest/v2/networks \
+❯ http POST https://gateway.production.netfoundry.io/rest/v2/networks \
   "Authorization: Bearer ${NETFOUNDRY_API_TOKEN}" \
   locationCode="us-west-2" \
   name="kbZtNet14b" \
@@ -66,10 +72,12 @@ If you have your API authentication token assigned to environment variable `NETF
 ❯ NF_NETWORK=3559807e-617d-4c29-a434-9ea15393a582
 ```
 
-### Discover an AWS Datacenter ID
+### Create an Edge Router
+
+At this time edge routers must be homed in an AWS datacenter if hosted by NetFoundry. You can also self-host an edge router by enrolling an installation of `ziti-router` with your network. In the NetFoundry platform, a datacenter is a cloud-provider-specific geographic region which is in the case of AWS a region with multiple availability zones.
 
 ```bash
-❯ http GET https://gateway.sandbox.netfoundry.io/rest/v1/dataCenters \
+❯ http GET https://gateway.production.netfoundry.io/rest/v1/dataCenters \
   "Authorization: Bearer ${NETFOUNDRY_API_TOKEN}" | jq '._embedded.dataCenters[]|select(.provider == "AWS")|{location:.locationCode, id:.id}'
 {
   "location": "ca-central-1",
@@ -78,10 +86,8 @@ If you have your API authentication token assigned to environment variable `NETF
 ❯ NF_SERVICE_DC=c3b7e284-a214-701e-0111-c3a7c2b1e280
 ```
 
-### Create an Edge Router
-
 ```bash
-❯ http POST https://gateway.sandbox.netfoundry.io/rest/v2/edge-routers \
+❯ http POST https://gateway.production.netfoundry.io/rest/v2/edge-routers \
   "Authorization: Bearer ${NETFOUNDRY_API_TOKEN}" <<EOF | jq .id
 {
         "networkId": "${NF_NETWORK}",
@@ -99,8 +105,10 @@ EOF
 
 ### Edge Router Policy
 
+Authorize endpoints with matching `endpointAttributes` to dial via edge routers to which this policy is applied in `edgeRouterAttributes`.
+
 ```bash
-❯ http POST https://gateway.sandbox.netfoundry.io/rest/v2/edge-router-policies \
+❯ http POST https://gateway.production.netfoundry.io/rest/v2/edge-router-policies \
   "Authorization: Bearer ${NETFOUNDRY_API_TOKEN}" <<EOF | jq .id
 {
         "endpointAttributes": [
@@ -119,8 +127,10 @@ EOF
 
 ### Define a Service
 
+Describe a server. Endpoints will be authorized to access this service if they have matching tags in `attributes`.
+
 ```bash
-❯ http POST https://gateway.sandbox.netfoundry.io/rest/v2/services \
+❯ http POST https://gateway.production.netfoundry.io/rest/v2/services \
   "Authorization: Bearer ${NETFOUNDRY_API_TOKEN}" <<EOF | jq .id
 {
         "attributes": [
@@ -145,8 +155,10 @@ EOF
 
 ### Create an AppWAN
 
+Authorize endpoints with matching tags in `endpointAttributes` to access services with matching tags in `serviceAttributes`.
+
 ```bash
-❯ http POST https://gateway.sandbox.netfoundry.io/rest/v2/app-wans \
+❯ http POST https://gateway.production.netfoundry.io/rest/v2/app-wans \
   "Authorization: Bearer ${NETFOUNDRY_API_TOKEN}" <<EOF | jq .id
 {
         "networkId": "${NF_NETWORK}",
@@ -165,8 +177,10 @@ EOF
 
 ### Create a Tunneler Endpoint
 
+The tags in `attributes` are used to authorize this endpoint to access services with matching tags via edge routers with matching tags.
+
 ```bash
-❯ http POST https://gateway.sandbox.netfoundry.io/rest/v2/endpoints \
+❯ http POST https://gateway.production.netfoundry.io/rest/v2/endpoints \
   "Authorization: Bearer ${NETFOUNDRY_API_TOKEN}" <<EOF | jq .id
 {
         "networkId": "${NF_NETWORK}",
@@ -193,7 +207,7 @@ Enroller a utility that will securely generate a unique cryptographic identity f
 ❯ ./ziti-enroller version
 0.14.9
 
-❯ http GET https://gateway.sandbox.netfoundry.io/rest/v2/endpoints/${NF_TUNNELER} \
+❯ http GET https://gateway.production.netfoundry.io/rest/v2/endpoints/${NF_TUNNELER} \
   "Authorization: Bearer ${NETFOUNDRY_API_TOKEN}" | jq -r '.jwt' > kbTunneler14.jwt
 
 ❯ ./ziti-enroller --jwt kbTunneler14.jwt
