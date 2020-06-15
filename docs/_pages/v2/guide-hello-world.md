@@ -6,6 +6,8 @@ sidebar:
 toc: true
 ---
 
+This guides you step by step to create an AppWAN with HTTP requests.
+
 ## Audience
 
 This is for you if you're ready to create your first AppWAN with version 2 of the NetFoundry API (`/core/v2`). I'll assume you're acquainted with [the foundational concepts](/help#foundational-concepts) and have an API token from Auth0. You can go back to the [authentication guide](/v1/guides/authentication/) if you need to get that token.
