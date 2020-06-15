@@ -15,7 +15,7 @@ header:
     image: /assets/images/hourglass-header.jpg
 ---
 
-What if you didn't have to store your credentials in Jenkins?
+Steal my AWS credentials!
 
 ```json
 {
@@ -28,11 +28,13 @@ What if you didn't have to store your credentials in Jenkins?
 }
 ```
 
-<i class="fas fa-hand-point-up"></i> &nbsp; Here are my real AWS credentials with administrator privileges that expired 15 minutes after I obtained them from Amazon's Security Token Service (STS). What follows is a reflection on why you too might decide that some credentials really shouldn't be stored in Jenkins, and a walk through one alternative.
+<i class="fas fa-hand-point-up"></i> &nbsp; These really are my AWS credentials with administrator privileges. Only, the session for which they are valid expired 15 minutes after I obtained them from Amazon's Security Token Service (STS).
+
+What follows is a reflection on why you too might decide to only entrust expiring credentials like these to Jenkins instead of storing powerful, long-lived credentials.
 
 ## The Why
 
-There's obvious value in automation, and Jenkins is an extremely capable general-purpose automation tool. That competence can lead to overloading i.e. overlapping and potentially colliding interests. In my experience, the life cycle of a job often began with an administrator scripting a repetitive task. The final handoff of that task to Jenkins means not only codifying the process, but also entrusting the admin's credentials to Jenkins. The problem with storing a powerful credential in Jenkins is that it's available to **all** of the codebases that Jenkins works with, not just the intended codebase.
+There's obvious value in automation, and Jenkins is an extremely capable general-purpose automation tool. That competence can lead to it becoming empowered to perform a wide range of very important tasks with credentials that could be quite destructive if misused. The problem with storing a powerful credential in Jenkins is that it's available to **all** of the codebases that Jenkins works with, not just the intended codebase.
 
 ### The Line of Sight Analogy
 
@@ -44,11 +46,15 @@ I know I can trust my robots to execute a program, and as long as the robot is i
 
 *What is the motivation for improving the security of secrets stored in Jenkins?*
 
-It is a feature of [the extremely popular Credentials Plugin](https://plugins.jenkins.io/credentials/) to make several types of secrets available in pipelines as environment variables. The confidentiality of these secrets is not modulated by Jenkins's own access controls, and it is not necessary to be a Jenkins administrator nor even a Jenkins user at all to access any secret stored in Jenkins. It is only necessary to push malicious code to any repository that is configured for jobs in Jenkins. 
+It is a feature of [the widely-used Credentials Plugin](https://plugins.jenkins.io/credentials/) to make several types of secrets available in pipelines as environment variables. The confidentiality of these secrets is not modulated by Jenkins's own access controls, and it is not necessary to be a Jenkins administrator nor even a Jenkins user at all to access any secret stored in Jenkins. It is only necessary to push malicious code to any repository that is configured for jobs in Jenkins.
 
 Obscuring this is not a viable strategy. Permanent (not automatically and routinely "rotated") infrastructure-critical secrets are too frequently stored encrypted-at-rest on the master node. This entire repository of secrets are trivially lifted by any job that is able to run on the master because the plaintext is available there. Additionally, any one secret may be trivially obtained by any job on any node where the credential ID is known.
 
 It is easy enough to limit the risk of theft of the entire plaintext of Jenkins secrets. That exploit would require either login access to the host or running a malicious job on the master node. You could configure the master node to have zero workers and carefully control login access via SSH. This does not prevent a malicious job running on any node from obtaining any secret when the ID is known. The ID is not a secret.
+
+The Jenkins project publishes best practices in [their wiki](https://wiki.jenkins.io/display/JENKINS/Jenkins+Best+Practices) which bring direct attention to these problems.
+
+Here's [a post from the TrendMicro blog](https://blog.trendmicro.com/trendlabs-security-intelligence/hiding-in-plain-text-jenkins-plugin-vulnerabilities/) about the vulnerability of credentials stored in Jenkins.
 
 ## The Gist
 
