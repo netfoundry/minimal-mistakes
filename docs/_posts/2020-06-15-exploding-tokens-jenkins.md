@@ -15,7 +15,7 @@ header:
     image: /assets/images/hourglass-header.jpg
 ---
 
-Steal my AWS credentials!
+## Steal my AWS credentials!
 
 ```json
 {
@@ -29,6 +29,8 @@ Steal my AWS credentials!
 ```
 
 <i class="fas fa-hand-point-up"></i> &nbsp; These really are my AWS credentials with administrator privileges. Only, the session for which they are valid expired 15 minutes after I obtained them from Amazon's Security Token Service (STS).
+
+![canonball time bomb](/assets/images/canonball-timer.png){: .align-center}
 
 What follows is a reflection on why you too might decide to only entrust expiring credentials like these to Jenkins instead of storing powerful, long-lived credentials.
 
