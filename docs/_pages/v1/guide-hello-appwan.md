@@ -45,7 +45,7 @@ If you have your API authentication token assigned to environment variable `NETF
 ```bash
 ❯ http POST https://gateway.production.netfoundry.io/rest/v1/networks \
   "Authorization: Bearer ${NETFOUNDRY_API_TOKEN}" \
-  name=exampleNetwork11
+  name=exampleNetwork
 ```
 
 **Response**
@@ -54,7 +54,7 @@ If you have your API authentication token assigned to environment variable `NETF
 {
   "createdAt": "2020-05-27T15:49:23.000+0000",
   "updatedAt": "2020-05-27T15:49:24.000+0000",
-  "name": "exampleNetwork11",
+  "name": "exampleNetwork",
   "caName": "CA_de67d725-b63f-4c2f-8c8c-073390cb3bed",
   "productFamily": "ZITI_ENABLED",
   "productVersion": "6.1.1-58266265",
