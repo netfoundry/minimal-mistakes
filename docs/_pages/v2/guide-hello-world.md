@@ -222,17 +222,6 @@ enrolled successfully. identity file written to: exampleTunneler.json
 
 Tunneler an app NetFoundry built with the [Ziti endpoint SDK](https://ziti.dev/). It will tunnel IP packets to the service via the AppWAN. You could also use any app that you built with a Ziti endpoint SDK. Tunneler is a portable binary and may be executed where it is downloaded.
 
-Tunneler is typically run in one of three modes.
-
-proxy
-:  run-as a normal user and listen for the named AppWAN-Service pair on a TCP port >1024. This is the mode used in the example below.
-
-tproxy
-:  run-as root and transparently proxy using iptables
-
-tun
-:  run-as root and intercept traffic that arrives on a provided tunnel interface
-
 {% include ziti-tunneler.md %}
 
 ```bash
@@ -249,7 +238,7 @@ The effect of this command is for Tunneler to bind to localhost:8080 and begin l
 54.153.103.130
 ```
 
-Where 54.153.103.130 is the public IPv4 of your edge router that terminates the service. The eth0.me server merely echoes back the IP address from which the request originated from the service's network perspective. You can double check that you do receive a different result when you query the eth0.me server directly.
+Where 54.153.103.130 is the public IPv4 of your edge router that terminates the service. The eth0.me server merely echoes back the IP address from which the request originated. You can double check that you do receive a different result when you query the eth0.me server directly via your own public IP.
 
 ```bash
 ❯ http -b GET eth0.me
