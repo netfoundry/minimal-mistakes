@@ -31,7 +31,7 @@ RapidAPI provides code samples for many programming languages for all of the API
 
 ## Subscribe Now
 
-You may click below to connect through RapidAPI to NetFoundry's API and paste code snippets they provide in your IDE to start building right away. After you subscribe through RapidAPI you'll use [RapidAPI's guides](https://docs.rapidapi.com/) to connect to authenticated and wrap your HTTP requests for the NetFoundry API. Beyond that you'll use the same concepts and order of operations to manage your AppWANs.
+You may click below to connect through RapidAPI to NetFoundry's API and paste code snippets they provide in your IDE to start building right away. After you subscribe through RapidAPI you'll use [RapidAPI's guides](https://docs.rapidapi.com/) to authenticate and wrap your HTTP requests for the NetFoundry API with the appropriate RapidAPI headers. Beyond that you'll use the same concepts and order of operations to manage your AppWANs as described in [Hello, AppWAN](/v1/guides/hello-appwan/).
 
 As a RapidAPI subscriber you will not need a separate Auth0 login or an account with NetFoundry.
 {: .notice--success}
