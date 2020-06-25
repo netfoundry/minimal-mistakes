@@ -13,10 +13,9 @@ toc: true
 
 OpenAPI is a specification for describing a REST API as a data structure and is represented as JSON or YAML. With this you could generate a client for your preferred programming language or import it as a collection of requests in [Postman](https://learning.postman.com/docs/postman/collections/working-with-openAPI/).
 
-[JSON](/assets/openapi-3.0.json){: .btn .btn--info .btn--x-large} &nbsp;
-<!-- TODO: link to latest definition
+<!-- [JSON](/assets/openapi-3.0.json){: .btn .btn--info .btn--x-large} &nbsp; -->
 [JSON](https://gateway.production.netfoundry.io/rest/v1/docs/openapi-3.0.json){: .btn .btn--info .btn--x-large} &nbsp;
-  -->
+
 [YAML](https://gateway.production.netfoundry.io/rest/v1/docs/openapi-3.0.yml){: .btn .btn--info .btn--x-large}
 
 ### Client Generators
