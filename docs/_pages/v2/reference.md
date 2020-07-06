@@ -10,96 +10,34 @@ toc: true
 
 ## Quick Reference
 
-### Life Cycle Status Codes
+### Life Cycle Statuses
 
-The numeric value appears in the attribute `status` for many types of resources.
+These symbolic values for `status` appear in many types of resources.
 
-100
-: NEW
+NEW
+: The request to create the resource was accepted.
 
-200
-: PROVISIONING
+PROVISIONING
+: A provisioning workflow is in progress.
 
-300
-: PROVISIONED
+PROVISIONED
+: A provisioning workflow is complete.
 
-400
-: REGISTERED
+ERROR
+: An unexpected error has prevented a workflow from completing.
 
-500
-: ERROR
+UPDATING
+: The resource has been re-declared by re-sending all attributes in a `PUT` request, and a workflow is in progress.
 
-600
-: UPDATING
+REPLACING
+: A healing workflow is in progress.
 
-700
-: REPLACING
+DELETING
+: The request to delete the resource was accepted.
 
-800
-: DELETING
+DELETED
+: The deletion workflow is complete.
 
-900
-: DELETED
+### Endpoint and Edge Router Enrollment Status
 
-### Endpoint Availability Status Codes
-
-The numeric value of `status` indicates the realtime availability of an endpoint.
-
-100
-: REGISTERING
-
-200
-: OFFLINE
-
-300
-: ONLINE
-
-### Endpoint Types
-
-CL
-: Non-Ziti Client Endpoint
-
-ZTCL
-: Ziti Client Endpoint
-
-ZTGW
-: NF-Hosted Ziti Bridge Gateway. Ziti Client Endpoints require one separate "Ziti bridge gateway" for each AppWAN.
-
-ZTNHGW
-: Customer-hosted Ziti Bridge Gateway. Ziti Client Endpoints require one separate "Ziti bridge gateway" for each AppWAN.
-
-GW
-: NF-Hosted Cloud Gateway in AWS
-
-AWSCPEGW
-: Customer-hosted Cloud Gateway in AWS launched from the AWS Marketplace
-
-```bash
-# look up the latest version of the marketplace offer
-❯ aws --region us-east-1 \
-    ec2 describe-images \
-      --owners aws-marketplace \
-      --filters "Name=product-code,Values=a4h9d0h56e7x0q6hlbii33kl8" \
-      --query 'sort_by(Images, &CreationDate)[-1]'
-```
-
-VCPEGW
-: Generic cloud gateway. Use this for on-premises hypervisors e.g. VMWare. (Virtual Customer Provided Equipment Gateway)
-
-AVWGW
-: Azure Virtual WAN Branch Gateway. on-premises gateway that provides a branch-to-cloud on-demand IPSec via Azure Virtual WAN.
-
-AZSGW
-: Cloud Gateway from the Azure Stack Marketplace offer.
-
-AZCPEGW
-: Cloud Gateway from the Azure Marketplace offer.
-
-HAGW
-: Logical pair of cloud gateways in a primary, backup configuration.
-
-GCPCPEGW
-: Cloud Gateway from the Google Compute Platform marketplace offer.
-
-ALICPEGW
-: Cloud Gateway from the Alibaba marketplace offer.
+Endpoints and Edge Routers have an attribute `jwt` which value is the one-time enrollment token prior to enrollment, and `null` after enrollment has succeeded.
