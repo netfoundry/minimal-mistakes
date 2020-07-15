@@ -29,9 +29,9 @@ feature_row:
     btn_label: "LEARN MORE"
   - image_path: /assets/images/rapidapi.jpg
     alt: "RapidAPI"
-    title: "User Manual"
+    title: "RapidAPI"
     excerpt: "Marketplace API Access"
-    url: "/v1/guides/rapidapi/"
+    url: "https://rapidapi.com/netfoundryinc-netfoundryinc-default/api/netfoundry-programmable-zero-trust-connectivity"
     btn_class: "btn--primary"
     btn_label: "LEARN MORE"
 
