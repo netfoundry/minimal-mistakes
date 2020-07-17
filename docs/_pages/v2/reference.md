@@ -5,7 +5,7 @@ toc: true
 ---
 
 ## HTML Reference
-[HTTP REST Docs](https://gateway.production.netfoundry.io/rest/v2/docs/index.html){: .btn .btn--info .btn--x-large}
+[HTTP REST Docs](https://gateway.production.netfoundry.io/core/v2/docs/index.html){: .btn .btn--info .btn--x-large}
 <!-- [API v2 Reference](https://gateway.sandbox.netfoundry.io/rest/v2/docs/index.html) -->
 
 ## Quick Reference
