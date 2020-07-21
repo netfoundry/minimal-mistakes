@@ -8,7 +8,7 @@ Click a version to load the corresponding documentation.
 
 [/rest/v1](/v1/){: .btn .btn--info .btn--x-large} works with Ziti LTS (v0.5) and RapidAPI.
 
-[/core/v2](/v2/){: .btn .btn--info .btn--x-large} works with Ziti (>= v0.13). RapidAPI support is coming soon!
+[/core/v2](/v2/){: .btn .btn--info .btn--x-large} works with Ziti (>= v0.15).
 
 ## API-Network Version Matrix
 
