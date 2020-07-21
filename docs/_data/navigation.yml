@@ -31,6 +31,9 @@ main2:
   # - title: "Blog"
   #   url: /blog/
     description: "What's new?"
+  - title: "Tools"
+    url: /v2/tools/
+    description: "Power User Kit"
   - title: "Versions"
     url: /versions/
     description: "Switch API version"
