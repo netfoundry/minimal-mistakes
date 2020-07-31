@@ -65,7 +65,7 @@ A network group organizes your NetFoundry networks for billing and permissions. 
 This will provision the dedicated compute infrastructure of your NetFoundry network. The value of `locationCode` determines the AWS region in which your controller node is located. It is not crucial to home the controller near your clients or services for performance reasons, but you may have other reasons for preferring or avoiding a particular geographic region.
 
 ```bash
-❯ http POST https://gateway.production.netfoundry.io/rest/v2/networks \
+❯ http POST https://gateway.production.netfoundry.io/core/v2/networks \
   "Authorization: Bearer ${NETFOUNDRY_API_TOKEN}" \
   locationCode="us-west-2" \
   name="exampleNetwork" \
@@ -90,7 +90,7 @@ At this time edge routers must be homed in an AWS datacenter if hosted by NetFou
 ```
 
 ```bash
-❯ http POST https://gateway.production.netfoundry.io/rest/v2/edge-routers \
+❯ http POST https://gateway.production.netfoundry.io/core/v2/edge-routers \
   "Authorization: Bearer ${NETFOUNDRY_API_TOKEN}" <<EOF | jq .id
 {
         "networkId": "${NF_NETWORK}",
@@ -111,7 +111,7 @@ EOF
 Authorize endpoints with matching `endpointAttributes` to dial via edge routers to which this policy is applied in `edgeRouterAttributes`.
 
 ```bash
-❯ http POST https://gateway.production.netfoundry.io/rest/v2/edge-router-policies \
+❯ http POST https://gateway.production.netfoundry.io/core/v2/edge-router-policies \
   "Authorization: Bearer ${NETFOUNDRY_API_TOKEN}" <<EOF | jq .id
 {
         "endpointAttributes": [
@@ -133,7 +133,7 @@ EOF
 Describe a server. Endpoints will be authorized to access this service if they have matching tags in `attributes`.
 
 ```bash
-❯ http POST https://gateway.production.netfoundry.io/rest/v2/services \
+❯ http POST https://gateway.production.netfoundry.io/core/v2/services \
   "Authorization: Bearer ${NETFOUNDRY_API_TOKEN}" <<EOF | jq .id
 {
         "attributes": [
@@ -153,7 +153,7 @@ Describe a server. Endpoints will be authorized to access this service if they h
 EOF
 "d1f6ef84-f979-4a2e-8e8f-b46c0fa1664b"
 ❯ NF_SERVICE_ID=d1f6ef84-f979-4a2e-8e8f-b46c0fa1664b
-❯ NF_SERVICE_NAME=exampleService
+❯ NF_SERVICE_NAME="exampleService"
 ```
 
 ### Create an AppWAN
@@ -161,7 +161,7 @@ EOF
 Authorize endpoints with matching tags in `endpointAttributes` to access services with matching tags in `serviceAttributes`.
 
 ```bash
-❯ http POST https://gateway.production.netfoundry.io/rest/v2/app-wans \
+❯ http POST https://gateway.production.netfoundry.io/core/v2/app-wans \
   "Authorization: Bearer ${NETFOUNDRY_API_TOKEN}" <<EOF | jq .id
 {
         "networkId": "${NF_NETWORK}",
@@ -183,7 +183,7 @@ EOF
 The tags in `attributes` are used to authorize this endpoint to access services with matching tags via edge routers with matching tags.
 
 ```bash
-❯ http POST https://gateway.production.netfoundry.io/rest/v2/endpoints \
+❯ http POST https://gateway.production.netfoundry.io/core/v2/endpoints \
   "Authorization: Bearer ${NETFOUNDRY_API_TOKEN}" <<EOF | jq .id
 {
         "networkId": "${NF_NETWORK}",
@@ -202,33 +202,31 @@ EOF
 
 ### Enroll the Tunneler
 
-Enroller a utility that will securely generate a unique cryptographic identity for Tunneler. Enroller is a portable binary and may be executed where it is downloaded.
-
-{% include ziti-enroller.md %}
+`enroll` is a subcommand of `ziti-tunnel` that will generate a permanent cryptographic identity for this install of Tunneler. NetFoundry calls this an "Endpoint". Here is [a helpful article about enrolling Tunneler](https://support.netfoundry.io/hc/en-us/articles/360045177311-How-to-Enroll-Tunneler) if you would like a bit more context.
 
 ```bash
-❯ ./ziti-enroller version
-0.14.9
+❯ ./ziti-tunnel version
+0.15.2
 
-❯ http GET https://gateway.production.netfoundry.io/rest/v2/endpoints/${NF_TUNNELER} \
+❯ http GET https://gateway.production.netfoundry.io/core/v2/endpoints/${NF_TUNNELER} \
   "Authorization: Bearer ${NETFOUNDRY_API_TOKEN}" | jq -r '.jwt' > exampleTunneler.jwt
 
-❯ ./ziti-enroller --jwt exampleTunneler.jwt
+❯ ./ziti-tunnel enroll --jwt exampleTunneler.jwt
 INFO[0000] generating P-384 key
 enrolled successfully. identity file written to: exampleTunneler.json
 ```
 
 ### Run Tunneler as a Proxy
 
-Tunneler an app NetFoundry built with the [Ziti endpoint SDK](https://ziti.dev/). It will tunnel IP packets to the service via the AppWAN. You could also use any app that you built with a Ziti endpoint SDK. Tunneler is a portable binary and may be executed where it is downloaded.
+Tunneler is an app that NetFoundry built with the [Ziti endpoint SDK](https://ziti.dev/). It will tunnel IP packets to the service across your AppWAN and provides a simple proxy mode that will work well for this exercise because it is a portable binary and may be run right where it is downloaded. You could also use any app that you built with a Ziti endpoint SDK, or any of [the client apps here](https://netfoundry.io/resources/support/downloads/networkversion7/#zititunnelers).
 
 {% include ziti-tunneler.md %}
 
 ```bash
 ❯ ./ziti-tunneler version
-0.14.9
+0.15.2
 
-❯ ./ziti/ziti-tunnel proxy --identity exampleTunneler.json ${NF_SERVICE_NAME}:8080
+❯ ./ziti/ziti-tunnel proxy --identity exampleTunneler.json "${NF_SERVICE_NAME}":8080
 ```
 
 The effect of this command is for Tunneler to bind to localhost:8080 and begin listening for connections. We'll test this by sending a request to that port.
