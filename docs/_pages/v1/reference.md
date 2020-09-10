@@ -68,6 +68,16 @@ The numeric value of `status` indicates the realtime availability of an endpoint
 300
 : ONLINE
 
+### NetFoundry Authorization Session Status Codes
+
+The numeric value of `status` indicates the realtime session state (active login to Console) of a user.
+
+100
+: INACTIVE
+
+200
+: ACTIVE
+
 ### Endpoint Types
 
 CL
