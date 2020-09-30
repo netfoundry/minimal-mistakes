@@ -23,7 +23,7 @@ where `{NETFOUNDRY_API_TOKEN}` is an expiring JSON Web Token (JWT) that you obta
 
 ### Get an Access Token
 
-Use your API account(`clientId`, `password`, `authenticationUrl`); to obtain a temporary `access_token` from the identity provider. Here are examples for HTTPie and cURL to get you started.
+Use your API account (`clientId`, `password`, `authenticationUrl`); to obtain a temporary `access_token` from the identity provider. Here are examples for HTTPie and cURL to get you started.
 
 **HTTPie**
 
