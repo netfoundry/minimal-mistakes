@@ -14,16 +14,16 @@ where `{NETFOUNDRY_API_TOKEN}` is an expiring JSON Web Token (JWT) that you obta
 
 ## Step by Step
 
-### Get a permanent credential
+### Get an API Account
 
 1. [Start a free trial](https://nfconsole.io/signup) if you need a login for NF Console
 2. [Log in to NF Console](https://nfconsole.io/login)
 3. In NF Console, navigate to "Organization", "Manage API Account", and click <i class="fas fa-plus-circle"></i>
 4. Make a note of the three values shown: CLIENT_ID, PASSWORD, OAUTH_URL
 
-### Get a temporary token
+### Get an Access Token
 
-Use your permanent credential; `client_id`, `client_secret`; to obtain an expiring `access_token` from the identity provider. Here are examples for `curl` and `http` to get you started.
+Use your API account(`clientId`, `password`, `authenticationUrl`); to obtain a temporary `access_token` from the identity provider. Here are examples for HTTPie and cURL to get you started.
 
 **HTTPie**
 

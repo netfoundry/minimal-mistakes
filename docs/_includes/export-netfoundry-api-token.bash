@@ -5,16 +5,16 @@
 _get_nf_token(){
     set -o pipefail
     [[ $# -eq 3 ]] || {
-        echo "ERROR: send params: client_id client_secret oauth_url" >&2
+        echo "ERROR: send params: client_id client_pass oauth_url" >&2
         return 1
     }
     client_id=$1
-    client_secret=$2
+    client_pass=$2
     oauth_url=$3                                              #https://netfoundry-sandbox-hnssty.auth.us-east-1.amazoncognito.com/oauth2/token
     mop_env=${oauth_url#https://netfoundry-}                  #sandbox-hnssty.auth.us-east-1.amazoncognito.com/oauth2/token
     mop_env=${mop_env%%-*.amazoncognito.com/oauth2/token}     #sandbox
     access_token=$(
-        http --check-status --form --auth "${client_id}:${client_secret}" POST $oauth_url \
+        http --check-status --form --auth "${client_id}:${client_pass}" POST $oauth_url \
             "scope=https://gateway.${mop_env}.netfoundry.io//ignore-scope" \
             "grant_type=client_credentials" | jq -r .access_token
     ) || return 1
