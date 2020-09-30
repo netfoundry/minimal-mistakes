@@ -9,17 +9,51 @@ RapidAPI subscribers will use their RapidAPI token with the RapidAPI code sample
 
 All authenticated operations require an HTTP header like
 
-```http
+```yaml
 Authorization: Bearer {NETFOUNDRY_API_TOKEN}
 ```
 
-where `{NETFOUNDRY_API_TOKEN}` is an expiring JSON Web Token (JWT) that you obtain from Auth0, NetFoundry API's identity provider, by authenticating with your permanent credential.
+where `{NETFOUNDRY_API_TOKEN}` is an expiring JSON Web Token (JWT) that you obtain from Cognito, NetFoundry API's identity provider, by authenticating with your API account.
+
+## Step by Step
+
+### Get a permanent credential
+
+1. [Start a free trial](https://nfconsole.io/signup) if you need a login for NF Console
+2. [Log in to NF Console](https://nfconsole.io/login)
+3. In NF Console, navigate to "Organization", "Manage API Account", and click <i class="fas fa-plus-circle"></i>
+4. Make a note of the three values shown: CLIENT_ID, PASSWORD, OAUTH_URL
+
+### Get a temporary token
+
+Use your permanent credential; `client_id`, `client_secret`; to obtain an expiring `access_token` from the identity provider, Auth0. Here are examples for `curl` and `http` to get you started.
+
+**HTTPie**
+
+```bash
+❯ http --form --auth "${NETFOUNDRY_CLIENT_ID}:${NETFOUNDRY_PASSWORD}" \
+    POST $NETFOUNDRY_OAUTH_URL \
+    "scope=https://gateway.production.netfoundry.io//ignore-scope" \
+    "grant_type=client_credentials"
+```
+
+**cURL**
+
+```bash
+❯ curl --user ${NETFOUNDRY_CLIENT_ID}:${NETFOUNDRY_PASSWORD} \
+    --request POST $NETFOUNDRY_OAUTH_URL \
+    --header 'content-type: application/x-www-form-urlencoded' \
+    --data 'grant_type=client_credentials&scope=https%3A%2F%2Fgateway.sandbox.netfoundry.io%2F%2Fignore-scope'
+```
 
 ## Shell example
 
 Pull it all together with [HTTPie (command-line HTTP client)](https://httpie.org/) and [`jq` (command-line JSON processor)](https://stedolan.github.io/jq/).
 
 ```bash
+NETFOUNDRY_CLIENT_ID=1st50d7si3dnu275bck2bd228m
+NETFOUNDRY_PASSWORD=1lhfgel7fi048nabt0f74ghckqbj5lsbmqa1g101ud9a935edhv8
+NETFOUNDRY_OAUTH_URL=https://netfoundry-sandbox-hnssty.auth.us-east-1.amazoncognito.com/oauth2/token
 source export-netfoundry-api-token.bash
 ```
 
@@ -29,41 +63,3 @@ source export-netfoundry-api-token.bash
 {% include export-netfoundry-api-token.bash %}
 {% endhighlight %}
 
-## Step by Step
-
-### Get a permanent credential
-
-1. [Start a free trial](https://nfconsole.io/signup) if you need a login for NF Console
-2. [Log in to NF Console](https://nfconsole.io/login)
-3. In NF Console, navigate to "Organization", "Manage API Account", and click <i class="fas fa-plus-circle"></i>
-
-### Get a temporary token
-
-Use your permanent credential; `client_id`, `client_secret`; to obtain an expiring `access_token` from the identity provider, Auth0. Here are examples for `curl` and `http` to get you started.
-
-**HTTPie**
-
-```bash
-❯ http POST https://netfoundry-production.auth0.com/oauth/token \
-  "client_id=${NETFOUNDRY_CLIENT_ID}" \
-  "client_secret=${NETFOUNDRY_CLIENT_SECRET}" \
-  "audience=https://gateway.production.netfoundry.io/" \
-  "grant_type=client_credentials"
-```
-
-**cURL**
-
-```bash
-❯ curl \
-    --silent \
-    --show-error \
-    --request POST \
-    --header 'content-type: application/json' \
-    --data '{
-        "client_id": "'${NETFOUNDRY_CLIENT_ID}'",
-        "client_secret": "'${NETFOUNDRY_CLIENT_SECRET}'",  
-        "audience": "https://gateway.production.netfoundry.io/",
-        "grant_type": "client_credentials"
-    }' \
-    https://netfoundry-production.auth0.com/oauth/token
-```

@@ -23,10 +23,6 @@ Include the expiring bearer token in your request to the NetFoundry API. You cou
 **cURL**
 
 ```bash
-❯ curl \
-    --silent \
-    --show-error \
-    --request GET \
-    --header "Authorization: Bearer ${NETFOUNDRY_API_TOKEN}" \
-    https://gateway.production.netfoundry.io/core/v2/networks
+❯ curl https://gateway.production.netfoundry.io/core/v2/networks \
+    --header "Authorization: Bearer ${NETFOUNDRY_API_TOKEN}"
 ```
