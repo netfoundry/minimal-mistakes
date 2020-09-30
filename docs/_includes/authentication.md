@@ -2,9 +2,6 @@
 
 This is aimed at NetFoundry customers and [trial users](https://nfconsole.io/signup) who will use the API directly to augment and automate their use of the NF Console.
 
-RapidAPI subscribers will use their RapidAPI token with the RapidAPI code samples instead of an Auth0 credential.
-{: .notice--warning}
-
 ## Overview
 
 All authenticated operations require an HTTP header like
@@ -26,7 +23,7 @@ where `{NETFOUNDRY_API_TOKEN}` is an expiring JSON Web Token (JWT) that you obta
 
 ### Get a temporary token
 
-Use your permanent credential; `client_id`, `client_secret`; to obtain an expiring `access_token` from the identity provider, Auth0. Here are examples for `curl` and `http` to get you started.
+Use your permanent credential; `client_id`, `client_secret`; to obtain an expiring `access_token` from the identity provider. Here are examples for `curl` and `http` to get you started.
 
 **HTTPie**
 
