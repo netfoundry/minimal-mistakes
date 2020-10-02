@@ -11,7 +11,7 @@ classes: wide
 
 ## Send a Request to the NetFoundry API
 
-Include the expiring bearer token in your request to the NetFoundry API. You could source the shell script above to make `NETFOUNDRY_API_TOKEN` available.
+Include the expiring bearer token in your request to the NetFoundry API. You could source the shell script below to make `NETFOUNDRY_API_TOKEN` available.
 
 **HTTPie**
 
