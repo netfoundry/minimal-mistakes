@@ -9,7 +9,7 @@ header:
   actions:
     - btn_class: "btn--primary"
       label: "LEARN MORE"
-      url: "/v1/guides/introduction/"
+      url: "/v2/guides/introduction/"
 title: "NetFoundry API"
 excerpt: "Documentation and Tools"
 feature_row:
@@ -24,7 +24,7 @@ feature_row:
     alt: "Ziti.dev"
     title: "OpenZiti"
     excerpt: "NetFoundry networks run Ziti"
-    url: "/v1/guides/ziti/"
+    url: "/v2/guides/ziti/"
     btn_class: "btn--primary"
     btn_label: "LEARN MORE"
   - image_path: /assets/images/rapidapi.jpg

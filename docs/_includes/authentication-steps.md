@@ -29,7 +29,7 @@ Use your API account (`clientId`, `password`, `authenticationUrl`) to obtain a t
 
 ```bash
 ❯ http --form --auth "${NETFOUNDRY_CLIENT_ID}:${NETFOUNDRY_PASSWORD}" \
-    POST $NETFOUNDRY_OAUTH_URL \
+    POST ${NETFOUNDRY_OAUTH_URL} \
     "scope=https://gateway.production.netfoundry.io//ignore-scope" \
     "grant_type=client_credentials"
 ```
@@ -38,7 +38,7 @@ Use your API account (`clientId`, `password`, `authenticationUrl`) to obtain a t
 
 ```bash
 ❯ curl --user ${NETFOUNDRY_CLIENT_ID}:${NETFOUNDRY_PASSWORD} \
-    --request POST $NETFOUNDRY_OAUTH_URL \
+    --request POST ${NETFOUNDRY_OAUTH_URL} \
     --header 'content-type: application/x-www-form-urlencoded' \
     --data 'grant_type=client_credentials&scope=https%3A%2F%2Fgateway.sandbox.netfoundry.io%2F%2Fignore-scope'
 ```

@@ -14,7 +14,7 @@ toc: true
 
 ## The Web Console
 
-the [NetFoundry Web Console](https://nfconsole.io/) is an implementation of the API and so may help to express the model of the API while you're learning [how to build an AppWAN](/v2/guides/hello-appwan/). For example, you might inspect the HTTP requests sent from your browser if you're unsure how to automate a particular action and need a hint for searching [the API reference](/v2/reference/).
+the [NetFoundry Web Console](https://nfconsole.io/) is an implementation of the API and so may help to express the model of the API while you're learning [how to build an AppWAN](/v2/guides/hello-world/). For example, you might inspect the HTTP requests sent from your browser if you're unsure how to automate a particular action and need a hint for searching [the API reference](/v2/reference/).
 
 ## Representations
 
