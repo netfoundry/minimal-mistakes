@@ -70,7 +70,7 @@ Traffic to a service that is "non-hosted" will exit the AppWAN at the terminatin
 
 #### Ziti Tunneler
 
-Tunneler is an open-source app maintained by NetFoundry that is built with Ziti SDKs that enables initiation for processes on the device where it is running, termination for services that device can reach, or both. When Tunneler is running on a device that is a router, such as NetFoundry's gateway endpoints a.k.a. "Cloud Gateways", it may also provide initiation and termination via attached routes.
+Tunneler is an open-source app maintained by NetFoundry that is built with Ziti SDKs that enables initiation for processes on the device where it is running, termination for services that device can reach, or both. When Tunneler is running on a device that is a router, such as a NetFoundry Edge Router, it may also provide initiation and termination via attached routes.
 
 <!-- ## Examples
 * NetFoundry will provision redundant, zero-trust fabric routers near the service's terminating endpoint.
