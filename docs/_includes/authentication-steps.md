@@ -19,7 +19,15 @@ where `{NETFOUNDRY_API_TOKEN}` is an expiring JSON Web Token (JWT) that you obta
 1. [Start a free trial](https://nfconsole.io/signup) if you need a login for NF Console
 2. [Log in to NF Console](https://nfconsole.io/login)
 3. In NF Console, navigate to "Organization", "Manage API Account", and click <i class="fas fa-plus-circle"></i>
-4. Make a note of the three values shown: CLIENT_ID, PASSWORD, OAUTH_URL
+4. Save the three values shown in a file "~/.netfoundry/credentials.json" like this
+
+```json
+{
+  "clientId": "3tcm6to3qqfu78juj9huppk9g3",
+  "password": "149a7ksfj3t5lstg0pesun69m1l4k91d6h8m779l43q0ekekr782",
+  "authenticationUrl": "https://netfoundry-production-xfjiye.auth.us-east-1.amazoncognito.com/oauth2/token"
+}
+```
 
 ### Get an Access Token
 

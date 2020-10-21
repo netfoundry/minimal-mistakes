@@ -21,6 +21,30 @@ _get_nf_token(){
     echo ${access_token}
 }
 
+_get_api_account(){
+    [[ -s ${NETFOUNDRY_API_ACCOUNT:=~/.netfoundry/credentials.json} ]] || {
+        echo "ERROR: missing API account credentials file i.e. NETFOUNDRY_API_ACCOUNT or ~/.netfoundry/credentials.json" >&2
+        return 1
+    }
+    for TOKEN in NETFOUNDRY_CLIENT_ID NETFOUNDRY_PASSWORD NETFOUNDRY_OAUTH_URL; do
+        printf 'export %s="%s"\n' \
+            $TOKEN \
+            $(python -c '
+import json,sys;
+varmap = {
+    "NETFOUNDRY_CLIENT_ID": "clientId", 
+    "NETFOUNDRY_PASSWORD": "password", 
+    "NETFOUNDRY_OAUTH_URL": "authenticationUrl"
+}; 
+print(json.load(sys.stdin)[varmap["'$TOKEN'"]]);
+            ' < $NETFOUNDRY_API_ACCOUNT)
+    done
+}
+
+[[ ! -z ${NETFOUNDRY_CLIENT_ID:-} && ! -z ${NETFOUNDRY_PASSWORD:-} && ! -z ${NETFOUNDRY_OAUTH_URL:-} ]] || {
+    source <(_get_api_account)
+}
+
 [[ ! -z ${NETFOUNDRY_CLIENT_ID:-} && ! -z ${NETFOUNDRY_PASSWORD:-} && ! -z ${NETFOUNDRY_OAUTH_URL:-} ]] || {
     echo "ERROR: API account vars are required: NETFOUNDRY_CLIENT_ID, NETFOUNDRY_PASSWORD, NETFOUNDRY_OAUTH_URL" >&2
     return 1
