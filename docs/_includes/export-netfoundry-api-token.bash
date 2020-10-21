@@ -16,8 +16,7 @@ _get_nf_token(){
     access_token=$(
         http --check-status --form --auth "${client_id}:${client_pass}" POST $oauth_url \
             "scope=https://gateway.${mop_env}.netfoundry.io//ignore-scope" \
-            "grant_type=client_credentials" | jq -r .access_token
-    ) || return 1
+            "grant_type=client_credentials" | python -c 'import json,sys;print(json.load(sys.stdin)["access_token"]);') || return 1
     echo ${access_token}
 }
 

@@ -1,8 +1,9 @@
 ## Script
 
-Pull it all together with [HTTPie (command-line HTTP client)](https://httpie.org/) and [`jq` (command-line JSON processor)](https://stedolan.github.io/jq/).
+Conveniently use your API account in the shell with [HTTPie (command-line HTTP client)](https://httpie.org/).
 
 ```bash
+# get an API token (depends on HTTPie)
 ❯ source ./export-netfoundry-api-token.bash
 ```
 
