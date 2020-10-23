@@ -13,10 +13,17 @@ _get_nf_token(){
     oauth_url=$3                                              #https://netfoundry-sandbox-hnssty.auth.us-east-1.amazoncognito.com/oauth2/token
     mop_env=${oauth_url#https://netfoundry-}                  #sandbox-hnssty.auth.us-east-1.amazoncognito.com/oauth2/token
     mop_env=${mop_env%%-*.amazoncognito.com/oauth2/token}     #sandbox
-    access_token=$(
-        http --check-status --form --auth "${client_id}:${client_pass}" POST $oauth_url \
-            "scope=https://gateway.${mop_env}.netfoundry.io//ignore-scope" \
-            "grant_type=client_credentials" | python -c 'import json,sys;print(json.load(sys.stdin)["access_token"]);') || return 1
+    access_token=$(curl \
+        --silent \
+        --show-error \
+        --fail \
+        --request POST \
+        --user "${client_id}:${client_pass}" \
+        ${oauth_url} \
+        --header 'content-type: application/x-www-form-urlencoded' \
+        --data "grant_type=client_credentials&scope=https%3A%2F%2Fgateway.${mop_env}.netfoundry.io%2F%2Fignore-scope" \
+            | python -c 'import json,sys;print(json.load(sys.stdin)["access_token"]);'
+    ) || return 1
     echo ${access_token}
 }
 

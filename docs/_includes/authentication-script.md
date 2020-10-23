@@ -1,6 +1,6 @@
 ## Script
 
-Conveniently use your API account in the shell with [HTTPie (command-line HTTP client)](https://httpie.org/).
+Conveniently use your API account in a shell with this script.
 
 ```bash
 # get an API token with the default API account ~/.netfoundry/credentials.json
