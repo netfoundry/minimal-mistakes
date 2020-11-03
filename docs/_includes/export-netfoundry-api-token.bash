@@ -8,7 +8,7 @@ nonf(){
             NETFOUNDRY_API_TOKEN \
             NETFOUNDRY_CLIENT_ID \
             NETFOUNDRY_PASSWORD \
-            NETFOUNDRY_PASSWORD
+            NETFOUNDRY_OAUTH_URL
 }
 
 _get_nf_token(){
