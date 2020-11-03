@@ -2,6 +2,15 @@
 #  NETFOUNDRY_API_TOKEN 
 # available to processes run in the same shell
 
+# troubleshooting function that drops all authentication variables
+nonf(){
+    unset   NETFOUNDRY_API_ACCOUNT \
+            NETFOUNDRY_API_TOKEN \
+            NETFOUNDRY_CLIENT_ID \
+            NETFOUNDRY_PASSWORD \
+            NETFOUNDRY_PASSWORD
+}
+
 _get_nf_token(){
     set -o pipefail
     [[ $# -eq 3 ]] || {
@@ -28,12 +37,14 @@ _get_nf_token(){
 }
 
 _get_api_account(){
-    [[ -s ${NETFOUNDRY_API_ACCOUNT:=~/.netfoundry/credentials.json} ]] || {
+    [[ -s ${NETFOUNDRY_API_ACCOUNT:=~/.netfoundry/credentials.json} ]] && {
+        echo "WARN: using API account from file $NETFOUNDRY_API_ACCOUNT" >&2
+    } || {
         echo "ERROR: missing API account credentials file i.e. NETFOUNDRY_API_ACCOUNT or ~/.netfoundry/credentials.json" >&2
         return 1
     }
     for TOKEN in NETFOUNDRY_CLIENT_ID NETFOUNDRY_PASSWORD NETFOUNDRY_OAUTH_URL; do
-        printf 'export %s="%s"\n' \
+        printf '%s="%s"\n' \
             $TOKEN \
             $(python -c '
 import json,sys;
@@ -47,8 +58,10 @@ print(json.load(sys.stdin)[varmap["'$TOKEN'"]]);
     done
 }
 
-[[ ! -z ${NETFOUNDRY_CLIENT_ID:-} && ! -z ${NETFOUNDRY_PASSWORD:-} && ! -z ${NETFOUNDRY_OAUTH_URL:-} ]] || {
-    source <(_get_api_account)
+[[ ! -z ${NETFOUNDRY_CLIENT_ID:-} && ! -z ${NETFOUNDRY_PASSWORD:-} && ! -z ${NETFOUNDRY_OAUTH_URL:-} ]] && {
+    echo "WARN: using API account from environment variables for $NETFOUNDRY_OAUTH_URL" >&2
+} || {
+    eval $(_get_api_account)
 }
 
 [[ ! -z ${NETFOUNDRY_CLIENT_ID:-} && ! -z ${NETFOUNDRY_PASSWORD:-} && ! -z ${NETFOUNDRY_OAUTH_URL:-} ]] || {
