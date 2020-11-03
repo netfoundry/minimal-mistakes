@@ -48,5 +48,5 @@ Use your API account (`clientId`, `password`, `authenticationUrl`) to obtain a t
 ❯ curl --user ${NETFOUNDRY_CLIENT_ID}:${NETFOUNDRY_PASSWORD} \
     --request POST ${NETFOUNDRY_OAUTH_URL} \
     --header 'content-type: application/x-www-form-urlencoded' \
-    --data 'grant_type=client_credentials&scope=https%3A%2F%2Fgateway.sandbox.netfoundry.io%2F%2Fignore-scope'
+    --data 'grant_type=client_credentials&scope=https%3A%2F%2Fgateway.production.netfoundry.io%2F%2Fignore-scope'
 ```
