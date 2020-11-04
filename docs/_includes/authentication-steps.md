@@ -33,6 +33,12 @@ where `{NETFOUNDRY_API_TOKEN}` is an expiring JSON Web Token (JWT) that you obta
 
 Use your API account (`clientId`, `password`, `authenticationUrl`) to obtain a temporary `access_token` from the identity provider. Here are examples for HTTPie and cURL to get you started.
 
+```bash
+NETFOUNDRY_CLIENT_ID=3tcm6to3qqfu78juj9huppk9g3
+NETFOUNDRY_PASSWORD=149a7ksfj3t5lstg0pesun69m1l4k91d6h8m779l43q0ekekr782
+NETFOUNDRY_OAUTH_URL=https://netfoundry-production-xfjiye.auth.us-east-1.amazoncognito.com/oauth2/token
+```
+
 **HTTPie**
 
 ```bash
