@@ -12,47 +12,19 @@ Authorization: Bearer {NETFOUNDRY_API_TOKEN}
 
 where `{NETFOUNDRY_API_TOKEN}` is an expiring JSON Web Token (JWT) that you obtain from Cognito, NetFoundry API's identity provider, by authenticating with your API account.
 
-## Step by Step
-
-### Get an API Account
+## Get an API Account
 
 1. [Start a free trial](https://nfconsole.io/signup) if you need a login for NF Console
 2. [Log in to NF Console](https://nfconsole.io/login)
 3. In NF Console, navigate to "Organization", "Manage API Account", and click <i class="fas fa-plus-circle"></i>
-4. Save the three values shown in a file "~/.netfoundry/credentials.json" like this
+4. Click the button to download "credentials.json"
+5. Save in one of
+    * project default: `./credentials.json`
+    * user default: `~/.netfoundry/credentials.json`
+    * device default: `/netfoundry/credentials.json`
 
-```json
-{
-  "clientId": "3tcm6to3qqfu78juj9huppk9g3",
-  "password": "149a7ksfj3t5lstg0pesun69m1l4k91d6h8m779l43q0ekekr782",
-  "authenticationUrl": "https://netfoundry-production-xfjiye.auth.us-east-1.amazoncognito.com/oauth2/token"
-}
-```
-
-### Get an Access Token
-
-Use your API account (`clientId`, `password`, `authenticationUrl`) to obtain a temporary `access_token` from the identity provider. Here are examples for HTTPie and cURL to get you started.
+You may override the default paths with an environment variable.
 
 ```bash
-NETFOUNDRY_CLIENT_ID=3tcm6to3qqfu78juj9huppk9g3
-NETFOUNDRY_PASSWORD=149a7ksfj3t5lstg0pesun69m1l4k91d6h8m779l43q0ekekr782
-NETFOUNDRY_OAUTH_URL=https://netfoundry-production-xfjiye.auth.us-east-1.amazoncognito.com/oauth2/token
-```
-
-**HTTPie**
-
-```bash
-❯ http --form --auth "${NETFOUNDRY_CLIENT_ID}:${NETFOUNDRY_PASSWORD}" \
-    POST ${NETFOUNDRY_OAUTH_URL} \
-    "scope=https://gateway.production.netfoundry.io//ignore-scope" \
-    "grant_type=client_credentials"
-```
-
-**cURL**
-
-```bash
-❯ curl --user ${NETFOUNDRY_CLIENT_ID}:${NETFOUNDRY_PASSWORD} \
-    --request POST ${NETFOUNDRY_OAUTH_URL} \
-    --header 'content-type: application/x-www-form-urlencoded' \
-    --data 'grant_type=client_credentials&scope=https%3A%2F%2Fgateway.production.netfoundry.io%2F%2Fignore-scope'
+NETFOUNDRY_API_ACCOUNT=~/Downloads/example-account.json
 ```

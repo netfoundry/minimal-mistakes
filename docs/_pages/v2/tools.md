@@ -8,13 +8,15 @@ toc: false
 
 ## Demos
 
+### Before You Begin
+
 These steps apply to both demos
 
 1. create a working directory like "netfoundry-demo"
-1. create an API account and save it in the working directory as "credentials.json"
+1. [create an API account](/v2/guides/authentication/#get-an-api-account) and save it in the working directory as "credentials.json"
 1. in your terminal, change directory to the working directory
 
-### Python Demo with Router-hosted Services
+### Demo 1: Router-hosted Services
 
 [The Python module](https://pypi.org/project/netfoundry/) includes [an executable demo](https://bitbucket.org/netfoundry/python-netfoundry/src/develop/netfoundry/demo.py).
 
@@ -24,20 +26,22 @@ python3 -m netfoundry.demo BibbidiBobbidiBoo
 ```
 
 Public Services
+
 * IPv4 echo: [http://echo.netfoundry/](http://echo.netfoundry/) (eth0.me)
 * ASCII Art Weather: [http://weather.netfoundry/](http://weather.netfoundry/) (wttr.in)
 
-    ```bash
-    # HTTPie
-    http GET http://weather.netfoundry "Host: wttr.in"
-    ```
 
-    ```bash
-    # cURL
-    curl http://weather.netfoundry --header "Host: wttr.in"
-    ```
+```bash
+# HTTPie
+http GET http://weather.netfoundry "Host: wttr.in"
+```
 
-### Docker Demo with Endpoint-hosted Services
+```bash
+# cURL
+curl http://weather.netfoundry --header "Host: wttr.in"
+```
+
+### Demo 2: Endpoint-hosted Services
 
 Alternatively, you may host private demo servers with Docker. Docker Compose will run the `netfoundry/python:demo` container which executes the same Python demo described above and will additionally create a handful of private demo servers that you can connect to from an enrolled Endpoint.
 

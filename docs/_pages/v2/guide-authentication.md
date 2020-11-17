@@ -9,9 +9,11 @@ classes: wide
 
 {% include authentication-steps.md %}
 
+{% include authentication-script.md %}
+
 ## Send a Request to the NetFoundry API
 
-Include the expiring bearer token in your request to the NetFoundry API. You could source the shell script below to make `NETFOUNDRY_API_TOKEN` available.
+Include the token in your request to the NetFoundry API. You could source the shell script above to make `NETFOUNDRY_API_TOKEN` available in the current shell.
 
 **HTTPie**
 
@@ -27,4 +29,3 @@ Include the expiring bearer token in your request to the NetFoundry API. You cou
     --header "Authorization: Bearer ${NETFOUNDRY_API_TOKEN}"
 ```
 
-{% include authentication-script.md %}
