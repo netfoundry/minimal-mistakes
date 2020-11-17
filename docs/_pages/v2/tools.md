@@ -15,7 +15,7 @@ These steps apply to both demos
 1. Make sure you have Python3 and `pip3 --version` ([install](https://pip.pypa.io/en/stable/installing/)).
 1. Create a working directory like "netfoundry-demo".
 1. [Create an API account](/v2/guides/authentication/#get-an-api-account) and save it in the working directory as "credentials.json".
-1. In your terminal, change directory to the working directory.
+1. In your terminal, change to the working directory e.g. `cd ./netfoundry-demo`.
 
 ### Demo 1: Router-hosted Services
 
