@@ -12,9 +12,10 @@ toc: false
 
 These steps apply to both demos
 
-1. create a working directory like "netfoundry-demo"
-1. [create an API account](/v2/guides/authentication/#get-an-api-account) and save it in the working directory as "credentials.json"
-1. in your terminal, change directory to the working directory
+1. Make sure you have Python3 and `pip3 --version` ([install](https://pip.pypa.io/en/stable/installing/)).
+1. Create a working directory like "netfoundry-demo".
+1. [Create an API account](/v2/guides/authentication/#get-an-api-account) and save it in the working directory as "credentials.json".
+1. In your terminal, change directory to the working directory.
 
 ### Demo 1: Router-hosted Services
 
@@ -22,10 +23,10 @@ These steps apply to both demos
 
 ```bash
 pip3 install --upgrade netfoundry
-python3 -m netfoundry.demo BibbidiBobbidiBoo
+python3 -m netfoundry.demo BibbidiBobbidiBoo # choose a name
 ```
 
-Public Services
+After a few minutes your demo Network will be created and these Services will then become available.
 
 * IPv4 echo: [http://echo.netfoundry/](http://echo.netfoundry/) (eth0.me)
 * ASCII Art Weather: [http://weather.netfoundry/](http://weather.netfoundry/) (wttr.in)
@@ -43,13 +44,15 @@ curl http://weather.netfoundry --header "Host: wttr.in"
 
 ### Demo 2: Endpoint-hosted Services
 
-Alternatively, you may host private demo servers with Docker. Docker Compose will run the `netfoundry/python:demo` container which executes the same Python demo described above and will additionally create a handful of private demo servers that you can connect to from an enrolled Endpoint.
+You may host private demo servers with Docker on any x86_64 Linux device. Compose will run the `netfoundry/python:demo` container which executes the same Python demo described above. This will create a handful servers that you can access from an enrolled Endpoint.
 
+1. install Compose `pip3 install docker-compose`
 1. save this file in your working directory [docker-compose.yml](https://github.com/netfoundry/developer-tools/blob/master/Docker/docker-compose.yml)
 1. in a terminal, run `docker-compose up` to create your demo network
 1. in the web console, share or scan to enroll additional Endpoints named like "dialerN" to connect to the following demo servers from your laptop, mobile, etc...
 
-Private Services
+After a few minutes your demo Network will be created and these Services will then become available.
+
 * Hello, World! Splash: [http://hello.netfoundry/](http://hello.netfoundry/) (netfoundry/railz)
 * OpenSpeedTest: [http://speedtest.netfoundry/](http://speedtest.netfoundry/) (mlabbe/openspeedtest)
 * REST: [http://httpbin.netfoundry/](http://httpbin.netfoundry/) (kennethreitz/httpbin)
