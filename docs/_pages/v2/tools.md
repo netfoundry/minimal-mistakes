@@ -35,12 +35,16 @@ WARN: Using the default Network Group: BOOP1256
         waiting for status PROVISIONED or until Tue Nov 17 23:43:05 2020..
     BibbidiBobbidiBoo    :   PROVISIONING    :....................
     BibbidiBobbidiBoo    :    PROVISIONED    :
-INFO: Placed Edge Router in Americas (AWS N. Virginia)
-INFO: Placed Edge Router in EuropeMiddleEastAfrica (AWS Ireland)
-        waiting for status PROVISIONED or until Wed Nov 18 00:19:52 2020..
-    AWS Ireland    :    PROVISIONED    :
-        waiting for status PROVISIONED or until Wed Nov 18 00:19:52 2020..
-  AWS N. Virginia  :    PROVISIONED    :
+INFO: Placed Edge Router in Americas (AWS Oregon)                                                                                                            
+INFO: Placed Edge Router in EuropeMiddleEastAfrica (AWS Stockholm)                                                                                           
+        waiting for status PROVISIONED or until Wed Nov 18 09:25:10 2020..                                                                                   
+    AWS Oregon     :        NEW        :.....                                 
+    AWS Oregon     :   PROVISIONING    :...........................                                                                                          
+    AWS Oregon     :    PROVISIONED    :                                      
+        waiting for status PROVISIONED or until Wed Nov 18 09:30:05 2020..                                                                                   
+   AWS Stockholm   :        NEW        :..                                                                                                                   
+   AWS Stockholm   :   PROVISIONING    :........................                                                                                             
+   AWS Stockholm   :    PROVISIONED    :                                      
 INFO: created Endpoint dialer1
 INFO: created Endpoint dialer2
 INFO: created Endpoint dialer3
