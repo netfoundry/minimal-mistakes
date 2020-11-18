@@ -27,9 +27,11 @@ Make sure you have Docker Engine ([install](https://docs.docker.com/engine/insta
 
 ```bash
 ❯ cd ./netfoundry-demo
-❯ docker run --rm -it -v $PWD:/netfoundry \
-    netfoundry/python \
-    python -m netfoundry.demo BibbidiBobbidiBoo # choose a name
+❯ docker run --rm -it \
+    -v $PWD:/netfoundry \
+    -e NETFOUNDRY_API_ACCOUNT=/netfoundry/credentials.json \
+    -e NETWORK_NAME=BibbidiBobbidiBoo \
+    netfoundry/python:demo
 ```
 
 #### Run Demo 1 with Python
@@ -39,6 +41,7 @@ Make sure you have Python3 and `pip3 --version` ([install](https://pip.pypa.io/e
 ```bash
 ❯ cd ./netfoundry-demo
 ❯ pip3 install --upgrade netfoundry
+❯ python3 -m json.tool ./credentials.json      # display the API account credentials
 ❯ python3 -m netfoundry.demo BibbidiBobbidiBoo # choose a name
 ```
 
