@@ -48,7 +48,7 @@ Make sure you have Python3 and `pip3 --version` ([install](https://pip.pypa.io/e
 After a few minutes your demo Network will be created and the Services will then become available.
 
 ```
-WARN: Using the default Network Group: BOOP1256
+WARN: Using the default Network Group: BOOPTASTIC
         waiting for status PROVISIONED or until Tue Nov 17 23:43:05 2020..
     BibbidiBobbidiBoo    :   PROVISIONING    :....................
     BibbidiBobbidiBoo    :    PROVISIONED    :
@@ -90,19 +90,39 @@ INFO: created AppWAN Welcome
 
 ### Demo 2: Endpoint-hosted Services
 
-You may host private demo servers with Docker on any x86_64 Linux device. Compose will run the `netfoundry/python:demo` container which executes the same Python demo described above. This will create a handful servers that you can access from an enrolled Endpoint.
+You may host private demo servers with Docker on any x86_64 Linux device. Compose will run the `netfoundry/python:demo` container which executes the same Python demo described above. Additionally, this will create a handful private servers that you can access from an enrolled Endpoint.
 
-1. In your terminal, change to the working directory e.g. `cd ./netfoundry-demo`.
-1. install Compose `pip3 install docker-compose`
+1. In your terminal, change to the working directory e.g. 
+
+    ```bash
+    cd ./netfoundry-demo
+    ```
+
+1. install Compose
+
+    ```bash
+    pip3 install docker-compose
+    ```
+
 1. save this file in your working directory [docker-compose.yml](https://github.com/netfoundry/developer-tools/blob/master/Docker/docker-compose.yml)
-1. in a terminal, run `docker-compose up` to create your demo network
+1. in a terminal, run to create your demo network
+
+    ```bash
+    ❯ NETWORK_NAME=BibbidiBobbidiBoo docker-compose up --detach
+    ```
+
+1. follow the demo's progress in the log
+
+    ```bash
+    ❯ docker-compose logs --follow builder
+    ```
+
 1. in the web console, share or scan to enroll additional Endpoints named like "dialerN" to connect to the following demo servers from your laptop, mobile, etc...
 
 After a few minutes your demo Network will be created and these Services will then become available.
 
 * Hello, World! Splash: [http://hello.netfoundry/](http://hello.netfoundry/) (netfoundry/railz)
-* OpenSpeedTest: [http://speedtest.netfoundry/](http://speedtest.netfoundry/) (mlabbe/openspeedtest)
-* REST: [http://httpbin.netfoundry/](http://httpbin.netfoundry/) (kennethreitz/httpbin)
+* REST Test: [http://httpbin.netfoundry/](http://httpbin.netfoundry/) (kennethreitz/httpbin)
 
 ## Python Module
 
