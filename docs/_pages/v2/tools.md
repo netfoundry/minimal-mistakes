@@ -12,7 +12,7 @@ Let a demo build you a functioning NetFoundry network and then play with it in [
 
 ### Before You Begin
 
-These steps apply to both demos
+These steps apply to both demos.
 
 1. Make sure you have Python3 and `pip3 --version` ([install](https://pip.pypa.io/en/stable/installing/)).
 1. Create a working directory like "netfoundry-demo".
@@ -28,7 +28,31 @@ pip3 install --upgrade netfoundry
 python3 -m netfoundry.demo BibbidiBobbidiBoo # choose a name
 ```
 
-After a few minutes your demo Network will be created and these Services will then become available.
+After a few minutes your demo Network will be created and the Services will then become available.
+
+```
+WARN: Using the default Network Group: BOOP1256
+        waiting for status PROVISIONED or until Tue Nov 17 23:43:05 2020..
+    BibbidiBobbidiBoo    :   PROVISIONING    :....................
+    BibbidiBobbidiBoo    :    PROVISIONED    :
+INFO: Placed Edge Router in Americas (AWS N. Virginia)
+INFO: Placed Edge Router in EuropeMiddleEastAfrica (AWS Ireland)
+        waiting for status PROVISIONED or until Wed Nov 18 00:19:52 2020..
+    AWS Ireland    :    PROVISIONED    :
+        waiting for status PROVISIONED or until Wed Nov 18 00:19:52 2020..
+  AWS N. Virginia  :    PROVISIONED    :
+INFO: created Endpoint dialer1
+INFO: created Endpoint dialer2
+INFO: created Endpoint dialer3
+INFO: created Endpoint exit1
+DEBUG: saving OTT for dialer1 in dialer1.jwt
+DEBUG: saving OTT for dialer2 in dialer2.jwt
+DEBUG: saving OTT for dialer3 in dialer3.jwt
+DEBUG: saving OTT for exit1 in exit1.jwt
+INFO: created Service Weather Service
+INFO: created Service Echo Service
+INFO: created AppWAN Welcome
+```
 
 * IPv4 echo: [http://echo.netfoundry/](http://echo.netfoundry/) (eth0.me, shows you the real IP from which your HTTP request originated on the internet)
 * ASCII Art Weather: [http://weather.netfoundry/](http://weather.netfoundry/) (wttr.in)
