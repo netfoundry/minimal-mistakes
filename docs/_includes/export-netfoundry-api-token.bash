@@ -80,7 +80,7 @@ print(json.load(sys.stdin)[varmap["'$TOKEN'"]]);
 }
 
 [[ ! -z ${NETFOUNDRY_CLIENT_ID:-} && ! -z ${NETFOUNDRY_PASSWORD:-} && ! -z ${NETFOUNDRY_OAUTH_URL:-} ]] || {
-    echo "ERROR: API account vars are required: NETFOUNDRY_CLIENT_ID, NETFOUNDRY_PASSWORD, NETFOUNDRY_OAUTH_URL" >&2
+    echo "ERROR: API account not found in env vars or default file paths for project, user, or device" >&2
     return 1
 }
 
