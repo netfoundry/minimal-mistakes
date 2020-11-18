@@ -92,32 +92,32 @@ INFO: created AppWAN Welcome
 
 You may host private demo servers with Docker on any x86_64 Linux device. Compose will run the `netfoundry/python:demo` container which executes the same Python demo described above. Additionally, this will create a handful private servers that you can access from an enrolled Endpoint.
 
-1. In your terminal, change to the working directory e.g. 
+1. In your terminal, change to the working directory.
 
     ```bash
-    cd ./netfoundry-demo
+    ❯ cd ./netfoundry-demo
     ```
 
-1. install Compose
+1. Install Compose.
 
     ```bash
-    pip3 install docker-compose
+    ❯ pip3 install docker-compose
     ```
 
-1. save this file in your working directory [docker-compose.yml](https://github.com/netfoundry/developer-tools/blob/master/Docker/docker-compose.yml)
-1. in a terminal, run to create your demo network
+1. Save this file in your working directory [docker-compose.yml](https://github.com/netfoundry/developer-tools/blob/master/Docker/docker-compose.yml).
+1. In a terminal, run Compose to create your demo Network.
 
     ```bash
     ❯ NETWORK_NAME=BibbidiBobbidiBoo docker-compose up --detach
     ```
 
-1. follow the demo's progress in the log
+1. Follow the demo's progress in the Compose log.
 
     ```bash
     ❯ docker-compose logs --follow builder
     ```
 
-1. in the web console, share or scan to enroll additional Endpoints named like "dialerN" to connect to the following demo servers from your laptop, mobile, etc...
+1. In the web console, share or scan to enroll additional Endpoints named like "dialerN" to connect to the following demo servers from your laptop, mobile, etc...
 
 After a few minutes your demo Network will be created and these Services will then become available.
 
@@ -131,6 +131,14 @@ After a few minutes your demo Network will be created and these Services will th
 
 ```bash
 ❯ pip install netfoundry
+```
+
+### Create a Custom Docker Container with the NetFoundry Python Module
+
+```docker
+FROM netfoundry/python
+COPY ./my-netfoundry-network.py .
+CMD ./my-netfoundry-network.py
 ```
 
 ## Utilities
