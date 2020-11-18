@@ -8,6 +8,8 @@ toc: false
 
 ## Demos
 
+Let a demo build you a functioning NetFoundry network and then play with it in [the web console](https://nfconsole.io/login)!
+
 ### Before You Begin
 
 These steps apply to both demos
@@ -28,9 +30,8 @@ python3 -m netfoundry.demo BibbidiBobbidiBoo # choose a name
 
 After a few minutes your demo Network will be created and these Services will then become available.
 
-* IPv4 echo: [http://echo.netfoundry/](http://echo.netfoundry/) (eth0.me)
+* IPv4 echo: [http://echo.netfoundry/](http://echo.netfoundry/) (eth0.me, shows you the real IP from which your HTTP request originated on the internet)
 * ASCII Art Weather: [http://weather.netfoundry/](http://weather.netfoundry/) (wttr.in)
-
 
 ```bash
 # HTTPie
