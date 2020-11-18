@@ -4,9 +4,20 @@ permalink: /v2/reference/
 toc: true
 ---
 
-## HTML Reference
-[API v2 Reference](https://gateway.production.netfoundry.io/core/v2/docs/index.html){: .btn .btn--info .btn--x-large}
-[API v1 Reference](https://gateway.production.netfoundry.io/rest/v1/docs/index.html){: .btn .btn--info .btn--x-large}
+## HTML References
+
+### Network orchestration API
+
+[Core v2](https://gateway.production.netfoundry.io/core/v2/docs/index.html){: .btn .btn--info .btn--x-large}
+
+### Identity API
+
+[Identity v1](https://gateway.production.netfoundry.io/identity/v1/docs/index.html){: .btn .btn--info .btn--x-large}
+
+### Permissions API
+
+[Authorization v1](https://gateway.production.netfoundry.io/auth/v1/docs/index.html){: .btn .btn--info .btn--x-large}
+
 
 ## Quick Reference
 
