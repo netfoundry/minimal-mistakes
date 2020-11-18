@@ -185,7 +185,7 @@ defaults:
       path: ""
       type: posts
     values:
-      layout: v1Single
+      layout: v2Single
       author_profile: true
       read_time: true
       comments: true
@@ -196,7 +196,7 @@ defaults:
       path: ""
       type: pages
     values:
-      layout: v1Single
+      layout: v2Single
       author_profile: false
   - scope:
       path: "_pages/v1/*"
