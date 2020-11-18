@@ -14,18 +14,32 @@ Let a demo build you a functioning NetFoundry network and then play with it in [
 
 These steps apply to both demos.
 
-1. Make sure you have Python3 and `pip3 --version` ([install](https://pip.pypa.io/en/stable/installing/)).
 1. Create a working directory like "netfoundry-demo".
 1. [Create an API account](/v2/guides/authentication/#get-an-api-account) and save it in the working directory as "credentials.json".
-1. In your terminal, change to the working directory e.g. `cd ./netfoundry-demo`.
 
 ### Demo 1: Router-hosted Services
 
 [The Python module](https://pypi.org/project/netfoundry/) includes [an executable demo](https://bitbucket.org/netfoundry/python-netfoundry/src/develop/netfoundry/demo.py).
 
+#### Run Demo 1 with Docker
+
+Make sure you have Docker Engine ([install](https://docs.docker.com/engine/install/)).
+
 ```bash
-pip3 install --upgrade netfoundry
-python3 -m netfoundry.demo BibbidiBobbidiBoo # choose a name
+❯ cd ./netfoundry-demo
+❯ docker run --rm -it -v $PWD:/netfoundry \
+    netfoundry/python \
+    python -m netfoundry.demo BibbidiBobbidiBoo # choose a name
+```
+
+#### Run Demo 1 with Python
+
+Make sure you have Python3 and `pip3 --version` ([install](https://pip.pypa.io/en/stable/installing/)).
+
+```bash
+❯ cd ./netfoundry-demo
+❯ pip3 install --upgrade netfoundry
+❯ python3 -m netfoundry.demo BibbidiBobbidiBoo # choose a name
 ```
 
 After a few minutes your demo Network will be created and the Services will then become available.
@@ -63,18 +77,19 @@ INFO: created AppWAN Welcome
 
 ```bash
 # HTTPie
-http GET http://weather.netfoundry "Host: wttr.in"
+❯ http GET http://weather.netfoundry "Host: wttr.in"
 ```
 
 ```bash
 # cURL
-curl http://weather.netfoundry --header "Host: wttr.in"
+❯ curl http://weather.netfoundry --header "Host: wttr.in"
 ```
 
 ### Demo 2: Endpoint-hosted Services
 
 You may host private demo servers with Docker on any x86_64 Linux device. Compose will run the `netfoundry/python:demo` container which executes the same Python demo described above. This will create a handful servers that you can access from an enrolled Endpoint.
 
+1. In your terminal, change to the working directory e.g. `cd ./netfoundry-demo`.
 1. install Compose `pip3 install docker-compose`
 1. save this file in your working directory [docker-compose.yml](https://github.com/netfoundry/developer-tools/blob/master/Docker/docker-compose.yml)
 1. in a terminal, run `docker-compose up` to create your demo network
@@ -92,7 +107,7 @@ After a few minutes your demo Network will be created and these Services will th
 : Python3 interface to the NetFoundry API
 
 ```bash
-pip install netfoundry
+❯ pip install netfoundry
 ```
 
 ## Utilities
