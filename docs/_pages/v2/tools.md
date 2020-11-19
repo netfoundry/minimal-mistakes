@@ -15,13 +15,13 @@ Let a demo build you a functioning NetFoundry network and then play with it in [
 These steps apply to both demos.
 
 1. Create a working directory like "netfoundry-demo".
-1. [Create an API account](/v2/guides/authentication/#get-an-api-account) and save it in the working directory as "credentials.json".
+1. [Create an API account](/v2/guides/authentication/#get-an-api-account) and save it in the working directory as "credentials.json". You only need the JSON file for this exercise.
 
-### Demo 1: Router-hosted Services
+### Demo: Router-hosted Services
 
 [The Python module](https://pypi.org/project/netfoundry/) includes [an executable demo](https://bitbucket.org/netfoundry/python-netfoundry/src/develop/netfoundry/demo.py).
 
-#### Run Demo 1 with Docker
+#### Run Demo with Docker
 
 Make sure you have Docker Engine ([install](https://docs.docker.com/engine/install/)).
 
@@ -29,12 +29,11 @@ Make sure you have Docker Engine ([install](https://docs.docker.com/engine/insta
 ❯ cd ./netfoundry-demo
 ❯ docker run --rm -it \
     -v $PWD:/netfoundry \
-    -e NETFOUNDRY_API_ACCOUNT=/netfoundry/credentials.json \
     -e NETWORK_NAME=BibbidiBobbidiBoo \
     netfoundry/python:demo
 ```
 
-#### Run Demo 1 with Python
+#### Run Demo with Python
 
 Make sure you have Python3 and `pip3 --version` ([install](https://pip.pypa.io/en/stable/installing/)).
 
@@ -47,21 +46,21 @@ Make sure you have Python3 and `pip3 --version` ([install](https://pip.pypa.io/e
 
 After a few minutes your demo Network will be created and the Services will then become available.
 
-```
+```log
 WARN: Using the default Network Group: BOOPTASTIC
         waiting for status PROVISIONED or until Tue Nov 17 23:43:05 2020..
     BibbidiBobbidiBoo    :   PROVISIONING    :....................
     BibbidiBobbidiBoo    :    PROVISIONED    :
-INFO: Placed Edge Router in Americas (AWS Oregon)                                                                                                            
-INFO: Placed Edge Router in EuropeMiddleEastAfrica (AWS Stockholm)                                                                                           
-        waiting for status PROVISIONED or until Wed Nov 18 09:25:10 2020..                                                                                   
-    AWS Oregon     :        NEW        :.....                                 
-    AWS Oregon     :   PROVISIONING    :...........................                                                                                          
-    AWS Oregon     :    PROVISIONED    :                                      
-        waiting for status PROVISIONED or until Wed Nov 18 09:30:05 2020..                                                                                   
-   AWS Stockholm   :        NEW        :..                                                                                                                   
-   AWS Stockholm   :   PROVISIONING    :........................                                                                                             
-   AWS Stockholm   :    PROVISIONED    :                                      
+INFO: Placed Edge Router in Americas (AWS Oregon)
+INFO: Placed Edge Router in EuropeMiddleEastAfrica (AWS Stockholm)
+        waiting for status PROVISIONED or until Wed Nov 18 09:25:10 2020..
+    AWS Oregon     :        NEW        :.....
+    AWS Oregon     :   PROVISIONING    :...........................
+    AWS Oregon     :    PROVISIONED    :
+        waiting for status PROVISIONED or until Wed Nov 18 09:30:05 2020..
+   AWS Stockholm   :        NEW        :..
+   AWS Stockholm   :   PROVISIONING    :........................
+   AWS Stockholm   :    PROVISIONED    :
 INFO: created Endpoint dialer1
 INFO: created Endpoint dialer2
 INFO: created Endpoint dialer3
@@ -88,9 +87,11 @@ INFO: created AppWAN Welcome
 ❯ curl http://weather.netfoundry --header "Host: wttr.in"
 ```
 
-### Demo 2: Endpoint-hosted Services
+### Demo: Endpoint-hosted Services
 
 You may host private demo servers with Docker on any x86_64 Linux device. Compose will run the `netfoundry/python:demo` container which executes the same Python demo described above. Additionally, this will create a handful private servers that you can access from an enrolled Endpoint.
+
+#### Run Demo with Docker Compose
 
 1. In your terminal, change to the working directory.
 
