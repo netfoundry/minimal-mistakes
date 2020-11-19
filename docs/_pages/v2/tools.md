@@ -41,8 +41,8 @@ Make sure you have Python3 and `pip3 --version` ([install](https://pip.pypa.io/e
 ```bash
 ❯ cd ./netfoundry-demo
 ❯ pip3 install --upgrade netfoundry
-❯ python3 -m json.tool ./credentials.json      # display the API account credentials
-❯ python3 -m netfoundry.demo BibbidiBobbidiBoo # choose a name
+❯ python3 -m json.tool ./credentials.json                # display the API account credentials
+❯ python3 -m netfoundry.demo --network BibbidiBobbidiBoo # choose a name
 ```
 
 After a few minutes your demo Network will be created and the Services will then become available.
