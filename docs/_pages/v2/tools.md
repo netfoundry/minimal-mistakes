@@ -26,11 +26,8 @@ These steps apply to both demos.
 Make sure you have Docker Engine ([install](https://docs.docker.com/engine/install/)).
 
 ```bash
-❯ cd ./netfoundry-demo
-❯ docker run --rm -it \
-    -v $PWD:/netfoundry \
-    -e NETWORK_NAME=BibbidiBobbidiBoo \
-    netfoundry/python:demo
+cd ./netfoundry-demo
+docker run --rm -it -v $PWD:/netfoundry -e NETWORK_NAME=BibbidiBobbidiBoo netfoundry/python:demo
 ```
 
 #### Run Demo with Python
@@ -38,10 +35,10 @@ Make sure you have Docker Engine ([install](https://docs.docker.com/engine/insta
 Make sure you have Python3 and `pip3 --version` ([install](https://pip.pypa.io/en/stable/installing/)).
 
 ```bash
-❯ cd ./netfoundry-demo
-❯ pip3 install --upgrade netfoundry
-❯ python3 -m json.tool ./credentials.json                # display the API account credentials
-❯ python3 -m netfoundry.demo --network BibbidiBobbidiBoo # choose a name
+cd ./netfoundry-demo
+pip3 install --upgrade netfoundry
+python3 -m json.tool ./credentials.json                # display the API account credentials
+python3 -m netfoundry.demo --network BibbidiBobbidiBoo # choose a name
 ```
 
 After a few minutes your demo Network will be created and the Services will then become available.
@@ -79,12 +76,12 @@ INFO: created AppWAN Welcome
 
 ```bash
 # HTTPie
-❯ http GET http://weather.netfoundry "Host: wttr.in"
+http GET http://weather.netfoundry "Host: wttr.in"
 ```
 
 ```bash
 # cURL
-❯ curl http://weather.netfoundry --header "Host: wttr.in"
+curl http://weather.netfoundry --header "Host: wttr.in"
 ```
 
 ### Demo: Endpoint-hosted Services
@@ -96,26 +93,26 @@ You may host private demo servers with Docker on any x86_64 Linux device. Compos
 1. In your terminal, change to the working directory.
 
     ```bash
-    ❯ cd ./netfoundry-demo
+    cd ./netfoundry-demo
     ```
 
 1. Install Compose.
 
     ```bash
-    ❯ pip3 install docker-compose
+    pip3 install docker-compose
     ```
 
-1. Save this file in your working directory [docker-compose.yml](https://github.com/netfoundry/developer-tools/blob/master/Docker/docker-compose.yml).
+1. Save this file in your working directory [docker-compose.yml](https://raw.githubusercontent.com/netfoundry/developer-tools/master/Docker/docker-compose.yml).
 1. In a terminal, run Compose to create your demo Network.
 
     ```bash
-    ❯ NETWORK_NAME=BibbidiBobbidiBoo docker-compose up --detach
+    NETWORK_NAME=BibbidiBobbidiBoo docker-compose up --detach
     ```
 
 1. Follow the demo's progress in the Compose log.
 
     ```bash
-    ❯ docker-compose logs --follow builder
+    docker-compose logs --follow builder
     ```
 
 1. In the web console, share or scan to enroll additional Endpoints named like "dialerN" to connect to the following demo servers from your laptop, mobile, etc...
@@ -125,13 +122,17 @@ After a few minutes your demo Network will be created and these Services will th
 * Hello, World! Splash: [http://hello.netfoundry/](http://hello.netfoundry/) (netfoundry/railz)
 * REST Test: [http://httpbin.netfoundry/](http://httpbin.netfoundry/) (kennethreitz/httpbin)
 
+#### Troubleshooting Docker Compose
+
+If the private Services are unavailable and the dialer log shows "no terminators" the likely cause is that the exit container has not yet started hosting the Services that were just created. The solution is to wait a few minutes or run `docker-compose restart exit`.
+
 ## Python Module
 
 [Python Package Index module](https://pypi.org/project/netfoundry/)
 : Python3 interface to the NetFoundry API
 
 ```bash
-❯ pip install netfoundry
+pip install netfoundry
 ```
 
 ### Create a Custom Docker Container with the NetFoundry Python Module
