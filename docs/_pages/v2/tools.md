@@ -151,6 +151,21 @@ COPY ./my-netfoundry-network.py .
 CMD ./my-netfoundry-network.py
 ```
 
+### Ansible Modules
+
+You may install our [Ansible Galaxy Collection](https://galaxy.ansible.com/search?deprecated=false&keywords=netfoundry). Which includes a module `netfoundry_endpoint` for creating, updating, or deleting an Endpoint. More soon to come!
+
+```bash
+# install collection
+ansible-galaxy collection install qrkourier.netfoundry
+# read about the info module
+ansible-doc qrkourier.netfoundry.netfoundry_info
+# read about the Endpoint module
+ansible-doc qrkourier.netfoundry.netfoundry_endpoint
+```
+
+For more examples please see [the playbook included in the collection](https://github.com/netfoundry/developer-tools/blob/master/ansible_collections/qrkourier/netfoundry/playbooks/network_info.yml). The default install path for this file is ~/.ansible/collections/ansible_collections/qrkourier/netfoundry/playbooks/network_info.yml.
+
 ## Utilities
 
 * [bulkInviteEndpoints.py](https://github.com/netfoundry/developer-tools/blob/master/bulkInviteEndpoints.py)
