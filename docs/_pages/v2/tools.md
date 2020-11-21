@@ -122,6 +122,8 @@ After a few minutes your demo Network will be created and these Services will th
 * Hello, World! Splash: [http://hello.netfoundry/](http://hello.netfoundry/) (netfoundry/railz)
 * REST Test: [http://httpbin.netfoundry/](http://httpbin.netfoundry/) (kennethreitz/httpbin)
 
+When finished run `docker-compose down` to destroy the containers.
+
 #### Troubleshooting Docker Compose
 
 If the private Services are unavailable and the dialer log shows "no terminators" the likely cause is that the exit container has not yet started hosting the Services that were just created. The solution is to wait a few minutes or run `docker-compose restart exit`.
