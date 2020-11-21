@@ -12,33 +12,16 @@ Let a demo build you a functioning NetFoundry network and then play with it in [
 
 ### Before You Begin
 
-These steps apply to both demos.
-
 1. Create a working directory like "netfoundry-demo".
 1. [Create an API account](/v2/guides/authentication/#get-an-api-account) and save it in the working directory as "credentials.json". You only need the JSON file for this exercise.
 
-### Demo: Router-hosted Services
-
-[The Python module](https://pypi.org/project/netfoundry/) includes [an executable demo](https://bitbucket.org/netfoundry/python-netfoundry/src/develop/netfoundry/demo.py).
-
-#### Run Demo with Docker
+### Demo: A Basic Network with Docker
 
 Make sure you have Docker Engine ([install](https://docs.docker.com/engine/install/)).
 
 ```bash
 cd ./netfoundry-demo
-docker run --rm -it -v $PWD:/netfoundry -e NETWORK_NAME=BibbidiBobbidiBoo netfoundry/python:demo
-```
-
-#### Run Demo with Python
-
-Make sure you have Python3 and `pip3 --version` ([install](https://pip.pypa.io/en/stable/installing/)).
-
-```bash
-cd ./netfoundry-demo
-pip3 install --upgrade netfoundry
-python3 -m json.tool ./credentials.json                # display the API account credentials
-python3 -m netfoundry.demo --network BibbidiBobbidiBoo # choose a name
+docker run --rm -it -v $PWD:/netfoundry netfoundry/python:demo
 ```
 
 After a few minutes your demo Network will be created and the Services will then become available.
@@ -62,17 +45,73 @@ INFO: created Endpoint dialer1
 INFO: created Endpoint dialer2
 INFO: created Endpoint dialer3
 INFO: created Endpoint exit1
-DEBUG: saving OTT for dialer1 in dialer1.jwt
-DEBUG: saving OTT for dialer2 in dialer2.jwt
-DEBUG: saving OTT for dialer3 in dialer3.jwt
-DEBUG: saving OTT for exit1 in exit1.jwt
 INFO: created Service Weather Service
 INFO: created Service Echo Service
 INFO: created AppWAN Welcome
 ```
 
-* IPv4 echo: [http://echo.netfoundry/](http://echo.netfoundry/) (eth0.me, shows you the real IP from which your HTTP request originated on the internet)
-* ASCII Art Weather: [http://weather.netfoundry/](http://weather.netfoundry/) (wttr.in)
+Enroll an Endpoint to demonstrate accessing a public demo server with an invented domain name. You could add the one-time-token .jwt file to Ziti Desktop Edge running on your laptop or you could visit [the web console](https://nfconsole.io/login) to scan the identity QR code with Ziti Mobile Edge.
+
+* Fireworks: [http://fireworks.netfoundry/](http://fireworks.netfoundry) Touch or click to shoot off some fireworks.
+* IPv4 echo: [http://echo.netfoundry/](http://echo.netfoundry/) (eth0.me, shows you the IP from which your HTTP request originated on the internet)
+
+#### More Control with Python
+
+You have access to more parameters when running [the demo script](https://bitbucket.org/netfoundry/python-netfoundry/src/develop/netfoundry/demo.py) directly. Make sure you have `pip3 --version` ([install](https://pip.pypa.io/en/stable/installing/)).
+
+```bash
+cd ./netfoundry-demo
+pip3 install --upgrade netfoundry
+python3 -m netfoundry.demo --help
+```
+
+### Self-Host Demo Servers and Endpoints
+
+You may host additional, private demo servers with Docker on any x86_64 Linux device. This will create a handful of servers that you can access via an enrolled Endpoint e.g. Desktop Edge for MacOS.
+
+1. In your terminal, change to the working directory.
+
+    ```bash
+    cd ./netfoundry-demo
+    ```
+
+1. Create Private Services in your Network
+
+    ```bash
+    python3 -m netfoundry.demo --network BibbidiBobbidiBoo --create-private
+    ```
+
+1. Save this file in your working directory [docker-compose.yml](https://raw.githubusercontent.com/netfoundry/developer-tools/master/docker/docker-compose.yml).
+1. In a terminal, run Compose. Install with `pip3 install docker-compose` or [follow instructions](https://docs.docker.com/compose/install/).
+
+    ```bash
+    docker-compose up --detach
+    ```
+
+1. In [the web console](https://nfconsole.io/login), share or scan to add an Endpoint identity named like "dialerN" to your Mobile Edge or Desktop Edge app and then connect to the demo servers from anywhere!
+
+* Hello, World! Splash: [http://hello.netfoundry/](http://hello.netfoundry/) (netfoundry/railz)
+* REST Test: [http://httpbin.netfoundry/](http://httpbin.netfoundry/) (kennethreitz/httpbin)
+
+When finished run `docker-compose down` to destroy the demo containers.
+
+### Run a Linux Endpoint
+
+You may also wish to visit the demo servers on a Linux machine. The first step is to configure DNS to enable accessing the domain names in your Network. Your Linux computer must have 127.0.0.1 as the primary nameserver. [Know more about DNS and `ziti-tunnel`](https://openziti.github.io/ziti/clients/tunneler.html#dns-server).
+
+1. In your terminal, change to the working directory.
+
+    ```bash
+    cd ./netfoundry-demo
+    ```
+
+1. Create a Linux Dialer
+
+    ```bash
+    python3 -m netfoundry.demo --network BibbidiBobbidiBoo --create-dialer
+    ```
+
+Within a few seconds the container `dialer` that was created by your earlier `docker-compose up` command  will have enrolled. You may now visit any of the aforementioned demo servers in a web browser or with a terminal command.
 
 ```bash
 # HTTPie
@@ -84,49 +123,16 @@ http GET http://weather.netfoundry "Host: wttr.in"
 curl http://weather.netfoundry --header "Host: wttr.in"
 ```
 
-### Demo: Endpoint-hosted Services
-
-You may host private demo servers with Docker on any x86_64 Linux device. Compose will run the `netfoundry/python:demo` container which executes the same Python demo described above. Additionally, this will create a handful private servers that you can access from an enrolled Endpoint.
-
-#### Run Demo with Docker Compose
-
-1. In your terminal, change to the working directory.
-
-    ```bash
-    cd ./netfoundry-demo
-    ```
-
-1. Install Compose.
-
-    ```bash
-    pip3 install docker-compose
-    ```
-
-1. Save this file in your working directory [docker-compose.yml](https://raw.githubusercontent.com/netfoundry/developer-tools/master/Docker/docker-compose.yml).
-1. In a terminal, run Compose to create your demo Network.
-
-    ```bash
-    NETWORK_NAME=BibbidiBobbidiBoo docker-compose up --detach
-    ```
-
-1. Follow the demo's progress in the Compose log.
-
-    ```bash
-    docker-compose logs --follow builder
-    ```
-
-1. In the web console, share or scan to enroll additional Endpoints named like "dialerN" to connect to the following demo servers from your laptop, mobile, etc...
-
-After a few minutes your demo Network will be created and these Services will then become available.
-
-* Hello, World! Splash: [http://hello.netfoundry/](http://hello.netfoundry/) (netfoundry/railz)
-* REST Test: [http://httpbin.netfoundry/](http://httpbin.netfoundry/) (kennethreitz/httpbin)
-
-When finished run `docker-compose down` to destroy the containers.
-
 #### Troubleshooting Docker Compose
 
 If the private Services are unavailable and the dialer log shows "no terminators" the likely cause is that the exit container has not yet started hosting the Services that were just created. The solution is to wait a few minutes or run `docker-compose restart exit`.
+
+You may inspect the logs from the container that is hosting the exit point to the demo Services with `ziti-tunnel`.
+
+```bash
+docker-compose logs --follow exit
+```
+
 
 ## Python Module
 
