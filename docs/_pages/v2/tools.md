@@ -173,3 +173,6 @@ For more examples please see [the playbook included in the collection](https://g
 
 * [bulkEditRoleAttributes.py](https://github.com/netfoundry/developer-tools/blob/master/bulkEditRoleAttributes.py)
 : replace the role attributes on all Endpoints, Edge Routers, or Services; optionally limited to those that match a pattern
+
+* [PostMan Service Runner](https://github.com/netfoundry/developer-tools/blob/master/NetFoundryRunners.postman_collection.json)
+: create Services in bulk with PostMan
