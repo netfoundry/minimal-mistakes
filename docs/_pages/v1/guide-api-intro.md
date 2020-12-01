@@ -2,7 +2,6 @@
 title: Overview
 permalink: /v1/guides/introduction/
 redirect_from:
-    - /guides/
     - /v1/
     - /v1/guides/
     - /v1/guides/overview/

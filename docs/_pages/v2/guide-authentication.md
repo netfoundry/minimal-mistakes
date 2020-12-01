@@ -1,5 +1,7 @@
 ---
-permalink: /v2/guides/authentication/
+permalink: /guides/authentication/
+redirect_from:
+  - /v2/guides/authentication/
 title: "Authentication"
 sidebar:
     nav: v2guides

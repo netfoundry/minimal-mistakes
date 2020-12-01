@@ -1,12 +1,14 @@
 ---
 title: References
-permalink: /v2/reference/
+permalink: /reference/
+redirect_from:
+    - /v2/reference/
 toc: true
 ---
 
 ## HTML References
 
-### Network orchestration API
+### Network Orchestration Platform API
 
 [Core v2](https://gateway.production.netfoundry.io/core/v2/docs/index.html){: .btn .btn--info .btn--x-large}
 

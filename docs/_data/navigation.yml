@@ -24,15 +24,15 @@ main:
 # v2 horizontal nav
 main2:
   - title: "Guides"
-    url: /v2/guides/
+    url: /guides/
     description: "intro, manuals, tutorials"
   - title: "Reference"
-    url: /v2/reference/
+    url: /reference/
   - title: "Blog"
     url: /blog/
     description: "What's new?"
   - title: "Tools"
-    url: /v2/tools/
+    url: /tools/
     description: "Power User Kit"
   - title: "Versions"
     url: /versions/
@@ -58,8 +58,8 @@ v2guides:
   - title: Guides
     children:
       - title: "Intro"
-        url: /v2/guides/introduction/
+        url: /guides/introduction/
       - title: "Authentication"
-        url: /v2/guides/authentication/
+        url: /guides/authentication/
       - title: "Hello, World"
-        url: /v2/guides/hello-world/
+        url: /guides/hello-world/

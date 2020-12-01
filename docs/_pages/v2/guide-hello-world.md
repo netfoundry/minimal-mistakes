@@ -1,6 +1,8 @@
 ---
 title: "Hello, World!"
-permalink: /v2/guides/hello-world/
+permalink: /guides/hello-world/
+redirect_from:
+  - /v2/guides/hello-world/
 sidebar:
     nav: v2guides
 toc: true

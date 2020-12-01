@@ -1,6 +1,8 @@
 ---
 title: Tools
-permalink: /v2/tools/
+permalink: /tools/
+redirect_from:
+    - /v2/tools/
 toc: false
 ---
 

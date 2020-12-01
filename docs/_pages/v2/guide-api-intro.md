@@ -1,10 +1,13 @@
 ---
 title: Overview
-permalink: /v2/guides/introduction/
+permalink: /guides/introduction/
 redirect_from:
+    - /guides/
+    - /guides/overview/
     - /v2/
     - /v2/guides/
     - /v2/guides/overview/
+    - /v2/guides/introduction/
 sidebar:
     nav: "v2guides"
 toc: true
