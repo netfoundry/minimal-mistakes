@@ -58,11 +58,13 @@ Enroll an Endpoint to access the public demo servers through the invented domain
 
 ## Do More with Python and Docker Compose
 
-You have access to more parameters when running [the demo script](https://bitbucket.org/netfoundry/python-netfoundry/src/develop/netfoundry/demo.py) directly instead of running the demo container. Make sure you have `pip3 --version` ([install](https://pip.pypa.io/en/stable/installing/)).
+You have access to more parameters when running [the demo script](https://bitbucket.org/netfoundry/python-netfoundry/src/develop/netfoundry/demo.py) directly instead of running the demo container. Make sure you have `pip3` ([install](https://pip.pypa.io/en/stable/installing/)).
 
 ```bash
 cd ./netfoundry-demo
+# install
 pip3 install --upgrade netfoundry
+# explore demo options
 python3 -m netfoundry.demo --help
 ```
 
@@ -83,9 +85,10 @@ You may host additional, private demo servers with Docker on any x86_64 Linux de
     ```
 
 1. Save this file in your working directory [docker-compose.yml](https://raw.githubusercontent.com/netfoundry/developer-tools/master/docker/docker-compose.yml).
-1. In a terminal, run Compose. Install with `pip3 install docker-compose` or [follow instructions](https://docs.docker.com/compose/install/).
+1. In a terminal, run Compose.
 
     ```bash
+    pip3 install docker-compose
     docker-compose up --detach
     ```
 
