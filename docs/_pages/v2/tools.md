@@ -168,11 +168,11 @@ For more examples please see [the playbook included in the collection](https://g
 
 ## Utilities
 
-* [bulkInviteEndpoints.py](https://github.com/netfoundry/developer-tools/blob/master/bulkInviteEndpoints.py)
+* [bulkInviteEndpoints.py](https://raw.githubusercontent.com/netfoundry/developer-tools/master/bulkInviteEndpoints.py)
 : create Endpoints and send the enrollment token to a list of email addresses
 
-* [bulkEditRoleAttributes.py](https://github.com/netfoundry/developer-tools/blob/master/bulkEditRoleAttributes.py)
+* [bulkEditRoleAttributes.py](https://raw.githubusercontent.com/netfoundry/developer-tools/master/bulkEditRoleAttributes.py)
 : replace the role attributes on all Endpoints, Edge Routers, or Services; optionally limited to those that match a pattern
 
-* [PostMan Service Runner](https://github.com/netfoundry/developer-tools/blob/master/NetFoundryRunners.postman_collection.json)
+* [PostMan Service Runner](https://github.com/netfoundry/developer-tools/raw/master/NetFoundryRunners.postman_collection.json)
 : create Services in bulk with PostMan
