@@ -1,5 +1,5 @@
 ---
-title: "REST Quickstart"
+title: "REST Examples"
 permalink: /guides/rest/
 redirect_from:
   - /v2/guides/hello-world/
