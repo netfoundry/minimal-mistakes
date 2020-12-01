@@ -57,9 +57,15 @@ v1guides:
 v2guides:
   - title: Guides
     children:
-      - title: "Intro"
+      - title: "Introduction"
         url: /guides/introduction/
       - title: "Authentication"
         url: /guides/authentication/
-      - title: "Hello, World"
-        url: /guides/hello-world/
+      - title: "Quickstart Demo"
+        url: /guides/demo/
+      - title: "Python Guide"
+        url: /guides/python/
+      - title: "Ansible Guide"
+        url: /guides/ansible/
+      - title: "REST Examples"
+        url: /guides/rest/

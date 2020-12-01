@@ -1,19 +1,22 @@
 ---
-title: "Hello, World!"
-permalink: /guides/hello-world/
+title: "REST Quickstart"
+permalink: /guides/rest/
 redirect_from:
   - /v2/guides/hello-world/
+  - /guides/hello-world/
 sidebar:
     nav: v2guides
 toc: true
 classes: wide
 ---
 
-This guides you step by step to create an AppWAN with HTTP requests.
+This guides you step by step to create an AppWAN with raw HTTP requests. There are other exercises you may find helpful:
+* [Quickstart Network with Docker or Python](/tools/#demos)
+* [Full-stack Hello, World! exercise with web console and AWS CloudFormation](https://netfoundry.io/helloworld/)
 
 ## Audience
 
-This is for you if you're ready to create your first AppWAN with version 2 of the NetFoundry API (`/core/v2`). I'll assume you're acquainted with [the foundational concepts](/help#foundational-concepts) and have an API token from the identity provider. You can go back to the [authentication guide](/v1/guides/authentication/) if you need to get that token.
+This is for you if you're ready to create your first AppWAN with version 2 of the NetFoundry API (`/core/v2`). I'll assume you're acquainted with [the foundational concepts](/help#foundational-concepts) and have an API account downloaded from the web console. You can go back to the [authentication guide](/v1/guides/authentication/) if you need to get that account or learn how to obtain a session token.
 
 <!-- There's a separate guide for [getting started with RapidAPI](/v1/guides/rapidapi/)
 {: .notice--success}
