@@ -68,7 +68,7 @@ cd ./netfoundry-demo
 # define a Network name
 NETWORK_NAME=BibbidiBobbidiBoo
 
-# Run the demo container (runs the Demo script)
+# Run the demo container (runs the demo script)
 docker run --rm -it -v $PWD:/netfoundry -e NETWORK_NAME netfoundry/python:demo
 ```
 
@@ -77,48 +77,24 @@ Enroll an Endpoint to access the public demo servers through the invented domain
 * Fireworks: [http://fireworks.netfoundry/](http://fireworks.netfoundry) Touch or click to shoot off some fireworks.
 * IPv4 echo: [http://echo.netfoundry/](http://echo.netfoundry/) (eth0.me, shows you the IP from which your HTTP request originated on the internet)
 
-## Do More with Python and Docker Compose
+### Run Additional Demo Servers
 
-You have access to more parameters when running [the demo script](https://bitbucket.org/netfoundry/python-netfoundry/src/develop/netfoundry/demo.py) directly instead of running the demo container. Make sure you have `pip3` ([install](https://pip.pypa.io/en/stable/installing/)).
+You may host additional, private demo servers with Docker. This will create a handful of servers that you can access with an Endpoint e.g. Desktop Edge for MacOS.
 
 ```bash
 cd ./netfoundry-demo
 
-# install
-pip3 install --upgrade --user netfoundry
+# Re-run the demo, additionally creating the private Services
+python3 -m netfoundry.demo --network BibbidiBobbidiBoo --create-private
 
-# explore demo options
-python3 -m netfoundry.demo --help
+# install Compose
+pip3 install --user docker-compose
+
+# download the Compose file with cURL and run Compose
+docker run --rm -v $(pwd):/work -w /work appropriate/curl -L -o docker-compose.yml https://raw.githubusercontent.com/netfoundry/developer-tools/master/docker/docker-compose.yml && docker-compose up --detach
 ```
 
-### Host Demo Servers with Docker Compose
-
-You may host additional, private demo servers with Docker on any x86_64 Linux device. This will create a handful of servers that you can access via an enrolled Endpoint e.g. Desktop Edge for MacOS.
-
-1. In your terminal, change to the working directory.
-
-    ```bash
-    cd ./netfoundry-demo
-    ```
-
-1. Create Private Services in your Network
-
-    ```bash
-    # Re-run the demo, additionally creating the private Services
-    python3 -m netfoundry.demo --network BibbidiBobbidiBoo --create-private
-    ```
-
-1. In a terminal, run Compose.
-
-    ```bash
-    # install Compose
-    pip3 install --user docker-compose
-
-    # download the Compose file with cURL and run Compose
-    docker run --rm -v $(pwd):/work -w /work appropriate/curl -L -o docker-compose.yml https://raw.githubusercontent.com/netfoundry/developer-tools/master/docker/docker-compose.yml && docker-compose up --detach
-    ```
-
-1. In [the web console](https://nfconsole.io/login), share or scan to add an Endpoint identity named like "dialerN" to your Mobile Edge or Desktop Edge app and then connect to the demo servers from anywhere!
+In [the web console](https://nfconsole.io/login), share to an email address or scan to add one of the Endpoints named like "dialerN". You can use the Mobile Edge or Desktop Edge app linked in the email and console to then connect to the demo servers from anywhere.
 
 * Hello, World! Splash: [http://hello.netfoundry/](http://hello.netfoundry/) (netfoundry/railz)
 * REST Test: [http://httpbin.netfoundry/](http://httpbin.netfoundry/) (kennethreitz/httpbin)
@@ -127,7 +103,7 @@ When finished run `docker-compose down` to destroy the demo containers.
 
 ### Run a Linux Endpoint
 
-You may also wish to visit the demo servers on a Linux machine. The first step is to configure DNS to enable accessing the domain names in your Network. Your Linux computer must have 127.0.0.1 as the primary nameserver. [Know more about DNS and `ziti-tunnel`](https://openziti.github.io/ziti/clients/tunneler.html#dns-server).
+You may also wish to visit the demo servers on a Linux machine. The first step is to configure DNS to enable accessing the domain names in your Network. Your Linux computer must have 127.0.0.1 as the primary nameserver. [Know more about the Edge Tunneler CLI](https://support.netfoundry.io/hc/en-us/articles/360045177311).
 
 1. In your terminal, change to the working directory.
 
@@ -153,8 +129,7 @@ http GET http://weather.netfoundry "Host: wttr.in"
 curl http://weather.netfoundry --header "Host: wttr.in"
 ```
 
-
-### Troubleshooting Docker Compose
+### Troubleshooting
 
 If the private Services are unavailable and the dialer log shows "no terminators" the likely cause is that the exit container has not yet started hosting the Services that were just created. The solution is to wait a few minutes or run `docker-compose restart exit`.
 
