@@ -11,30 +11,52 @@ classes: wide
 ---
 
 This guides you step by step to create an AppWAN with raw HTTP requests. There are other exercises you may find helpful:
-* [Quickstart Network with Docker or Python](/tools/#demos)
+* [Quickstart Demo with Docker](/guides/demo/)
 * [Full-stack Hello, World! exercise with web console and AWS CloudFormation](https://netfoundry.io/helloworld/)
 
 ## Audience
 
-This is for you if you're ready to create your first AppWAN with version 2 of the NetFoundry API (`/core/v2`). I'll assume you're acquainted with [the foundational concepts](/help#foundational-concepts) and have an API account downloaded from the web console. You can go back to the [authentication guide](/v1/guides/authentication/) if you need to get that account or learn how to obtain a session token.
-
-<!-- There's a separate guide for [getting started with RapidAPI](/v1/guides/rapidapi/)
-{: .notice--success}
- -->
+This is for you if you're ready to create your first AppWAN with the NetFoundry API. It is assumed you are acquainted with [the foundational concepts](/help#foundational-concepts) and have an API account downloaded from the web console. You can go back to the [authentication guide](/v2/guides/authentication/) if you need to get that account or learn how to obtain a session token.
 
 ## By Example
 
-The result of these request examples is an AppWAN that allows Tunneler to initiate connections to a service. You could describe any server in your service definition, even one that is not public as long as the edge router is able to reach the server.
+The result of these HTTP requests is an AppWAN that allows an Endpoint named "dialer1" to initiate connections to a Service. You could describe any server in your Service definition, even one that is not public as long as the edge router is able to reach the server. The example given is a NetFoundry-hosted Edge Router performing dual functions:
+1. Edge Router for dialing Endpoints
+2. Service hosting for http://eth0.me (a simple IP echo server)
 
 ### Set up Your Workspace
 
 These examples, like those in the [authentication guide](/v2/guides/authentication/), make use of [HTTPie (command-line HTTP client)](https://httpie.org/) and [`jq` (command-line JSON processor)](https://stedolan.github.io/jq/).
 
-If you have your API authentication token assigned to environment variable `NETFOUNDRY_API_TOKEN` then you're ready to go!
+If you have your API authentication token assigned to environment variable `NETFOUNDRY_API_TOKEN` then you're ready to go! You can go back to the [authentication guide](/v2/guides/authentication/) if you need to get that account or learn how to obtain a session token.
+
+### Discover your Organization
+
+This is like asking "Who am I?" and is merely informational, not required for the further steps in this exercise.
+
+```bash
+❯ http GET https://gateway.production.netfoundry.io/identity/v1/organization \
+  "Authorization: Bearer ${NETFOUNDRY_API_TOKEN}" |jq .
+```
+
+### Discover Network Group ID
+
+A network group organizes your NetFoundry Networks for billing and permissions. You need to know the Network Group ID in order to create a Network. This example filters for a particular Network Group by name. There is typically only one.
+
+<!-- TODO update organizations to fixed object reference like networkgroups -->
+```bash
+❯ http GET https://gateway.production.netfoundry.io/rest/v1/network-groups/ \
+  "Authorization: Bearer ${NETFOUNDRY_API_TOKEN}" | jq '._embedded.organizations[]|select(.name == "MYGROUP")|{name:.name,id:.id}'
+{
+  "name": "MYGROUP",
+  "id": "4d15ef35-cfa0-4963-a667-5c86d16ce77e"
+}
+❯ NF_NETWORK_GROUP=4d15ef35-cfa0-4963-a667-5c86d16ce77e
+```
 
 ### Discover Network Configuration ID
 
-This is a simplistic sizing of your network's components. Use "small" for cost-conscious testing, "medium" for nominal performance.
+This is a simplistic sizing of your Network's components. Use "small" for cost-conscious testing.
 
 ```bash
 ❯ http GET https://gateway.production.netfoundry.io/rest/v1/networkConfigMetadata/ \
@@ -50,24 +72,9 @@ This is a simplistic sizing of your network's components. Use "small" for cost-c
 ❯ NF_CONFIG=2616da5c-4441-4c3d-a9a2-ed37262f2ef4
 ```
 
-### Discover Network Group ID
-
-A network group organizes your NetFoundry networks for billing and permissions. You need to know the network group ID in order to create a network. This example filters for a particular group by name. In most cases there will be only one group in the list of results.
-
-<!-- TODO update organizations to fixed object reference like networkgroups -->
-```bash
-❯ http GET https://gateway.production.netfoundry.io/rest/v1/network-groups/ \
-  "Authorization: Bearer ${NETFOUNDRY_API_TOKEN}" | jq '._embedded.organizations[]|select(.name == "MYGROUP")|{name:.name,id:.id}'
-{
-  "name": "MYGROUP",
-  "id": "4d15ef35-cfa0-4963-a667-5c86d16ce77e"
-}
-❯ NF_NETWORK_GROUP=4d15ef35-cfa0-4963-a667-5c86d16ce77e
-```
-
 ### Create a Network
 
-This will provision the dedicated compute infrastructure of your NetFoundry network. The value of `locationCode` determines the AWS region in which your controller node is located. It is not crucial to home the controller near your clients or services for performance reasons, but you may have other reasons for preferring or avoiding a particular geographic region.
+This will provision the dedicated compute infrastructure of your NetFoundry Network. The value of `locationCode` determines the AWS region in which your controller node is located.
 
 ```bash
 ❯ http POST https://gateway.production.netfoundry.io/core/v2/networks \
@@ -82,7 +89,7 @@ This will provision the dedicated compute infrastructure of your NetFoundry netw
 
 ### Create an Edge Router
 
-At this time edge routers must be homed in an AWS datacenter if hosted by NetFoundry. You can also self-host an edge router by enrolling an installation of `ziti-router` with your network. In the NetFoundry platform, a datacenter is a cloud-provider-specific geographic region which is in the case of AWS a region with multiple availability zones.
+The minimal functioning Network has a single hosted Edge Router performing two functions: Edge Router for dialing Endpoints and hosting for a Service.
 
 ```bash
 ❯ http GET https://gateway.production.netfoundry.io/rest/v1/dataCenters \
@@ -100,7 +107,7 @@ At this time edge routers must be homed in an AWS datacenter if hosted by NetFou
 {
         "networkId": "${NF_NETWORK}",
         "attributes": [
-                "#all"
+                "#defaultRouters"
         ],
         "name": "exampleEdgeRouter",
         "dataCenterId": "${NF_SERVICE_DC}",
@@ -120,10 +127,10 @@ Authorize endpoints with matching `endpointAttributes` to dial via edge routers 
   "Authorization: Bearer ${NETFOUNDRY_API_TOKEN}" <<EOF | jq .id
 {
         "endpointAttributes": [
-                "#all"
+                "#dialers"
         ],
         "edgeRouterAttributes": [
-                "#all"
+                "#defaultRouters"
         ],
         "networkId": "${NF_NETWORK}",
         "name": "exampleEdgeRouterPolicy"
@@ -142,13 +149,13 @@ Describe a server. Endpoints will be authorized to access this service if they h
   "Authorization: Bearer ${NETFOUNDRY_API_TOKEN}" <<EOF | jq .id
 {
         "attributes": [
-                "#all"
+                "#publicServices"
         ],
         "edgeRouterAttributes": [
 
         ],
         "networkId": "${NF_NETWORK}",
-        "name": "exampleService",
+        "name": "echoService",
         "egressRouterId": "${NF_EDGE_ROUTER}",
         "clientHostName": "eth0.me",
         "clientPortRange": "80",
@@ -158,7 +165,7 @@ Describe a server. Endpoints will be authorized to access this service if they h
 EOF
 "d1f6ef84-f979-4a2e-8e8f-b46c0fa1664b"
 ❯ NF_SERVICE_ID=d1f6ef84-f979-4a2e-8e8f-b46c0fa1664b
-❯ NF_SERVICE_NAME="exampleService"
+❯ NF_SERVICE_NAME="echoService"
 ```
 
 ### Create an AppWAN
@@ -171,10 +178,10 @@ Authorize endpoints with matching tags in `endpointAttributes` to access service
 {
         "networkId": "${NF_NETWORK}",
         "serviceAttributes": [
-                "#all"
+                "#publicServices"
         ],
         "endpointAttributes": [
-                "#all"
+                "#dialers"
         ],
         "name": "exampleAppWAN"
 }
@@ -193,45 +200,45 @@ The tags in `attributes` are used to authorize this endpoint to access services 
 {
         "networkId": "${NF_NETWORK}",
         "attributes": [
-                "#all"
+                "#dialers"
         ],
         "enrollmentMethod": {
                 "ott": true
         },
-        "name": "exampleTunneler"
+        "name": "dialer1"
 }
 EOF
 "345a13a6-ef47-42b5-bd45-c6aa2328d52d"
 ❯ NF_TUNNELER=345a13a6-ef47-42b5-bd45-c6aa2328d52d
 ```
 
-### Enroll the Tunneler
+### Enroll an Endpoint
 
-`enroll` is a subcommand of `ziti-tunnel` that will generate a permanent cryptographic identity for this install of Tunneler. NetFoundry calls this an "Endpoint". Here is [a helpful article about enrolling Tunneler](https://support.netfoundry.io/hc/en-us/articles/360045177311-How-to-Enroll-Tunneler) if you would like a bit more context.
+`enroll` is a subcommand of `ziti-tunnel` that will generate a permanent cryptographic identity for this device.
 
 ```bash
 ❯ ./ziti-tunnel version
 0.15.2
 
 ❯ http GET https://gateway.production.netfoundry.io/core/v2/endpoints/${NF_TUNNELER} \
-  "Authorization: Bearer ${NETFOUNDRY_API_TOKEN}" | jq -r '.jwt' > exampleTunneler.jwt
+  "Authorization: Bearer ${NETFOUNDRY_API_TOKEN}" | jq -r '.jwt' > dialer1.jwt
 
-❯ ./ziti-tunnel enroll --jwt exampleTunneler.jwt
+❯ ./ziti-tunnel enroll --jwt dialer1.jwt
 INFO[0000] generating P-384 key
-enrolled successfully. identity file written to: exampleTunneler.json
+enrolled successfully. identity file written to: dialer1.json
 ```
 
-### Run Tunneler as a Proxy
+### Run the Edge Tunneler CLI as a Proxy
 
-Tunneler is an app that NetFoundry built with the [Ziti endpoint SDK](https://ziti.dev/). It will tunnel IP packets to the service across your AppWAN and provides a simple proxy mode that will work well for this exercise because it is a portable binary and may be run right where it is downloaded. You could also use any app that you built with a Ziti endpoint SDK, or any of [the client apps here](https://netfoundry.io/resources/support/downloads/networkversion7/#zititunnelers).
+The Edge Tunneler CLI will tunnel IP packets to your Service across and provides a simple proxy mode that will work well for this exercise. You could also use any app that you built with a Ziti endpoint SDK, or any of [the client apps here](https://netfoundry.io/resources/support/downloads/networkversion7/#zititunnelers). Here is [a helpful article about using ziti-tunnel as an Endpoint](https://support.netfoundry.io/hc/en-us/articles/360045177311) if you would like a bit more context.
 
 {% include ziti-tunneler.md %}
 
 ```bash
 ❯ ./ziti-tunneler version
-0.15.2
+0.17.2
 
-❯ ./ziti/ziti-tunnel proxy --identity exampleTunneler.json "${NF_SERVICE_NAME}":8080
+❯ ./ziti/ziti-tunnel proxy --identity dialer1.json "${NF_SERVICE_NAME}":8080
 ```
 
 The effect of this command is for Tunneler to bind to localhost:8080 and begin listening for connections. We'll test this by sending a request to that port.
