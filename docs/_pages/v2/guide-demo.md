@@ -16,14 +16,7 @@ Let the demo script build you a complete NetFoundry Network and then play with i
 1. Create a working directory like "netfoundry-demo".
 1. [Create an API account](/guides/authentication/#get-an-api-account) and save it in the working directory as "credentials.json". You only need the JSON file for this exercise.
 
-## Run the Demo Container
-
-Make sure you have [Docker Engine](https://docs.docker.com/engine/install/).
-
-```bash
-cd ./netfoundry-demo
-docker run --rm -it -v $PWD:/netfoundry netfoundry/python:demo
-```
+## Run the Demo
 
 After a few minutes your demo Network will be created and the Services will then become available.
 
@@ -51,6 +44,34 @@ INFO: created Service Echo Service
 INFO: created AppWAN Welcome
 ```
 
+You may run the demo with Python or Docker.
+
+### Run the Demo with Python
+
+```bash
+cd ./netfoundry-demo
+
+# install
+pip3 install --upgrade --user netfoundry
+
+# Run the demo script
+python3 -m netfoundry.demo --network BibbidiBobbidiBoo
+```
+
+### Run the Demo with Docker
+
+Make sure you have [Docker Engine](https://docs.docker.com/engine/install/).
+
+```bash
+cd ./netfoundry-demo
+
+# define a Network name
+NETWORK_NAME=BibbidiBobbidiBoo
+
+# Run the demo container (runs the Demo script)
+docker run --rm -it -v $PWD:/netfoundry -e NETWORK_NAME netfoundry/python:demo
+```
+
 Enroll an Endpoint to access the public demo servers through the invented domain names below. To enroll you laptop you could install the Ziti Desktop Edge app for your OS and add the identity to the app. To enroll your mobile you could visit [the web console](https://nfconsole.io/login) to scan the identity QR code with Ziti Mobile Edge installed from the app store.
 
 * Fireworks: [http://fireworks.netfoundry/](http://fireworks.netfoundry) Touch or click to shoot off some fireworks.
@@ -62,8 +83,10 @@ You have access to more parameters when running [the demo script](https://bitbuc
 
 ```bash
 cd ./netfoundry-demo
+
 # install
-pip3 install --upgrade netfoundry
+pip3 install --upgrade --user netfoundry
+
 # explore demo options
 python3 -m netfoundry.demo --help
 ```
@@ -81,15 +104,18 @@ You may host additional, private demo servers with Docker on any x86_64 Linux de
 1. Create Private Services in your Network
 
     ```bash
+    # Re-run the demo, additionally creating the private Services
     python3 -m netfoundry.demo --network BibbidiBobbidiBoo --create-private
     ```
 
-1. Save this file in your working directory [docker-compose.yml](https://raw.githubusercontent.com/netfoundry/developer-tools/master/docker/docker-compose.yml).
 1. In a terminal, run Compose.
 
     ```bash
-    pip3 install docker-compose
-    docker-compose up --detach
+    # install Compose
+    pip3 install --user docker-compose
+
+    # download the Compose file with cURL and run Compose
+    docker run --rm -v $(pwd):/work -w /work appropriate/curl -L -o docker-compose.yml https://raw.githubusercontent.com/netfoundry/developer-tools/master/docker/docker-compose.yml && docker-compose up --detach
     ```
 
 1. In [the web console](https://nfconsole.io/login), share or scan to add an Endpoint identity named like "dialerN" to your Mobile Edge or Desktop Edge app and then connect to the demo servers from anywhere!
