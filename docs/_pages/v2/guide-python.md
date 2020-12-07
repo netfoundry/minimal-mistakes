@@ -15,7 +15,7 @@ classes: wide
 : Python3 interface to the NetFoundry API
 
 ```bash
-pip install netfoundry
+pip install --upgrade --user netfoundry
 # or
 python3 -m pip install --upgrade --user netfoundry
 ```
