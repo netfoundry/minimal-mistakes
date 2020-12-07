@@ -20,7 +20,17 @@ pip install --upgrade --user netfoundry
 python3 -m pip install --upgrade --user netfoundry
 ```
 
+## Virtualenv
 
+Alternatively, you could install the module in a project directory with `virtualenv`.
+
+```bash
+mkdir -p netfoundry-project && cd netfoundry-project
+python3 -m pip install --user virtualenv
+virtualenv venv
+source venv/bin/activate
+pip install netfoundry
+```
 
 ### Documentation
 
