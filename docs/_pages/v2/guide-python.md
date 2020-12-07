@@ -17,7 +17,7 @@ classes: wide
 ```bash
 pip install netfoundry
 # or
-python3 -m pip install --upgrade netfoundry
+python3 -m pip install --upgrade --user netfoundry
 ```
 
 
