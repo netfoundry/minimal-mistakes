@@ -9,44 +9,37 @@ toc: true
 classes: wide
 ---
 
-Let the demo script build you a complete NetFoundry Network and then play with it in [the web console](https://nfconsole.io/login).
+The demo script will create a complete NetFoundry Network that you may then extend for your own purposes. The following will be added to the NetFoundry Network that you specify:
+
+* AppWAN: "Welcome"
+    * Services #welcomeWagon
+        * Fireworks Service
+        * Echo Service
+        * Weather Service
+    * Endpoints #workFromAnywhere
+        * Mobile1
+        * Desktop1
+* Edge Routers #defaultRouters
+    * Americas
+
+## How it Works
+
+You'll access the demo servers by adding the identity of one of the provided Endpoints to a tunneler app e.g. Ziti Mobile Edge for iOS, Desktop Edge for Windows. As soon as the Endpoints are created by the demo you may go ahead and add the identity to your tunneler.
+
+Look in the web console for these Endpoints and click on them to explore installation and enrollment instructions for your device's operating system.
+
+Once the Endpoint identity has been added to your device's tunneler the demo servers will be reachable e.g. http://fireworks.netfoundry.
 
 ## Before You Begin
 
 1. Create a working directory like "netfoundry-demo".
 1. [Create an API account](/guides/authentication/#get-an-api-account) and save it in the working directory as "credentials.json". You only need the JSON file for this exercise.
 
-## Run the Demo
-
-After a few minutes your demo Network will be created and the Services will then become available.
-
-```log
-WARN: Using the default Network Group: BOOPTASTIC
-        waiting for status PROVISIONED or until Tue Nov 17 23:43:05 2020..
-    BibbidiBobbidiBoo    :   PROVISIONING    :....................
-    BibbidiBobbidiBoo    :    PROVISIONED    :
-INFO: Placed Edge Router in Americas (AWS Oregon)
-INFO: Placed Edge Router in EuropeMiddleEastAfrica (AWS Stockholm)
-        waiting for status PROVISIONED or until Wed Nov 18 09:25:10 2020..
-    AWS Oregon     :        NEW        :.....
-    AWS Oregon     :   PROVISIONING    :...........................
-    AWS Oregon     :    PROVISIONED    :
-        waiting for status PROVISIONED or until Wed Nov 18 09:30:05 2020..
-   AWS Stockholm   :        NEW        :..
-   AWS Stockholm   :   PROVISIONING    :........................
-   AWS Stockholm   :    PROVISIONED    :
-INFO: created Endpoint dialer1
-INFO: created Endpoint dialer2
-INFO: created Endpoint dialer3
-INFO: created Endpoint exit1
-INFO: created Service Weather Service
-INFO: created Service Echo Service
-INFO: created AppWAN Welcome
-```
-
-You may run the demo with Python or Docker.
+You may run the demo in a terminal window as a Docker container or as a Python script.
 
 ### Run the Demo with Python
+
+To run the demo with Python you will need to [install Python3](https://www.python.org/downloads/).
 
 ```bash
 cd ./netfoundry-demo
@@ -72,12 +65,21 @@ NETWORK_NAME=BibbidiBobbidiBoo
 docker run --rm -it -v $PWD:/netfoundry -e NETWORK_NAME netfoundry/python:demo
 ```
 
-Enroll an Endpoint to access the public demo servers through the invented domain names below. To enroll you laptop you could install the Ziti Desktop Edge app for your OS and add the identity to the app. To enroll your mobile you could visit [the web console](https://nfconsole.io/login) to scan the identity QR code with Ziti Mobile Edge installed from the app store.
+## Use the Demo Servers
 
-* Fireworks: [http://fireworks.netfoundry/](http://fireworks.netfoundry) Touch or click to shoot off some fireworks.
-* IPv4 echo: [http://echo.netfoundry/](http://echo.netfoundry/) (eth0.me, shows you the IP from which your HTTP request originated on the internet)
+Install a tunneler on your device. For example, you could install the Ziti Desktop Edge for MacOS and add the identity for the Endpoint named "Desktop1" in the Desktop Edge app. The easiest way to obtain the Endpoint software and the Endpoint identity is to visit [the web console](https://nfconsole.io/login) and click on one of your Endpoints. There you may scan the identity's QR code with Ziti Mobile Edge installed from the app store or download the identity as a JWT file to add to the Desktop Edge app.
 
-### Run Additional Demo Servers
+### Fireworks Demo
+
+Touch or click to shoot off some fireworks. This demo shows that you are able to access a web site with an invented domain name that you control through your NetFoundry Network.
+
+[http://fireworks.netfoundry/](http://fireworks.netfoundry)
+
+### IP Address Echo Demo
+
+Visit [http://eth0.me](http://eth0.me) and [http://echo.netfoundry/](http://echo.netfoundry/) in two separate web browser tabs. The IP addresses are different and this demonstrates that your HTTP request was sent to the same demo server by two different paths. This is important because your NetFoundry Network allows you to control where your traffic exits to the internet. If you visit eth0.me directly then you will see the ISP address where your device connects to the internet without NetFoundry. If you use the NetFoundry Service address then your connection occurs via the hosting Edge Router (an exit point for your Network).
+
+## Run Additional Demo Servers
 
 You may host additional, private demo servers with Docker. This will create a handful of servers that you can access with an Endpoint e.g. Desktop Edge for MacOS.
 
@@ -101,7 +103,7 @@ In [the web console](https://nfconsole.io/login), share to an email address or s
 
 When finished run `docker-compose down` to destroy the demo containers.
 
-### Run a Linux Endpoint
+## Run a Linux Endpoint
 
 You may also wish to visit the demo servers on a Linux machine. The first step is to configure DNS to enable accessing the domain names in your Network. Your Linux computer must have 127.0.0.1 as the primary nameserver. [Know more about the Edge Tunneler CLI](https://support.netfoundry.io/hc/en-us/articles/360045177311).
 
@@ -129,7 +131,7 @@ http GET http://weather.netfoundry "Host: wttr.in"
 curl http://weather.netfoundry --header "Host: wttr.in"
 ```
 
-### Troubleshooting
+## Troubleshooting
 
 If the private Services are unavailable and the dialer log shows "no terminators" the likely cause is that the exit container has not yet started hosting the Services that were just created. The solution is to wait a few minutes or run `docker-compose restart exit`.
 
