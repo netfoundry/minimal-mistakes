@@ -62,7 +62,7 @@ cd ./netfoundry-demo
 NETWORK_NAME=BibbidiBobbidiBoo
 
 # Run the demo container (runs the demo script)
-docker run --rm -it -v $PWD:/netfoundry -e NETWORK_NAME netfoundry/python:demo
+docker run --rm -it -v $(pwd):/netfoundry -e NETWORK_NAME netfoundry/python:demo
 ```
 
 ## Use the Demo Servers
@@ -96,14 +96,14 @@ pip3 install --user docker-compose
 docker run --rm -v $(pwd):/work -w /work appropriate/curl -L -o docker-compose.yml https://raw.githubusercontent.com/netfoundry/developer-tools/master/docker/docker-compose.yml && docker-compose up --detach
 ```
 
-In [the web console](https://nfconsole.io/login), share to an email address or scan to add one of the Endpoints named like "dialerN". You can use the Mobile Edge or Desktop Edge app linked in the email and console to then connect to the demo servers from anywhere.
+In [the web console](https://nfconsole.io/login), share to an email address or scan to add one of the Endpoints. You could add the Endpoint identity to the Mobile Edge or Desktop Edge app linked in the email and console to then connect to the demo servers from anywhere the app is running.
 
 * Hello, World! Splash: [http://hello.netfoundry/](http://hello.netfoundry/) (netfoundry/railz)
 * REST Test: [http://httpbin.netfoundry/](http://httpbin.netfoundry/) (kennethreitz/httpbin)
 
 When finished run `docker-compose down` to destroy the demo containers.
 
-## Run a Linux Endpoint
+## Run a Linux Client Endpoint
 
 You may also wish to visit the demo servers on a Linux machine. The first step is to configure DNS to enable accessing the domain names in your Network. Your Linux computer must have 127.0.0.1 as the primary nameserver. [Know more about the Edge Tunneler CLI](https://support.netfoundry.io/hc/en-us/articles/360045177311).
 
@@ -113,17 +113,19 @@ You may also wish to visit the demo servers on a Linux machine. The first step i
     cd ./netfoundry-demo
     ```
 
-1. Create a Linux Dialer
+1. Create a Linux Client Endpoint
 
-    ```bash
-    python3 -m netfoundry.demo --network BibbidiBobbidiBoo --create-dialer
-    ```
+Client Endpoints dial Services; hosting Endpoints bind Services.
+
+```bash
+python3 -m netfoundry.demo --network BibbidiBobbidiBoo --create-dialer
+```
 
 Within a few seconds the container `dialer` that was created by your earlier `docker-compose up` command  will have enrolled. You may now visit any of the aforementioned demo servers in a web browser or with a terminal command.
 
 ```bash
 # HTTPie
-http GET http://weather.netfoundry "Host: wttr.in"
+http http://weather.netfoundry "Host: wttr.in"
 ```
 
 ```bash
@@ -138,6 +140,9 @@ If the private Services are unavailable and the dialer log shows "no terminators
 You may inspect the logs from the container that is hosting the exit point to the demo Services with `ziti-tunnel`.
 
 ```bash
-docker-compose logs --follow exit
-```
+# inspect the logs for the hosting Endpoint
+docker-compose logs exit
 
+# inspect the logs for the Linux client Endpoint
+docker-compose logs dialer
+```
