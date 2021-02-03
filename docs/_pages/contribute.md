@@ -7,22 +7,27 @@ sidebar:
 
 ---
 
+## Video Walkthrough of a Change
 {% include youtube.html id="qRfXGot0eMA" %}
+
+## Introduction
 
 Thank you for improving this site! This site is open source and the API maintainers welcome your contributions. [Please reach out](/help/) if you have any questions. Minor changes may be made directly in GitHub's online editor wherever &nbsp;<i class="fas fa-edit" aria-hidden="true"></i>&nbsp;**Edit**&nbsp; appears at bottom-right. 
 
 Changes are published automatically by GitHub pages when merged to branch "master". When sending a pull request it's necessary to change the base repo to "netfoundry/mop-api-docs" to avoid sending the request to the upstream forked theme repo.
 
 ## Content
+
 The content of this site lives in the top-level directory `/docs` in the GitHub repo [netfoundry/mop-api-docs](https://github.com/netfoundry/mop-api-docs/tree/master/docs). Most of the content is in `/docs/_pages/` with meaningful names. You can add or edit Kramdown (GitHub-flavored Markdown) `.md`, `.markdown`; or Liquid template `.html` files.
 
-
 ## Theme
+
 The theme lives in the top-level `/` in the same GitHub repo as the content: [netfoundry/mop-api-docs](https://github.com/netfoundry/mop-api-docs). The repo is forked from Minimal Mistakes v4.19.2 which publishes an excellent [quick-start guide](https://mmistakes.github.io/minimal-mistakes/docs/overriding-theme-defaults/). The idea is to override theme defaults in the content area `/docs` in order to minimize changes to the upstream theme.
 
 For example, `/docs/_layouts/default.html` overrides `/_layouts/default.html` and is available immediately in the local preview. Changes to the default, inherited theme files don't become visible in the local preview until they're merged to the master branch in the Git remote. Most changes should be overrides under `/docs`.
 
 ## Preview
+
 These steps provide a local preview server at **[http://localhost:4000/](http://localhost:4000/)**
 
 1. Install
@@ -68,6 +73,7 @@ These steps provide a local preview server at **[http://localhost:4000/](http://
         ```
 
 ### Things to Know
+
 * Local changes to files in `/docs` will be picked up immediately by Jekyll, except `/docs/_config.yml` which requires restarting the preview container.
 * Optionally, before running the container, export your [GitHub API token](https://help.github.com/en/github/authenticating-to-github/creating-a-personal-access-token-for-the-command-line) as `JEKYLL_GITHUB_TOKEN` and it will be made available to Jekyll for querying metadata from the GitHub API.
 
@@ -85,6 +91,7 @@ These steps provide a local preview server at **[http://localhost:4000/](http://
 10. monitor for build failures
 
 ## CI/CD
+
 * All merges to the master branch are automatically published by GitHub pages.
 * Pushes to any branch trigger [a Travis build](https://travis-ci.org/github/netfoundry/mop-api-docs). The Travis build
     * validates the changes with Jekyll, and
