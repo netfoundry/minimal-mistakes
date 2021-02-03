@@ -9,7 +9,7 @@ header:
   actions:
     - btn_class: "btn--primary"
       label: "LEARN MORE"
-      url: "/v2/guides/introduction/"
+      url: "/guides/introduction/"
 title: "NetFoundry API"
 excerpt: "Documentation and Tools"
 feature_row:
@@ -27,11 +27,11 @@ feature_row:
     url: "/v2/guides/ziti/"
     btn_class: "btn--primary"
     btn_label: "LEARN MORE"
-  - image_path: /assets/images/rapidapi.jpg
-    alt: "RapidAPI"
-    title: "RapidAPI"
-    excerpt: "Marketplace API Access"
-    url: "https://rapidapi.com/netfoundryinc-netfoundryinc-default/api/netfoundry-programmable-zero-trust-connectivity"
+  - image_path: /assets/images/ansible.jpg
+    alt: "Ansible"
+    title: "Ansible"
+    excerpt: "Declarative Network as Code"
+    url: "/guides/ansible/"
     btn_class: "btn--primary"
     btn_label: "LEARN MORE"
 
