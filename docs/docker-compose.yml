@@ -1,4 +1,4 @@
-# run docker-compose in /docs
+# docker-compose --file ./docs/docker-compose.yml up --build --force-recreate preview
 version: '3.3'
 services:
   preview:
