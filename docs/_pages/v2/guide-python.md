@@ -11,13 +11,31 @@ classes: wide
 
 ## Overview
 
-An Organization is an identity construct, and so permissions pertaining to users and API accounts are granted on an Organization-wide basis. `class Organization` is used to create a reusable session object for some Organization, defaulting to the Organization of the calling identity, and to find Network Groups that are authorized for that Organization. The most common pattern is `organization = netfoundry.Organization(credentials)`.
+An Organization contains identities, and permissions pertaining to administration of identities, i.e. users and API accounts, are granted on an Organization-wide basis. Instances of `class Organization` represent some Organization, defaulting to the Organization of the callers identity. You may use the methods on that object to find Network Groups that are authorized for that Organization. The most common pattern is this:
 
-Network Groups are just what they sound like: groupings of NetFoundry Networks. A Network is always a member of exactly one Group, and permissions pertaining to Networks are granted on a Group-wide or Network-wide basis. `class NetworkGroup` accepts the session object and is used to select one of the available Groups, defaulting to the first Group found. There is typically only one Group, and so the most common pattern is `network_group = netfoundry.NetworkGroup(organization)`.
+```python
+identity = 'credentials.json'                                # relative to PWD or in ~/.netfoundry or /netfoundry
+organization = netfoundry.Organization(credentials=identity) # use the calling identity's organization
+caller_identity = organization.caller                        # Who am I?
+group_names = organization.network_groups_by_name            # {'ACMEGROUP': 'e7688733-a3ae-4ce5-821a-055247baa09e'}
+```
 
-An instance of `class Network` selects a particular Network by name or ID from the Group, and provides methods to use the Network to manage entities and policies in that Network. There are attributes like `network.endpoints()` that may be called to describe then-current state of a particular type of entity or policy. The most common pattern is `network = netfoundry.network(network_group, name="BibbidiBobbidiBoo")`. 
+A Network is always a member of exactly one Network Group, and permissions pertaining to Networks are granted on a Group-wide or Network-wide basis. `class NetworkGroup` requires the Organization object as a parameter and is used to select one of the available Groups, defaulting to the first Group found. There is typically only one Group, and the most common pattern is this:
 
-## Python Module
+```python
+network_name = 'ACME Net'
+network_group = netfoundry.NetworkGroup(organization, network_group_id=group_names['ACMEGROUP'])  # use Group as Organization
+created_network = network_group.create_network(name=network_name)
+```
+
+An instance of `class Network` selects a particular Network by name or ID from the Network Group, and provides methods to use the Network to manage entities and policies in that Network. There are attributes like `network.endpoints()` that may be called to describe then-current state of a particular type of entity or policy. The most common pattern is this:
+
+```python
+network = netfoundry.network(network_group, network_id=created_network['id'])
+endpoints = network.endpoints()
+```
+
+## Install
 
 [Python Package Index module](https://pypi.org/project/netfoundry/)
 : Python3 interface to the NetFoundry API
@@ -28,7 +46,7 @@ pip install --upgrade --user netfoundry
 python3 -m pip install --upgrade --user netfoundry
 ```
 
-## Virtualenv
+### Virtualenv
 
 Alternatively, you could install the module in a project directory with `virtualenv`.
 
@@ -40,7 +58,7 @@ source venv/bin/activate
 pip install netfoundry
 ```
 
-### Documentation
+## Documentation
 
 The module works with `pydoc` in the usual ways. For example:
 
@@ -52,7 +70,7 @@ pydoc netfoundry.demo
 pydoc netfoundry
 ```
 
-### Create a Custom Docker Container with the NetFoundry Python Module
+## Docker
 
 Suppose you have written a Python program named "my-netfoundry-network.py" that imports the NetFoundry module. You could run your program with a Docker container image that has the NetFoundry module pre-installed.
 
