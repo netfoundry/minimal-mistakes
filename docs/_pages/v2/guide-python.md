@@ -11,16 +11,17 @@ classes: wide
 
 ## Overview
 
-### Organizations
+### Organizations, Identities, and Roles
 
-An *Organization* contains identities such as users and API accounts. These identities are granted access to Networks in Network Groups by assignment of roles. The default roles are Organization Admin and Network Group Admin. Instances of `class Organization` represent some Organization. The Organization of the caller's identity is the default. Search attribute `Organization.network_groups_by_name` to find Network Groups that are authorized for the Organization. There is typically only one Organization and one Network Group.
+An *Organization* contains identities. Users and API accounts are identities. An instance of `class Organization` represents a particular Organization. There is typically only one Organization, and the Organization of the caller's identity is used by default.
+
+These identities are granted access to Networks in Network Groups when a role is assigned to an identity for some Network or Network Group. An example of a role assignment is "Network Admin - ACME Net" which grants permission to manage Network "ACME Net", but not to delete the Network itself or grant new permissions on the Network. The default roles are Organization Admin and Network Group Admin. Together these default roles grant all permissions for the Organization and Networks inside the Group.
 
 ```python
 # become identity in Organization
 identity = 'credentials.json'                                # relative to PWD or in ~/.netfoundry or /netfoundry
 organization = netfoundry.Organization(credentials=identity) # use the calling identity's organization
 caller_identity = organization.caller                        # Who am I?
-group_names = organization.network_groups_by_name            # {'ACMEGROUP': 'e7688733-a3ae-4ce5-821a-055247baa09e'}
 ```
 
 ```bash
@@ -30,11 +31,11 @@ group_names = organization.network_groups_by_name            # {'ACMEGROUP': 'e7
 
 ### Network Groups
 
-A Network is always a member of exactly one *Network Group*. Permissions for a Network are granted at the Network or Network Group level. `class NetworkGroup` is used to select one of the available Network Groups. The default is to use the first, and there is typically only one.
+A Network is always a member of exactly one *Network Group*. Permissions to read or manage a Network are granted to a member of an Organization at the Network level or Network Group level or both. An instance of `class NetworkGroup` represents a particular Network Group and may be used to find, create, and delete Networks in that Group. Most users have only the default Network Group and it is selected automatically when there is only one.
 
 ```python
 # use Group as Organization
-network_group = netfoundry.NetworkGroup(organization, network_group_id=group_names['ACMEGROUP'])
+network_group = netfoundry.NetworkGroup(organization)
 network_name = 'ACME Net'
 created_network = network_group.create_network(name=network_name)
 ```
@@ -46,10 +47,10 @@ created_network = network_group.create_network(name=network_name)
 
 ### Networks
 
-A NetFoundry *Network* contains the entities and policies that compose your AppWANs. An instance of `class Network` is created to use a particular Network by name or ID. This provides attributes and methods to describe and manage the Network.
+A NetFoundry *Network* contains the entities and policies that compose your AppWANs. An instance of `class Network` represents a particular Network. The Network may be selected by name or ID. This provides attributes and methods to describe and manage the Network.
 
 ```python
-# use Network
+# use a Network
 network = netfoundry.network(network_group, network_id=created_network['id'])
 status = network.status           # read the status attribute
 endpoints = network.endpoints()   # call a method to get live results
