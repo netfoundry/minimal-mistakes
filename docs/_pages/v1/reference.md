@@ -1,6 +1,7 @@
 ---
 title: References
 permalink: /v1/reference/
+redirect_to: /reference/
 toc: true
 ---
 

@@ -1,6 +1,7 @@
 ---
 title: "Hello, AppWAN"
 permalink: /v1/guides/hello-appwan/
+redirect_to: /guides/rest/
 sidebar:
     nav: v1guides
 tags:

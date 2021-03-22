@@ -1,5 +1,6 @@
 ---
 permalink: /v1/guides/authentication/
+redirect_to: /guides/authentication/
 title: "Authentication"
 sidebar:
     nav: v1guides
