@@ -11,11 +11,23 @@ classes: wide
 
 ## Overview
 
-### Organizations, Identities, and Roles
+This overview defines *italicized* terms and essential concepts and introduces the Python module classes you will use.
 
-An *Organization* contains identities. Users and API accounts are identities. An instance of `class Organization` represents a particular Organization. There is typically only one Organization, and the Organization of the caller's identity is used by default.
+### Identities
 
-These identities are granted access to Networks in Network Groups when a role is assigned to an identity for some Network or Network Group. An example of a role assignment is "Network Admin - ACME Net" which grants permission to manage Network "ACME Net", but not to delete the Network itself or grant new permissions on the Network. The default roles are Organization Admin and Network Group Admin. Together these default roles grant all permissions for the Organization and Networks inside the Group.
+Users and API accounts are identities, and identities are members of an *Organization*. Identities are granted permissions on *Organizations*, *Networks*, and *Network Groups* by way of *role* assignments. 
+<!-- TODO: Identities are managed through methods of `class Organization`. -->
+
+### Roles
+
+Roles are sets of permissions that are granted to *identities* for *Organizations*, *Networks*, and *Network Groups*. An example of a role assignment is "Network Admin - ACME Net" which grants permission to manage *Network* "ACME Net", but not to delete it nor grant new permissions.
+
+The default roles for new users and API accounts are "Organization Admin" and "Network Group Admin". Taken together, these default roles grant all permissions for the *Organization* and *Networks* inside the *Network Group*. 
+<!-- TODO: Roles are managed through methods of `class Organization`. -->
+
+### Organizations
+
+An Organization contains identities. An instance of `class Organization` represents a particular Organization. There is typically only one Organization, and the Organization of the caller's identity is used by default.
 
 ```python
 # become identity in Organization
@@ -29,25 +41,9 @@ caller_identity = organization.caller                        # Who am I?
 ❯ pydoc netfoundry.Organization
 ```
 
-### Network Groups
-
-A Network is always a member of exactly one *Network Group*. Permissions to read or manage a Network are granted to a member of an Organization at the Network level or Network Group level or both. An instance of `class NetworkGroup` represents a particular Network Group and may be used to find, create, and delete Networks in that Group. Most users have only the default Network Group and it is selected automatically when there is only one.
-
-```python
-# use Group as Organization
-network_group = netfoundry.NetworkGroup(organization)
-network_name = 'ACME Net'
-created_network = network_group.create_network(name=network_name)
-```
-
-```bash
-# built-in docs
-❯ pydoc netfoundry.NetworkGroup
-```
-
 ### Networks
 
-A NetFoundry *Network* contains the entities and policies that compose your AppWANs. An instance of `class Network` represents a particular Network. The Network may be selected by name or ID. This provides attributes and methods to describe and manage the Network.
+A NetFoundry Network contains the entities and policies that compose your AppWANs. An instance of `class Network` represents a particular Network. The Network may be selected by name or ID. This provides attributes and methods to describe and manage the Network. A Network is always a member of exactly one *Network Group*.
 
 ```python
 # use a Network
@@ -61,20 +57,36 @@ endpoints = network.endpoints()   # call a method to get live results
 ❯ pydoc netfoundry.Network
 ```
 
+### Network Groups
+
+A *Network Group* organizes Networks for billing and administration purposes. *Roles* that grant permissions on a Network are granted to an *identity* at the Network level or Network Group level or both. An instance of `class NetworkGroup` represents a particular Network Group and may be used to find, create, and delete Networks in that Group. Most users have only the default Network Group and it is selected automatically when there is only one.
+
+```python
+# use Group as Organization
+network_group = netfoundry.NetworkGroup(organization)
+network_name = 'ACME Net'
+created_network = network_group.create_network(name=network_name)
+```
+
+```bash
+# built-in docs
+❯ pydoc netfoundry.NetworkGroup
+```
+
 ## Installation
+
+Installing the Python3 module is easy with `pip`.
 
 [Python Package Index module](https://pypi.org/project/netfoundry/)
 : Python3 interface to the NetFoundry API
 
 ```bash
-❯ pip install --upgrade --user netfoundry
-# or
-❯ python3 -m pip install --upgrade --user netfoundry
+❯ pip install netfoundry
 ```
 
 ## Demo Script
 
-You may find it helpful to read a Python script that uses the module to create and populate a Network with functioning Services.
+A sample Python script is provided which uses this module to create a Network with a functioning Service.
 
 [Link to demo.py source file on the web](https://bitbucket.org/netfoundry/python-netfoundry/src/master/netfoundry/demo.py).
 
