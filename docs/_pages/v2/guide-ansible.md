@@ -13,11 +13,19 @@ You may install our [Ansible Galaxy Collection](https://galaxy.ansible.com/netfo
 
 ## Before You Begin
 
-Install [the NetFoundry Python module](/guides/python).
+Install the latest release of [the NetFoundry Python module](/guides/python).
 
 ```bash
-# for example, to install latest in HOME
-pip3 install netfoundry --user --upgrade
+# python3 pip3
+pip install netfoundry --upgrade
+```
+
+Ensure you have the latest release of the collection.
+
+```bash
+# you must first delete the collection and then install to effect an "upgrade"
+rm -rf ~/.ansible/collections/ansible_collections/netfoundry/platform && \
+  ansible-galaxy collection install --force-with-deps netfoundry.platform
 ```
 
 ## Built-in Documentation
@@ -44,7 +52,6 @@ ansible-doc netfoundry.platform.netfoundry_router_policy
 ```
 
 Here is a simple example. For more examples please see [the playbook included in the collection](https://github.com/netfoundry/developer-tools/blob/master/ansible_collections/netfoundry/platform/playbooks/example_playbook.yml). The default install path for this file is ~/.ansible/collections/ansible_collections/netfoundry/platform/playbooks/example_playbook.yml.
-
 
 ```yaml
 {% raw %}
