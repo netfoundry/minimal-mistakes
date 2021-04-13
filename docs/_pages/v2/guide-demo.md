@@ -118,10 +118,10 @@ You may also wish to visit the demo servers on a Linux machine. The first step i
 Client Endpoints dial Services; hosting Endpoints bind Services.
 
 ```bash
-python3 -m netfoundry.demo --network BibbidiBobbidiBoo --create-dialer
+python3 -m netfoundry.demo --network BibbidiBobbidiBoo --create-client
 ```
 
-Within a few seconds the container `dialer` that was created by your earlier `docker-compose up` command  will have enrolled. You may now visit any of the aforementioned demo servers in a web browser or with a terminal command.
+Within a few seconds the container `client` that was created by your earlier `docker-compose up` command  will have enrolled. You may now visit any of the aforementioned demo servers in a web browser or with a terminal command.
 
 ```bash
 # HTTPie
@@ -133,9 +133,40 @@ http http://weather.netfoundry "Host: wttr.in"
 curl http://weather.netfoundry --header "Host: wttr.in"
 ```
 
+## More Options
+
+```bash
+❯ python3 -m netfoundry.demo --help
+DEBUG: running demo script in "python-netfoundry/netfoundry/demo.py"
+usage: demo.py [-h] [-n NETWORK] [-o ORGANIZATION] [-g NETWORK_GROUP] [-s {small,medium,large}] [-v VERSION] [-p] [-c] [--credentials CREDENTIALS] [--regions REGIONS [REGIONS ...]] [--proxy PROXY] [{create,delete}]
+
+positional arguments:
+  {create,delete}       the command to run
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -n NETWORK, --network NETWORK
+                        The name of your demo network
+  -o ORGANIZATION, --organization ORGANIZATION
+                        The label of an alternative Organization (default is Org of caller)
+  -g NETWORK_GROUP, --network-group NETWORK_GROUP
+                        The shortname of a Network Group (default is the first, typically singular, Group known to this Org)
+  -s {small,medium,large}, --network-size {small,medium,large}
+                        Billable Network size to create
+  -v VERSION, --network-version VERSION
+                        Network product version from https://gateway.production.netfoundry.io/product-metadata/v2/download-urls.json
+  -p, --create-private  Also create private Endpoint-hosted Services for the optional Docker Compose portion of the quickstart
+  -c, --create-client   Also create a client Endpoint for the optional Linux portion of the quickstart
+  --credentials CREDENTIALS
+                        path to API account credentials JSON file overrides NETFOUNDRY_API_ACCOUNT
+  --regions REGIONS [REGIONS ...]
+                        space-separated one or more major geographic regions in which to place Edge Routers for overlay fabric: Americas EuropeMiddleEastAfrica AsiaPacific
+  --proxy PROXY         'http://localhost:8080' 'socks5://localhost:9046'
+```
+
 ## Troubleshooting
 
-If the private Services are unavailable and the dialer log shows "no terminators" the likely cause is that the exit container has not yet started hosting the Services that were just created. The solution is to wait a few minutes or run `docker-compose restart exit`.
+If the private Services are unavailable and the client log shows "no terminators" the likely cause is that the exit container has not yet started hosting the Services that were just created. The solution is to wait a few minutes or run `docker-compose restart exit`.
 
 You may inspect the logs from the container that is hosting the exit point to the demo Services with `ziti-tunnel`.
 
@@ -144,5 +175,5 @@ You may inspect the logs from the container that is hosting the exit point to th
 docker-compose logs exit
 
 # inspect the logs for the Linux client Endpoint
-docker-compose logs dialer
+docker-compose logs client
 ```
