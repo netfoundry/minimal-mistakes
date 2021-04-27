@@ -20,7 +20,7 @@ This is for you if you're ready to create your first AppWAN with the NetFoundry 
 
 ## By Example
 
-The result of these HTTP requests is an AppWAN that allows an Endpoint named "dialer1" to initiate connections to a Service. You could describe any server in your Service definition, even one that is not public as long as the edge router is able to reach the server. The example given is a NetFoundry-hosted Edge Router performing dual functions:
+The result of these HTTP requests is an AppWAN that allows an Endpoint named "client1" to initiate connections to a Service. You could describe any server in your Service definition, even one that is not public as long as the edge router is able to reach the server. The example given is a NetFoundry-hosted Edge Router performing dual functions:
 1. Edge Router for dialing Endpoints
 2. Service hosting for http://eth0.me (a simple IP echo server)
 
@@ -126,46 +126,99 @@ Authorize endpoints with matching `endpointAttributes` to dial via edge routers 
 ❯ http POST https://gateway.production.netfoundry.io/core/v2/edge-router-policies \
   "Authorization: Bearer ${NETFOUNDRY_API_TOKEN}" <<EOF | jq .id
 {
-        "endpointAttributes": [
-                "#dialers"
-        ],
-        "edgeRouterAttributes": [
-                "#defaultRouters"
-        ],
-        "networkId": "${NF_NETWORK}",
-        "name": "exampleEdgeRouterPolicy"
+  "endpointAttributes": [
+    "#clients"
+  ],
+  "edgeRouterAttributes": [
+    "#defaultRouters"
+  ],
+  "networkId": "${NF_NETWORK}",
+  "name": "exampleEdgeRouterPolicy"
 }
 EOF
 "e8a534a1-d4bc-4570-86c0-1288fb2ced65"
 ❯ NF_POLICY=e8a534a1-d4bc-4570-86c0-1288fb2ced65
 ```
 
-### Define a Service
+### Define an endpoint-hosted service
 
-Describe a server. Endpoints will be authorized to access this service if they have matching tags in `attributes`.
+Describe a server. Endpoints will be authorized to access this service if they have matching tags in `attributes`. You may host a service with one or more endpoints, and all hosting endpoints share the same `serverEgress` map describing the server that is reachable by the hosting endpoint(s).
 
 ```bash
 ❯ http POST https://gateway.production.netfoundry.io/core/v2/services \
   "Authorization: Bearer ${NETFOUNDRY_API_TOKEN}" <<EOF | jq .id
 {
-        "attributes": [
-                "#publicServices"
-        ],
-        "edgeRouterAttributes": [
+  "networkId": "${NF_NETWORK}",
+  "name": "Endpoint Echo Service",
+  "encryptionRequired": true,
+  "model": {
+    "clientIngress": {
+      "host": "echo-service.netfoundry",
+      "port": 80
+    },
+    "edgeRouterAttributes": [
+      "#all"
+    ],
+    "bindEndpointAttributes": [
+      "@Exit1690",
+      "#echoExitEndpoints"
+    ],
+    "serverEgress": {
+      "protocol": "tcp",
+      "host": "eth0.me",
+      "port": 80
+    }
+  },
+  "attributes": [
+    "#publicServices"
+  ],
+  "modelType": "TunnelerToEndpoint"
+}
+EOF
+"dcfd61cd-0389-4828-aa37-abdfb020d329"
+❯ NF_ENDPOINT_SERVICE_ID=dcfd61cd-0389-4828-aa37-abdfb020d329
+❯ NF_ENDPOINT_SERVICE_NAME="Endpoint Echo Service"
+```
 
-        ],
-        "networkId": "${NF_NETWORK}",
-        "name": "echoService",
-        "egressRouterId": "${NF_EDGE_ROUTER}",
-        "clientHostName": "eth0.me",
-        "clientPortRange": "80",
-        "serverHostName": "eth0.me",
-        "serverPortRange": "80"
+### Define a router-hosted service
+
+Describe a list of router-server pairs to host the service. You may host a service with one or more routers, each with their own `serverEgress` map describing a server(s) that is reachable by the hosting routers.
+
+```bash
+❯ http POST https://gateway.production.netfoundry.io/core/v2/services \
+  "Authorization: Bearer ${NETFOUNDRY_API_TOKEN}" <<EOF | jq .id
+{
+  "networkId": "${NF_NETWORK}",
+  "name": "Router Echo Service",
+  "encryptionRequired": true,
+  "model": {
+    "clientIngress": {
+      "host": "echo-router.Junction1690.netfoundry",
+      "port": 80
+    },
+    "edgeRouterAttributes": [
+      "#all"
+    ],
+    "edgeRouterHosts": [
+      {
+        "edgeRouterId": "${NF_EDGE_ROUTER}",
+        "serverEgress": {
+          "protocol": "tcp",
+          "host": "eth0.me",
+          "port": 80
+        }
+      }
+    ]
+  },
+  "attributes": [
+    "#publicServices"
+  ],
+  "modelType": "TunnelerToEdgeRouter"
 }
 EOF
 "d1f6ef84-f979-4a2e-8e8f-b46c0fa1664b"
-❯ NF_SERVICE_ID=d1f6ef84-f979-4a2e-8e8f-b46c0fa1664b
-❯ NF_SERVICE_NAME="echoService"
+❯ NF_ROUTER_SERVICE_ID=d1f6ef84-f979-4a2e-8e8f-b46c0fa1664b
+❯ NF_ROUTER_SERVICE_NAME="Router Echo Service"
 ```
 
 ### Create an AppWAN
@@ -181,7 +234,7 @@ Authorize endpoints with matching tags in `endpointAttributes` to access service
                 "#publicServices"
         ],
         "endpointAttributes": [
-                "#dialers"
+                "#clients"
         ],
         "name": "exampleAppWAN"
 }
@@ -190,7 +243,7 @@ EOF
 ❯ NF_APPWAN=6085ad2f-4adf-470c-a315-23f30b9aacae
 ```
 
-### Create a Tunneler Endpoint
+### Create a Client Endpoint
 
 The tags in `attributes` are used to authorize this endpoint to access services with matching tags via edge routers with matching tags.
 
@@ -200,37 +253,64 @@ The tags in `attributes` are used to authorize this endpoint to access services 
 {
         "networkId": "${NF_NETWORK}",
         "attributes": [
-                "#dialers"
+                "#clients"
         ],
         "enrollmentMethod": {
                 "ott": true
         },
-        "name": "dialer1"
+        "name": "client1"
 }
 EOF
 "345a13a6-ef47-42b5-bd45-c6aa2328d52d"
-❯ NF_TUNNELER=345a13a6-ef47-42b5-bd45-c6aa2328d52d
+❯ NF_CLIENT_ENDPOINT=345a13a6-ef47-42b5-bd45-c6aa2328d52d
 ```
 
-### Enroll an Endpoint
+### Create a Hosting Endpoint
+
+The tags in `attributes` are used to authorize this endpoint use edge routers with matching tags.
+
+```bash
+❯ http POST https://gateway.production.netfoundry.io/core/v2/endpoints \
+  "Authorization: Bearer ${NETFOUNDRY_API_TOKEN}" <<EOF | jq .id
+{
+        "networkId": "${NF_NETWORK}",
+        "attributes": [
+                "#exits"
+        ],
+        "enrollmentMethod": {
+                "ott": true
+        },
+        "name": "exit1"
+}
+EOF
+"0bdfe257-d1bc-4949-ac9a-fcca66ba6d69"
+❯ NF_HOSTING_ENDPOINT=0bdfe257-d1bc-4949-ac9a-fcca66ba6d69
+```
+
+### Enroll the Endpoints
 
 `enroll` is a subcommand of `ziti-tunnel` that will generate a permanent cryptographic identity for this device.
 
 ```bash
 ❯ ./ziti-tunnel version
-0.15.2
+0.19.12
 
-❯ http GET https://gateway.production.netfoundry.io/core/v2/endpoints/${NF_TUNNELER} \
-  "Authorization: Bearer ${NETFOUNDRY_API_TOKEN}" | jq -r '.jwt' > dialer1.jwt
+❯ http GET https://gateway.production.netfoundry.io/core/v2/endpoints/${NF_CLIENT_ENDPOINT} \
+  "Authorization: Bearer ${NETFOUNDRY_API_TOKEN}" | jq -r '.jwt' > client1.jwt
 
-❯ ./ziti-tunnel enroll --jwt dialer1.jwt
+❯ ./ziti-tunnel enroll --jwt client1.jwt
 INFO[0000] generating P-384 key
-enrolled successfully. identity file written to: dialer1.json
+enrolled successfully. identity file written to: client1.json
+
+❯ http GET https://gateway.production.netfoundry.io/core/v2/endpoints/${NF_HOSTING_ENDPOINT} \
+  "Authorization: Bearer ${NETFOUNDRY_API_TOKEN}" | jq -r '.jwt' > exit1.jwt
+
+❯ ./ziti-tunnel enroll --jwt exit1.jwt
+INFO[0000] generating P-384 key
+enrolled successfully. identity file written to: exit1.json
 ```
 
-### Run the Edge Tunneler CLI as a Proxy
-
-The Edge Tunneler CLI will tunnel IP packets to your Service across and provides a simple proxy mode that will work well for this exercise. You could also use any app that you built with a Ziti endpoint SDK, or any of [the client apps here](https://netfoundry.io/resources/support/downloads/networkversion7/#zititunnelers). Here is [a helpful article about using ziti-tunnel as an Endpoint](https://support.netfoundry.io/hc/en-us/articles/360045177311) if you would like a bit more context.
+### Host a Service with the Linux Tunneler
 
 {% include ziti-tunneler.md %}
 
@@ -238,13 +318,27 @@ The Edge Tunneler CLI will tunnel IP packets to your Service across and provides
 ❯ ./ziti-tunneler version
 0.17.2
 
-❯ ./ziti/ziti-tunnel proxy --identity dialer1.json "${NF_SERVICE_NAME}":8080
+❯ ./ziti/ziti-tunnel host --identity exit1.json
+
 ```
 
-The effect of this command is for Tunneler to bind to localhost:8080 and begin listening for connections. We'll test this by sending a request to that port.
+### Run the Linux Tunneler CLI as a Proxy
+
+The Linux Tunneler CLI will tunnel IP packets to your Service across and provides a simple proxy mode that will work well for this exercise. You could also use any app that you built with a Ziti endpoint SDK, or any of [the client apps here](https://netfoundry.io/resources/support/downloads/networkversion7/#zititunnelers). Here is [a helpful article about using ziti-tunnel as an Endpoint](https://support.netfoundry.io/hc/en-us/articles/360045177311) if you would like a bit more context.
 
 ```bash
+❯ ./ziti/ziti-tunnel proxy --identity client1.json "${NF_ENDPOINT_SERVICE_NAME}":8080 "${NF_ROUTER_SERVICE_NAME}":8888
+```
+
+The effect of this command is for Tunneler to bind to localhost:8080,8888 and begin listening for connections. We'll test this by sending a request to that port.
+
+```bash
+# send a request to the endpoint-hosted service
 ❯ http -b GET localhost:8080
+69.234.67.56
+
+# send a request to the router-hosted service
+❯ http -b GET localhost:8888
 54.153.103.130
 ```
 
