@@ -47,8 +47,11 @@ cd ./netfoundry-demo
 # install
 pip3 install --upgrade --user netfoundry
 
-# Run the demo script
+# Run the demo script to deploy global fabric and a handful of functioning Services
 python3 -m netfoundry.demo --network BibbidiBobbidiBoo
+
+# Delete the demo network
+python3 -m netfoundry.demo delete --network BibbidiBobbidiBoo
 ```
 
 ### Run the Demo with Docker
@@ -138,7 +141,9 @@ curl http://weather.netfoundry --header "Host: wttr.in"
 ```bash
 ❯ python3 -m netfoundry.demo --help
 DEBUG: running demo script in "python-netfoundry/netfoundry/demo.py"
-usage: demo.py [-h] [-n NETWORK] [-o ORGANIZATION] [-g NETWORK_GROUP] [-s {small,medium,large}] [-v VERSION] [-p] [-c] [--credentials CREDENTIALS] [--regions REGIONS [REGIONS ...]] [--proxy PROXY] [{create,delete}]
+usage: python -m netfoundry.demo [-h] [-n NETWORK] [-o ORGANIZATION] [-g NETWORK_GROUP] [-s {small,medium,large}] [-v VERSION] [-p] [-c] [--credentials CREDENTIALS] [--provider {AWS,AZURE,GCP,ALICLOUD,NETFOUNDRY,OCP}]
+               (--regions {Americas,EuropeMiddleEastAfrica,AsiaPacific} [{Americas,EuropeMiddleEastAfrica,AsiaPacific} ...] | --location-codes LOCATION_CODES [LOCATION_CODES ...]) [--proxy PROXY]
+               [{create,delete}]
 
 positional arguments:
   {create,delete}       the command to run
@@ -154,14 +159,19 @@ optional arguments:
   -s {small,medium,large}, --network-size {small,medium,large}
                         Billable Network size to create
   -v VERSION, --network-version VERSION
-                        Network product version from https://gateway.production.netfoundry.io/product-metadata/v2/download-urls.json
+                        Network product version: "default", "latest", or semver
   -p, --create-private  Also create private Endpoint-hosted Services for the optional Docker Compose portion of the quickstart
   -c, --create-client   Also create a client Endpoint for the optional Linux portion of the quickstart
   --credentials CREDENTIALS
                         path to API account credentials JSON file overrides NETFOUNDRY_API_ACCOUNT
-  --regions REGIONS [REGIONS ...]
-                        space-separated one or more major geographic regions in which to place Edge Routers for overlay fabric: Americas EuropeMiddleEastAfrica AsiaPacific
+  --provider {AWS,AZURE,GCP,ALICLOUD,NETFOUNDRY,OCP}
+                        cloud provider to host Edge Routers
+  --regions {Americas,EuropeMiddleEastAfrica,AsiaPacific} [{Americas,EuropeMiddleEastAfrica,AsiaPacific} ...]
+                        space-separated one or more major geographic regions in which to place Edge Routers for overlay fabric
+  --location-codes LOCATION_CODES [LOCATION_CODES ...]
+                        cloud location codes in which to host Edge Routers
   --proxy PROXY         'http://localhost:8080' 'socks5://localhost:9046'
+
 ```
 
 ## Troubleshooting
