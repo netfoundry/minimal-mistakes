@@ -19,5 +19,7 @@ jobs:
       env: 
         ALGOLIA_API_KEY: ${{ secrets.ALGOLIA_API_KEY }}
       run: |
+        cd docs
         bundle install --jobs 4 --retry 3
-        bundle exec jekyll algolia --config ./docs/_config.yml --source ./docs --destination ./docs/_site 
+        bundle exec jekyll build --config ./_config.yml
+        bundle exec jekyll algolia --source . --destination ./_site 
