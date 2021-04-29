@@ -17,6 +17,4 @@ jobs:
         bundler-cache: true # runs 'bundle install' and caches installed gems automatically
     - name: Actually Update Algolia
       run: |
-        gem install bundler
-        gem install jekyll
         bundle exec jekyll algolia --source ./docs --destination ./docs/_site --config ./docs/_config.yml
