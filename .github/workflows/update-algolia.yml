@@ -19,6 +19,7 @@ jobs:
       env: 
         ALGOLIA_API_KEY: ${{ secrets.ALGOLIA_API_KEY }}
       run: |
-        bundle install --gemfile=./docs/Gemfile --jobs 4 --retry 3
-        bundle exec jekyll build --config ./docs/_config.yml
-        bundle exec jekyll algolia --source ./docs --destination ./docs/_site 
+        cd docs
+        bundle install --gemfile=./Gemfile --jobs 4 --retry 3
+        bundle exec jekyll build --config ./_config.yml
+        bundle exec jekyll algolia --source . --destination ./_site 
