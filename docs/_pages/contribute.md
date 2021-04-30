@@ -14,17 +14,17 @@ sidebar:
 
 Thank you for improving this site! This site is open source and the API maintainers welcome your contributions. [Please reach out](/help/) if you have any questions. Minor changes may be made directly in GitHub's online editor wherever &nbsp;<i class="fas fa-edit" aria-hidden="true"></i>&nbsp;**Edit**&nbsp; appears at bottom-right. 
 
-Changes are published automatically by GitHub pages when merged to branch "master". When sending a pull request it's necessary to change the base repo to "netfoundry/mop-api-docs" to avoid sending the request to the upstream forked theme repo.
+Changes are published automatically by GitHub pages when merged to branch "main". When sending a pull request it's necessary to change the base repo to "netfoundry/mop-api-docs" to avoid sending the request to the upstream forked theme repo.
 
 ## Content
 
-The content of this site lives in the top-level directory `/docs` in the GitHub repo [netfoundry/mop-api-docs](https://github.com/netfoundry/mop-api-docs/tree/master/docs). Most of the content is in `/docs/_pages/` with meaningful names. You can add or edit Kramdown (GitHub-flavored Markdown) `.md`, `.markdown`; or Liquid template `.html` files.
+The content of this site lives in the top-level directory `/docs` in the GitHub repo [netfoundry/mop-api-docs](https://github.com/netfoundry/mop-api-docs/tree/main/docs). Most of the content is in `/docs/_pages/` with meaningful names. You can add or edit Kramdown (GitHub-flavored Markdown) `.md`, `.markdown`; or Liquid template `.html` files.
 
 ## Theme
 
 The theme lives in the top-level `/` in the same GitHub repo as the content: [netfoundry/mop-api-docs](https://github.com/netfoundry/mop-api-docs). The repo is forked from Minimal Mistakes v4.19.2 which publishes an excellent [quick-start guide](https://mmistakes.github.io/minimal-mistakes/docs/overriding-theme-defaults/). The idea is to override theme defaults in the content area `/docs` in order to minimize changes to the upstream theme.
 
-For example, `/docs/_layouts/default.html` overrides `/_layouts/default.html` and is available immediately in the local preview. Changes to the default, inherited theme files don't become visible in the local preview until they're merged to the master branch in the Git remote. Most changes should be overrides under `/docs`.
+For example, `/docs/_layouts/default.html` overrides `/_layouts/default.html` and is available immediately in the local preview. Changes to the default, inherited theme files don't become visible in the local preview until they're merged to the main branch in the Git remote. Most changes should be overrides under `/docs`.
 
 ## Preview
 
@@ -92,21 +92,11 @@ These steps provide a local preview server at **[http://localhost:4000/](http://
 
 ## CI/CD
 
-* All merges to the master branch are automatically published by GitHub pages.
-* Pushes to any branch trigger [a Travis build](https://travis-ci.org/github/netfoundry/mop-api-docs). The Travis build
-    * validates the changes with Jekyll, and
-    * updates the Algolia search index. The Travis env var `ALGOLIA_API_KEY` is the secret key for updating the Algolia index that was configured in `/docs/_config.yml`.
-* The Travis job reports are sent to Slack in *netfoundry.slack.com#dev-notifications*
-    * The Slack token is encrypted with `travis` CLI in `/.travis.yml` by following steps prescribed in [the Travis App for Slack](https://netfoundry.slack.com/apps/A0F81FP4N-travis-ci?next_id=0)
-    ```bash
-    # in /docs
-    docker-compose run --rm build
-    # iteractive in running container
-    gem install travis --no-document
-    travis encrypt "netfoundry:{redacted}" --add notifications.slack -r netfoundry/mop-api-docs
-    ```
-    The result of this is a new encrypted Slack token in the existing Travis config file `/.travis.yml` which you'll need to commit and push to the Git remote to become part of your pull request.
-* The GitHub repo has a branch protection for master that requires a successful Travis build.
+* All merges to the main branch are automatically published by GitHub pages.
+* Pushes to main will also trigger [a Github Action](https://github.com/netfoundry/mop-api-docs/actions/workflows/update-algolia.yml). The Github Action:
+    * validates the changes with Jekyll
+    * updates the Algolia search index. A Github secret is named `ALGOLIA_API_KEY` needs to be set for the Algolia step to pass and is defined in the Netfoundry Github Organization.
+* The GitHub repo has branch protections for main that require successful Github actions before allowing the merge as well as a PR approval from another user.
 * The domain name developer.netfoundry.io is a `CNAME` resource record in the netfoundry.io hosted zone in Route53. The `RDATA` of the record is the GitHub Pages sub-domain.
     ```bash
     ❯ dig +short -tCNAME developer.netfoundry.io.
