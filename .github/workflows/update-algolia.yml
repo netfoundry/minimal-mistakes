@@ -21,4 +21,5 @@ jobs:
       run: |
         cd docs
         bundle install --gemfile=./Gemfile --jobs 4 --retry 3
-        bundle exec jekyll build algolia --config ./_config.yml --source . --destination ./_site 
+        bundle exec jekyll build --config ./_config.yml --source . --destination ./_site 
+        bundle exec jekyll algolia --config ./_config.yml --source . --destination ./_site 
