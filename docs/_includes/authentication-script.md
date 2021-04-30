@@ -1,6 +1,6 @@
 ## Get a Token in the Current Shell
 
-Conveniently use your API account in a shell with this script.
+If you are using a shell such as bash or zsh you can [download](/assets/export-netfoundry-api-token.bash) and source this script which will setup your shell quickly and easily for use with the samples below.
 
 ```bash
 # get an API token with the default API account ~/.netfoundry/credentials.json
@@ -13,12 +13,12 @@ Conveniently use your API account in a shell with this script.
     source ./export-netfoundry-api-token.bash
 ```
 
-### Get the Script 
+### Get the export-netfoundry-api-token.bash Script
 
 [download](/assets/export-netfoundry-api-token.bash){: .btn .btn--info .btn--x-large}
 
 <details>
-<summary>Preview</summary>
+<summary>Expand to see the full source of export-netfoundry-api-token.bash</summary>
 
 {% highlight bash %}
 {% include export-netfoundry-api-token.bash %}
