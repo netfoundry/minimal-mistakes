@@ -5,15 +5,23 @@ tags:
     - devops
     - kubernetes
     - helm
+    - tunneler
 author: Ken
-toc: false
+toc: true
 classes: wide
 #last_updated: June 9, 2019
 header:
     image: /assets/images/nfkubbiker.jpg
 ---
 
+NetFoundry networks provide 
 This will deploy a Linux endpoint to your Kubernetes cluster. The endpoint may then be assigned in your NetFoundry network to host a NetFoundry service that is reachable inside your Kubernetes cluster. For example, the master API server used by `kubectl` or a Kubernetes dashboard 
+
+
+## Before you begin
+
+## 
+
 
 In NF console, create an endpoint like "k8s pod identity". Download the enrollment token (key). This will be used to enroll the k8s pod a little later. Create a service like "k8s api server" for https://kubernetes.default.svc:443, hosted by the endpoint you just created. Create a client endpoint like "my laptop". Download the enrollment token .jwt file to your laptop. Create an AppWAN authorizing your laptop to connect to "k8s api server". Create a hosted edge router in any NF datacenter. Create a (blanket) edge router policy configuring #all endpoints to use #all edge routers.
 

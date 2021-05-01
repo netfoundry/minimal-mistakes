@@ -6,7 +6,7 @@ tags:
     - network-as-a-service
     - hello-appwan
 author: Albert
-excerpt: Network as a Service with Jenkins, Netfoundry, &amp; Ziti.
+excerpt: Network as a service with Jenkins, Netfoundry, &amp; Ziti.
 toc: true
 last_updated: November 8, 2019
 ---
@@ -35,7 +35,7 @@ Jenkins is an open source automation server. Jenkins helps to automate the non-h
 High Level Design
 -----------------
 
-My end goal was to be able to reach an Nginx webserver which was sitting in a private VPC with a private address. The webserver serves as a front end for internal data which is sensitive in nature, should only be for internal consumption and shouldn’t be publicly accessible. I would use a Jenkins pipeline to call Netfoundry APIs to setup a secure Network which would be used to connect to the Nginx webserver. By using an automation tool, I ensure this action is repeatable and I can spin the network up and down as I need.
+My end goal was to be able to reach an Nginx webserver which was sitting in a private VPC with a private address. The webserver serves as a front end for internal data which is sensitive in nature, should only be for internal consumption and shouldn’t be publicly accessible. I would use a Jenkins pipeline to call Netfoundry APIs to setup a secure network which would be used to connect to the Nginx webserver. By using an automation tool, I ensure this action is repeatable and I can spin the network up and down as I need.
 
 ![private VPC](/assets/images/private-vpc.png)
 
@@ -47,13 +47,13 @@ The Jenkins pipeline will walk through creating a network which allows access to
 
 ### Stage 1: User Input
 
-This step is meant to collect any variable information by the user. In this example, we are getting the name of the [network.](http://network.it/ "http://network.It") As a take-away, this step is optional, we can do away with this section all together by generating a Network name directly from the pipeline.
+This step is meant to collect any variable information by the user. In this example, we are getting the name of the [network.](http://network.it/ "http://network.It") As a take-away, this step is optional, we can do away with this section all together by generating a network name directly from the pipeline.
 
     stage('User Input') {
           input {
             message "Enter name of network"
             parameters {
-              string(name:'network', defaultValue: '', description: 'Choose Network Name')
+              string(name:'network', defaultValue: '', description: 'Choose network name')
             }
           }
         }
@@ -72,9 +72,9 @@ Once the user input is done, the next step is to Login in to the Netfoundry API 
 
 ### Step 3: Create Network
 
-Once successfully authenticated, next step will be to create a network. Again this is done with REST API calls to the Netfoundry API for Create Network ([https://gateway.production.netfoundry.io/rest/v1/docs/index.html#resource-network-create](https://gateway.production.netfoundry.io/rest/v1/docs/index.html#resource-network-create)). It is important to note that there are no app-wan on this network at the moment, so even after the network is created, it is not in position to carry traffic as yet, until an app-wan has been added. This process is an async process, so you will need to implement a method to keep checking on the network status to confirm its created before moving to the next stage.
+Once successfully authenticated, next step will be to create a network. Again this is done with REST API calls to the Netfoundry API for create network ([https://gateway.production.netfoundry.io/rest/v1/docs/index.html#resource-network-create](https://gateway.production.netfoundry.io/rest/v1/docs/index.html#resource-network-create)). It is important to note that there are no app-wan on this network at the moment, so even after the network is created, it is not in position to carry traffic as yet, until an app-wan has been added. This process is an async process, so you will need to implement a method to keep checking on the network status to confirm its created before moving to the next stage.
 
-    stage('Create Network') {
+    stage('Create network') {
           steps {
             timeout(time: "${time_out}", unit: 'MINUTES') {
             script {
@@ -99,7 +99,7 @@ Once successfully authenticated, next step will be to create a network. Again th
 
 ### Step 4: Create Gateway
 
-It is necessary to create a gateway within your internal VPC which would have access to the Nginx web server. This Gateway effectively acts as a proxy of the requests to the Nginx web server allowing it to be accessible from the Network created in Step 3. This is precisely why this setup can replace the bastion host. Creating the network will spin up a Netfoundry Controller ( control plane ) and Transfer Nodes ( used for carrying traffic from one point to another.)
+It is necessary to create a gateway within your internal VPC which would have access to the Nginx web server. This Gateway effectively acts as a proxy of the requests to the Nginx web server allowing it to be accessible from the network created in Step 3. This is precisely why this setup can replace the bastion host. Creating the network will spin up a Netfoundry controller ( control plane ) and Transfer Nodes ( used for carrying traffic from one point to another.)
 
     stage('Create Gateway') {
               steps {
@@ -127,11 +127,11 @@ It is necessary to create a gateway within your internal VPC which would have ac
 
 This is similar to opening up a firewall rule or Security Group access. Destination IP will be your Nginx server and any local IP which will be used as an intercept IP. Reference:- [https://gateway.production.netfoundry.io/rest/v1/docs/index.html#resource-ip-host-service-create](https://gateway.production.netfoundry.io/rest/v1/docs/index.html#resource-ip-host-service-create)
 
-    stage('Create Service') {
+    stage('Create service') {
           steps {
             script {
               data = [
-              "name": "Test Service",
+              "name": "Test service",
               "serviceClass": "CS",
               "serviceInterceptType": "IP",
               "endpointId": endpointID,
@@ -176,9 +176,9 @@ Appwans effectively define how endpoints ( in this case the Netfoundry client on
 
 ### Step 7: Attach Service to AppWan
 
-The last step is to add the Service to the app-wan created. Once this is done, my network has access to Nginx webserver. Last step is to login to the Netfoundry console and create a client to use for accessing this network. [https://gateway.production.netfoundry.io/rest/v1/docs/index.html#resource-appwan-update](https://gateway.production.netfoundry.io/rest/v1/docs/index.html#resource-appwan-update)
+The last step is to add the service to the app-wan created. Once this is done, my network has access to Nginx webserver. Last step is to login to the Netfoundry console and create a client to use for accessing this network. [https://gateway.production.netfoundry.io/rest/v1/docs/index.html#resource-appwan-update](https://gateway.production.netfoundry.io/rest/v1/docs/index.html#resource-appwan-update)
 
-    stage('Attach Service to AppWan') {
+    stage('Attach service to AppWan') {
           steps {
             script {
               data = [
@@ -213,7 +213,7 @@ With this done, I was able to access to the Nginx webserver which was previously
 
 Using a Bastion Host
 
-Using Netfoundry APIs and Networks
+Using Netfoundry APIs and networks
 
 Complicated and Static setup
 

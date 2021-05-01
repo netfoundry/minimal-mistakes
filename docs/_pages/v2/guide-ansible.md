@@ -9,7 +9,7 @@ toc: false
 classes: wide
 ---
 
-You may install our [Ansible Galaxy Collection](https://galaxy.ansible.com/netfoundry/platform). Which includes modules like `netfoundry_info` for creating a session and discovering Networks.
+You may install our [Ansible Galaxy Collection](https://galaxy.ansible.com/netfoundry/platform). Which includes modules like `netfoundry_info` for creating a session and discovering networks.
 
 ## Before You Begin
 
@@ -37,17 +37,17 @@ Explanation of module parameters with practical examples
 ansible-galaxy collection install netfoundry.platform
 # read about the Info module
 ansible-doc netfoundry.platform.netfoundry_info
-# read about the Network module
+# read about the network module
 ansible-doc netfoundry.platform.netfoundry_network
-# read about the Endpoint module
+# read about the endpoint module
 ansible-doc netfoundry.platform.netfoundry_endpoint
-# read about the Service module
+# read about the service module
 ansible-doc netfoundry.platform.netfoundry_service
 # read about the AppWAN module
 ansible-doc netfoundry.platform.netfoundry_appwan
-# read about the Router module
+# read about the router module
 ansible-doc netfoundry.platform.netfoundry_router
-# read about the Router Policy module
+# read about the router Policy module
 ansible-doc netfoundry.platform.netfoundry_router_policy
 ```
 
@@ -75,7 +75,7 @@ Here is a simple example. For more examples please see [the playbook included in
       credentials: credentials.json # relative to playbook or in ~/.netfoundry/ or /netfoundry/
     register: netfoundry_organization
 
-  - name: Create Network
+  - name: Create network
     netfoundry_network:
       network: BibbidiBobbidiBoo
       size: small
@@ -84,14 +84,14 @@ Here is a simple example. For more examples please see [the playbook included in
       wait: 2400
       network_group: "{{ netfoundry_organization.network_group }}"
 
-  - name: Describe the Network
+  - name: Describe the network
     netfoundry_info:
       network: BibbidiBobbidiBoo
       inventory: True
       session: "{{ netfoundry_organization.session }}"
     register: netfoundry_network
 
-  - name: wait for each public Edge Router to become REGISTERED
+  - name: wait for each public edge router to become REGISTERED
       netfoundry_router:
         name: "{{ item.name }}"
         attributes: 
@@ -102,7 +102,7 @@ Here is a simple example. For more examples please see [the playbook included in
         network: "{{ netfoundry_network.network }}"
       loop: "{{ hosted_edge_routers }}"
 
-  - name: create Endpoints
+  - name: create endpoints
     netfoundry_endpoint:
       name: "{{ item }}"
       attributes:
@@ -115,7 +115,7 @@ Here is a simple example. For more examples please see [the playbook included in
     - Exit1
     register: endpoints
 
-  - name: declare an Endpoint-hosted Service
+  - name: declare an endpoint-hosted service
     netfoundry_service:
       name: HTTP Echo 1
       endpoints: 
@@ -129,7 +129,7 @@ Here is a simple example. For more examples please see [the playbook included in
       serverProtocol: TCP
       network: "{{ netfoundry_network.network }}"
 
-  - name: Create a public Edge Router Policy
+  - name: Create a public edge router policy
     netfoundry_router_policy:
       name: defaultRouters
       routers:
@@ -149,7 +149,7 @@ Here is a simple example. For more examples please see [the playbook included in
       network: "{{ netfoundry_network.network }}"
 
   # lastly, do tasks that depend on an async background task
-  - name: declare a Router-hosted Service
+  - name: declare a router-hosted service
     netfoundry_service:
       name: HTTP Echo 2
       attributes: 

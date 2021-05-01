@@ -53,4 +53,4 @@ DELETED
 
 ### Endpoint and Edge Router Enrollment Status
 
-Endpoints and Edge Routers have an attribute `jwt` which value is the one-time enrollment token prior to enrollment, and `null` after enrollment has succeeded.
+Endpoints and edge routers have an attribute `jwt` which value is the one-time enrollment token prior to enrollment, and `null` after enrollment has succeeded.

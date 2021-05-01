@@ -20,9 +20,9 @@ This is for you if you're ready to create your first AppWAN with the NetFoundry 
 
 ## By Example
 
-The result of these HTTP requests is an AppWAN that allows an Endpoint named "client1" to initiate connections to a Service. You could describe any server in your Service definition, even one that is not public as long as the edge router is able to reach the server. The example given is a NetFoundry-hosted Edge Router performing dual functions:
-1. Edge Router for dialing Endpoints
-2. Service hosting for http://eth0.me (a simple IP echo server)
+The result of these HTTP requests is an AppWAN that allows an endpoint named "client1" to initiate connections to a service. You could describe any server in your service definition, even one that is not public as long as the edge router is able to reach the server. The example given is a NetFoundry-hosted edge router performing dual functions:
+1. edge router for dialing endpoints
+2. service hosting for http://eth0.me (a simple IP echo server)
 
 ### Set up Your Workspace
 
@@ -41,7 +41,7 @@ This is like asking "Who am I?" and is merely informational, not required for th
 
 ### Discover Network Group ID
 
-A network group organizes your NetFoundry Networks for billing and permissions. You need to know the Network Group ID in order to create a Network. This example filters for a particular Network Group by name. There is typically only one.
+A network group organizes your NetFoundry networks for billing and permissions. You need to know the network group ID in order to create a network. This example filters for a particular network group by name. There is typically only one.
 
 <!-- TODO update organizations to fixed object reference like networkgroups -->
 ```bash
@@ -56,7 +56,7 @@ A network group organizes your NetFoundry Networks for billing and permissions. 
 
 ### Discover Network Configuration ID
 
-This is a simplistic sizing of your Network's components. Use "small" for cost-conscious testing.
+This is a simplistic sizing of your network's components. Use "small" for cost-conscious testing.
 
 ```bash
 ❯ http GET https://gateway.production.netfoundry.io/rest/v1/networkConfigMetadata/ \
@@ -74,7 +74,7 @@ This is a simplistic sizing of your Network's components. Use "small" for cost-c
 
 ### Create a Network
 
-This will provision the dedicated compute infrastructure of your NetFoundry Network. The value of `locationCode` determines the AWS region in which your controller node is located.
+This will provision the dedicated compute infrastructure of your NetFoundry network. The value of `locationCode` determines the AWS region in which your controller node is located.
 
 ```bash
 ❯ http POST https://gateway.production.netfoundry.io/core/v2/networks \
@@ -89,7 +89,7 @@ This will provision the dedicated compute infrastructure of your NetFoundry Netw
 
 ### Create an Edge Router
 
-The minimal functioning Network has a single hosted Edge Router performing two functions: Edge Router for dialing Endpoints and hosting for a Service.
+The minimal functioning network has a single hosted edge router performing two functions: edge router for dialing endpoints and hosting for a service.
 
 ```bash
 ❯ http GET https://gateway.production.netfoundry.io/rest/v1/dataCenters \
@@ -149,7 +149,7 @@ Describe a server. Endpoints will be authorized to access this service if they h
   "Authorization: Bearer ${NETFOUNDRY_API_TOKEN}" <<EOF | jq .id
 {
   "networkId": "${NF_NETWORK}",
-  "name": "Endpoint Echo Service",
+  "name": "Endpoint echo service",
   "encryptionRequired": true,
   "model": {
     "clientIngress": {
@@ -177,7 +177,7 @@ Describe a server. Endpoints will be authorized to access this service if they h
 EOF
 "dcfd61cd-0389-4828-aa37-abdfb020d329"
 ❯ NF_ENDPOINT_SERVICE_ID=dcfd61cd-0389-4828-aa37-abdfb020d329
-❯ NF_ENDPOINT_SERVICE_NAME="Endpoint Echo Service"
+❯ NF_ENDPOINT_SERVICE_NAME="Endpoint echo service"
 ```
 
 ### Define a router-hosted service
@@ -189,7 +189,7 @@ Describe a list of router-server pairs to host the service. You may host a servi
   "Authorization: Bearer ${NETFOUNDRY_API_TOKEN}" <<EOF | jq .id
 {
   "networkId": "${NF_NETWORK}",
-  "name": "Router Echo Service",
+  "name": "Router echo service",
   "encryptionRequired": true,
   "model": {
     "clientIngress": {
@@ -218,7 +218,7 @@ Describe a list of router-server pairs to host the service. You may host a servi
 EOF
 "d1f6ef84-f979-4a2e-8e8f-b46c0fa1664b"
 ❯ NF_ROUTER_SERVICE_ID=d1f6ef84-f979-4a2e-8e8f-b46c0fa1664b
-❯ NF_ROUTER_SERVICE_NAME="Router Echo Service"
+❯ NF_ROUTER_SERVICE_NAME="Router echo service"
 ```
 
 ### Create an AppWAN
@@ -324,7 +324,7 @@ enrolled successfully. identity file written to: exit1.json
 
 ### Run the Linux Tunneler CLI as a Proxy
 
-The Linux Tunneler CLI will tunnel IP packets to your Service across and provides a simple proxy mode that will work well for this exercise. You could also use any app that you built with a Ziti endpoint SDK, or any of [the client apps here](https://netfoundry.io/resources/support/downloads/networkversion7/#zititunnelers). Here is [a helpful article about using ziti-tunnel as an Endpoint](https://support.netfoundry.io/hc/en-us/articles/360045177311) if you would like a bit more context.
+The Linux Tunneler CLI will tunnel IP packets to your service across and provides a simple proxy mode that will work well for this exercise. You could also use any app that you built with a Ziti endpoint SDK, or any of [the client apps here](https://netfoundry.io/resources/support/downloads/networkversion7/#zititunnelers). Here is [a helpful article about using ziti-tunnel as an endpoint](https://support.netfoundry.io/hc/en-us/articles/360045177311) if you would like a bit more context.
 
 ```bash
 ❯ ./ziti/ziti-tunnel proxy --identity client1.json "${NF_ENDPOINT_SERVICE_NAME}":8080 "${NF_ROUTER_SERVICE_NAME}":8888
