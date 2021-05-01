@@ -79,6 +79,8 @@ The Helm chart will create a Kubernetes deployment pod running the Ziti Linux tu
 
 ## Configure `kubectl` to use the private Ziti URL
 
+_You may skip this section if you are not interested in making the Kubernetes API private_
+
 Now your NetFoundry network is set up to allow your Ziti Desktop Edge app on your laptop to connect to your Kubernetes cluster. Next you will configure a new `kubectl` context to connect to the private URL with Ziti.
 
 1. Find the master API *server* URL for the current `kubectl` context. In my case it is the server for cluster "my-cluster".
@@ -141,7 +143,7 @@ Now your NetFoundry network is set up to allow your Ziti Desktop Edge app on you
 
 This demonstrates that you are able to connect to your Kubernetes cluster's master API server via Ziti, and so you could at this point disable the public cluster API endpoint and continue normally!
 
-## Publish Additional Cluster Services
+## Expose Cluster Services with Ziti
 
 You may immediately connect to any HTTP or HTTPS services in your cluster with `kubectl proxy`. In this case `kubectl` is authenticating to the API on your behalf and providing a plain HTTP server on the loopback interface.
 
@@ -154,17 +156,29 @@ Starting to serve on 127.0.0.1:8001
 
 ```
 
-You may also wish to publish additional cluster services with Ziti to your NetFoundry network so that there is no need for a proxy.
+This is where it gets good: you may publish private cluster services with Ziti to your NetFoundry network so that there is no need for a proxy, and thereafter control access primarily through the NetFoundry console or API.
 
 1. Deploy a lightweight NetFoundry hello world web server on your cluster.
 
-    This will install .
-
     ```bash
-    ❯ kubectl get services --all-namespaces|egrep kubernetes-dashboard
-    kubernetes-dashboard   dashboard-metrics-scraper   ClusterIP   10.96.228.247   <none>        8000/TCP                 25m
-    kubernetes-dashboard   kubernetes-dashboard        ClusterIP   10.96.18.197    <none>        443/TCP                  26m
+    ❯ helm install hello netfoundry/hello-netfoundry 
+    NAME: hello
+    LAST DEPLOYED: Sat May  1 19:33:21 2021
+    NAMESPACE: default
+    STATUS: deployed
+    REVISION: 1
+    TEST SUITE: None
     ```
+
+2. In NetFoundry console, in Services, create a service for the hello server.
+
+    The server domain name for the new service is "hello-netfoundry.default.svc". Your ziti-host pod will use cluster DNS to resolve the service name in the default namespace.
+
+    ![NetFoundry service for the hello web server](/assets/images/create-service-hello-netfoundry.png)
+
+3. Visit the hello server in the browser on your laptop!
+
+    [http://hello.netfoundry/](http://hello.netfoundry/)
 
 ## Troubleshooting
 
@@ -182,15 +196,6 @@ pod "ziti-host-dfcb98fcd-vjlww" deleted
 You may also inspect the endpoint tunneler `ziti-tunnel` log messages for clues if it is not working. An error like "NO_EDGE_ROUTERS_AVAILABLE" could mean you did not create the blanket edge router policy when you set up your NetFoundry network.
 
 ```bash
-❯ kubectl logs ziti-host-dfcb98fcd-vjlww|tail
+❯ kubectl logs ziti-host-dfcb98fcd-vjlww | tail -
 {"error":"unable to create apiSession. http status code: 400, msg: {\"error\":{\"code\":\"NO_EDGE_ROUTERS_AVAILABLE\",\"message\":\"No edge routers are assigned and online to handle the requested connection\",\"requestId\":\"fk7Gl3Isj\"},\"meta\":{\"apiEnrolmentVersion\":\"0.0.1\",\"apiVersion\":\"0.0.1\"}}\n","file":"/home/runner/go/pkg/mod/github.com/openziti/sdk-golang@v0.15.43/ziti/ziti.go:1187","func":"github.com/openziti/sdk-golang/ziti.(*listenerManager).createSessionWithBackoff","level":"error","msg":"failed to create bind session for service echo-1691-50050","time":"2021-05-01T18:08:34Z"}
-{"file":"/home/runner/go/pkg/mod/github.com/openziti/sdk-golang@v0.15.43/ziti/ziti.go:1095","func":"github.com/openziti/sdk-golang/ziti.(*listenerManager).makeMoreListeners","level":"warning","msg":"disconnected for longer than configured connect timeout. closing","time":"2021-05-01T18:08:34Z"}
-{"error":"listener is closed","file":"/home/runner/go/pkg/mod/github.com/openziti/edge@v0.19.90/tunnel/provider.go:102","func":"github.com/openziti/edge/tunnel.(*contextProvider).accept","level":"error","msg":"closing listener for service","service":"echo-1691-50049","time":"2021-05-01T18:08:34Z"}
-{"error":"listener is closed","file":"/home/runner/go/pkg/mod/github.com/openziti/edge@v0.19.90/tunnel/provider.go:102","func":"github.com/openziti/edge/tunnel.(*contextProvider).accept","level":"error","msg":"closing listener for service","service":"echo-1691-50050","time":"2021-05-01T18:08:34Z"}
-{"error":"unable to create apiSession. http status code: 400, msg: {\"error\":{\"code\":\"NO_EDGE_ROUTERS_AVAILABLE\",\"message\":\"No edge routers are assigned and online to handle the requested connection\",\"requestId\":\"SkmsuZwsj\"},\"meta\":{\"apiEnrolmentVersion\":\"0.0.1\",\"apiVersion\":\"0.0.1\"}}\n","file":"/home/runner/go/pkg/mod/github.com/openziti/sdk-golang@v0.15.43/ziti/ziti.go:879","func":"github.com/openziti/sdk-golang/ziti.(*contextImpl).createSession","level":"warning","msg":"failure creating Bind session to service echo-1691-50090","time":"2021-05-01T18:08:34Z"}
-{"file":"/home/runner/go/pkg/mod/github.com/openziti/sdk-golang@v0.15.43/ziti/ziti.go:888","func":"github.com/openziti/sdk-golang/ziti.(*contextImpl).createSession","level":"warning","msg":"session create failure not recoverable, not retrying","time":"2021-05-01T18:08:34Z"}
-{"error":"unable to create apiSession. http status code: 400, msg: {\"error\":{\"code\":\"NO_EDGE_ROUTERS_AVAILABLE\",\"message\":\"No edge routers are assigned and online to handle the requested connection\",\"requestId\":\"SkmsuZwsj\"},\"meta\":{\"apiEnrolmentVersion\":\"0.0.1\",\"apiVersion\":\"0.0.1\"}}\n","file":"/home/runner/go/pkg/mod/github.com/openziti/sdk-golang@v0.15.43/ziti/ziti.go:1187","func":"github.com/openziti/sdk-golang/ziti.(*listenerManager).createSessionWithBackoff","level":"error","msg":"failed to create bind session for service echo-1691-50090","time":"2021-05-01T18:08:34Z"}
-{"file":"/home/runner/go/pkg/mod/github.com/openziti/sdk-golang@v0.15.43/ziti/ziti.go:1095","func":"github.com/openziti/sdk-golang/ziti.(*listenerManager).makeMoreListeners","level":"warning","msg":"disconnected for longer than configured connect timeout. closing","time":"2021-05-01T18:08:34Z"}
-{"error":"listener is closed","file":"/home/runner/go/pkg/mod/github.com/openziti/edge@v0.19.90/tunnel/provider.go:102","func":"github.com/openziti/edge/tunnel.(*contextProvider).accept","level":"error","msg":"closing listener for service","service":"echo-1691-50092","time":"2021-05-01T18:08:35Z"}
-{"error":"listener is closed","file":"/home/runner/go/pkg/mod/github.com/openziti/edge@v0.19.90/tunnel/provider.go:102","func":"github.com/openziti/edge/tunnel.(*contextProvider).accept","level":"error","msg":"closing listener for service","service":"echo-1691-50090","time":"2021-05-01T18:08:35Z"}
 ```
