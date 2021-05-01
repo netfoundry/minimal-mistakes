@@ -59,5 +59,7 @@ v2guides:
         url: /guides/python/
       - title: "Ansible Guide"
         url: /guides/ansible/
+      - title: "Kubernetes Guide"
+        url: /guides/kubernetes/
       - title: "REST Examples"
         url: /guides/rest/
