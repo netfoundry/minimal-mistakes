@@ -15,9 +15,9 @@ First and foremost, I will never share your email address or any other personal 
 
 Like many other websites, this site uses log files to help learn about when, from where, and how often traffic flows to this site. The information in these log files include:
 
-* Internet Protocol addresses (IP)
+* Internet protocol addresses (IP)
 * Types of browser
-* Internet Service Provider (ISP)
+* Internet service provider (ISP)
 * Date and time stamp
 * Referring and exit pages
 * Number of clicks
