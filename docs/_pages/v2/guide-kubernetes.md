@@ -1,6 +1,6 @@
 ---
-title: Connect to Kubernetes with NetFoundry
-excerpt: Install a Helm chart for secure access to cluster or pod services.
+title: Install Ziti in Kubernetes
+excerpt: Install a Helm chart for secure access to cluster services.
 tags:
     - devops
     - kubernetes
@@ -16,45 +16,39 @@ header:
     image: /assets/images/nfkubbiker.jpg
 ---
 
-Let's talk about using a NetFoundry network to publish your Kubernetes cluster's internal services. This is a programmable approach to secure access that makes traditional alternatives like IP allow lists, virtual private networks, and bastion hosts obsolete. This also means your cluster could be anywhere it can reach out to the internet, and the master API server need not be exposed to the public internet.
+Let's talk about using a Ziti network to expose your Kubernetes cluster services. This is a flexible approach to secure, controlled access to cluster services. With Ziti, you don't need traditional alternatives like IP allow lists, virtual private networks, and bastion hosts. This also means your cluster could be anywhere it can reach out to the internet, and the master API server need not be exposed to the public internet. We'll cover making the Kubernetes API itself private in [the last section](#private-kubernetes-api-with-ziti), if you're interested in that.
 
-You will deploy a NetFoundry endpoint as a pod on your Kubernetes cluster with a Helm chart. The endpoint may then be assigned in your NetFoundry network to host any services that are reachable inside your Kubernetes cluster. For example, the master API server used by `kubectl`, a Kubernetes dashboard, or any pod, service, or node IP or domain name you wish to expose to authorized remote apps, devices, or subnets.
+You will install Ziti as a normal pod deployment on your Kubernetes cluster with a Helm chart. This pod will represent an endpoint in your Ziti network, and may then be granted permission to host any Ziti services. You'll create Ziti services that describe the cluster services you wish to expose. For example, the Kubernetes API used by `kubectl`, a Kubernetes dashboard, or any pod, service, node domain name or IP.
 
 ## Before you begin
 
-1. [Create a Kubernetes cluster with at least one worker node](https://kubernetes.io/docs/tutorials/kubernetes-basics/create-cluster/).
-2. [Install `kubectl`, the command line interface for Kubernetes](https://kubernetes.io/docs/tasks/tools/)
+1. [Install `kubectl`, the command line interface for Kubernetes](https://kubernetes.io/docs/tasks/tools/)
+2. [Create a Kubernetes cluster with at least one worker node](https://kubernetes.io/docs/tutorials/kubernetes-basics/create-cluster/).
 3. [Install Helm, the package manager for Kubernetes](https://helm.sh/docs/intro/quickstart/).
-4. [Sign up for a free trial with NetFoundry](https://nfconsole.io/signup)
+4. [Sign up for a free trial with NetFoundry](https://nfconsole.io/signup) if you wish to use the NetFoundry console to orchestrate your Ziti network (easiest).
 
-## Create a NetFoundry Network
+## Create a Ziti Network
 
-You will need a basic network to describe the services you wish to publish and to authorize clients to connect. Follow these steps to create a NetFoundry service for your Kubernetes master API server.
+You will need a basic Ziti network to describe the services you wish to expose and to authorize clients to connect. Follow these steps to create a Ziti service for your Kubernetes master API server.
 
 1. In the NF web console, create a network. The network will be ready in a few minutes.
 2. In endpoints, create an endpoint named "k8s pod endpoint", then open the endpoint details to download the enrollment token .jwt file to the computer where you will connect to the k8s API server with `kubectl` and `helm`. This will be used a little later when you install the Helm chart on your cluster.
-    ![NetFoundry service for Kubernetes master API server](/assets/images/create-endpoint-apiserver.png)
-3. Create an endpoint named "my laptop". This will be used to connect to any Kubernetes services you decide to publish. Download the enrollment token .jwt file to your laptop.
-4. In services, create a service like "k8s api server" for https://kubernetes.default.svc:443 as shown in the image above, hosted by the endpoint you just created. This is how you describe the cluster's internal services you'd like to publish.
-    ![NetFoundry service for Kubernetes master API server](/assets/images/create-service-apiserver.png)
+    ![Ziti endpoint for the pod](/assets/images/create-endpoint-apiserver.png)
+3. Create an endpoint named "my laptop". This will be used to connect to any Kubernetes services you decide to expose. Download the enrollment token .jwt file to your laptop.
+4. In Services, create a service for the hello web server.
 
-    _https://kubernetes.default.svc:443 is typically the default URL for accessing the master API server from a pod._
+    The server domain name for the new service is "hello-toy.default.svc". Your ziti-host pod will use [cluster DNS](https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/) to resolve the service name in the default namespace.
 
-    ```bash
-    ❯ kubectl cluster-info
-    Kubernetes control plane is running at https://kubernetes.default.svc:443
-    CoreDNS is running at https://kubernetes.default.svc:443/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
-    ```
-
+    ![Ziti service for the hello web server](/assets/images/create-service-hello-netfoundry.png)
 5. In AppWANs, create an AppWAN authorizing `#all` endpoints to connect to `#all` services. This is for simplicity's sake and assumes you are the only operator of your network. You could instead define a more restrictive policy.
 6. In edge routers, create an edge router in any data center, ideally near your laptop.
 7. In edge router policies, create a blanket edge router policy for #all endpoints to use #all edge routers.
 8. Install [Ziti Desktop Edge](https://netfoundry.io/resources/support/downloads/networkversion7/#zititunnelers) on your laptop.
-9. In Ziti Desktop Edge, add the endpoint identity you downloaded.
+9. In Ziti Desktop Edge, add the endpoint identity you downloaded i.e. "my laptop.jwt".
 
 ## Install Ziti with Helm
 
-The Helm chart will create a Kubernetes deployment pod running the Ziti Linux tunneler which will be enrolled with your NetFoundry network using the token file you downloaded earlier.
+The Helm chart will create a normal Kubernetes deployment pod running the Ziti Linux tunneler which will be enrolled with your Ziti network using the token file you downloaded earlier i.e. "k8s pod endpoint.jwt".
 
 1. Add NetFoundry charts repo to Helm.
 
@@ -73,17 +67,51 @@ The Helm chart will create a Kubernetes deployment pod running the Ziti Linux tu
     STATUS: deployed
     REVISION: 1
     NOTES:
-    1. This deployment does not provide an ingress / server port, only egress from the pod to any `serverEgress` destinations you configure in a NetFoundry network e.g. https://kubernetes.default.svc:443:
+    1. This deployment does not provide an ingress / server port, only egress from the pod to any `serverEgress` destinations you configure in a Ziti network e.g. https://kubernetes.default.svc:443:
     export POD_NAME=$(kubectl get pods --namespace default -l "app.kubernetes.io/name=ziti-host,app.kubernetes.io/instance=ziti-host" -o jsonpath="{.items[0].metadata.name}")
     ```
 
-## Configure `kubectl` to use the private Ziti URL
+Congratulations! Ziti is now running behind the scenes in your cluster, and you may now expose any of your cluster services. Next, we'll deploy a toy web app to expose with Ziti.
+
+## Expose Cluster Services with Ziti
+
+You may expose your cluster's services to your Ziti network.
+
+1. Deploy a lightweight NetFoundry hello world web server on your cluster.
+
+    ```bash
+    ❯ helm install hello netfoundry/hello-toy 
+    NAME: hello
+    LAST DEPLOYED: Sat May  1 19:33:21 2021
+    NAMESPACE: default
+    STATUS: deployed
+    REVISION: 1
+    TEST SUITE: None
+    ```
+
+2. Visit the hello server in the browser on your laptop!
+
+    [http://hello.netfoundry/](http://hello.netfoundry/)
+
+## Private Kubernetes API with Ziti
 
 _You may skip this section if you are not interested in making the Kubernetes API private_
 
-Now your NetFoundry network is set up to allow your Ziti Desktop Edge app on your laptop to connect to your Kubernetes cluster. Next you will configure a new `kubectl` context to connect to the private URL with Ziti.
 
-1. Find the master API *server* URL for the current `kubectl` context. In my case it is the server for cluster "my-cluster".
+1. In NetFoundry console, in Services, create a service like "k8s api server" for https://kubernetes.default.svc:443 hosted by the endpoint you created earlier e.g. "k8s pod endpoint". This host config URL reflects the cluster's default namespace using [cluster DNS](https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/).
+    ![Ziti service for Kubernetes master API server](/assets/images/create-service-apiserver.png)
+
+    _https://kubernetes.default.svc:443 is typically the default URL for accessing the master API server from a pod._
+
+    ```bash
+    ❯ kubectl cluster-info
+    Kubernetes control plane is running at https://kubernetes.default.svc:443
+    CoreDNS is running at https://kubernetes.default.svc:443/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
+    ```
+
+Now your Ziti network is set up to allow your Ziti Desktop Edge app on your laptop to connect to your Kubernetes cluster. Next you will configure a new `kubectl` context to connect to the private URL with Ziti.
+
+2. Find the master API *server* URL for the current `kubectl` context. In my case it is the server for cluster "my-cluster".
 
     ```bash
     ❯ kubectl config view -o jsonpath='{.contexts[?(@.name == "'$(kubectl config current-context)'")].context.cluster}'
@@ -93,14 +121,14 @@ Now your NetFoundry network is set up to allow your Ziti Desktop Edge app on you
     https://129.159.89.193:6443
     ```
 
-2. Find the name of the *user* for the current context
+3. Find the name of the *user* for the current context
 
     ```bash
     ❯ kubectl config view -o jsonpath='{.contexts[?(@.name == "'$(kubectl config current-context)'")].context.user}'
     my-user
     ```
 
-3. Define a new `kubectl` cluster "my-cluster-private".
+4. Define a new `kubectl` cluster "my-cluster-private".
 
     This new cluster definition will have the private *server* URL with the same *certificate authority* as the current context.
 
@@ -130,7 +158,7 @@ Now your NetFoundry network is set up to allow your Ziti Desktop Edge app on you
     Context "my-context-private" created.
     ```
 
-5. Switch to the new `kubectl` context
+6. Switch to the new `kubectl` context
 
     ```bash
     ❯ kubectl config use-context my-context-private                                                                                                      
@@ -143,46 +171,9 @@ Now your NetFoundry network is set up to allow your Ziti Desktop Edge app on you
 
 This demonstrates that you are able to connect to your Kubernetes cluster's master API server via Ziti, and so you could at this point disable the public cluster API endpoint and continue normally!
 
-## Expose Cluster Services with Ziti
-
-You may immediately connect to any HTTP or HTTPS services in your cluster with `kubectl proxy`. In this case `kubectl` is authenticating to the API on your behalf and providing a plain HTTP server on the loopback interface.
-
-```bash
-❯ kubectl proxy
-Starting to serve on 127.0.0.1:8001
-
-# Now, if Kubernetes Dashboard is running, you may connect via the proxy:
-#  http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/
-
-```
-
-This is where it gets good: you may publish private cluster services with Ziti to your NetFoundry network so that there is no need for a proxy, and thereafter control access primarily through the NetFoundry console or API.
-
-1. Deploy a lightweight NetFoundry hello world web server on your cluster.
-
-    ```bash
-    ❯ helm install hello netfoundry/hello-netfoundry 
-    NAME: hello
-    LAST DEPLOYED: Sat May  1 19:33:21 2021
-    NAMESPACE: default
-    STATUS: deployed
-    REVISION: 1
-    TEST SUITE: None
-    ```
-
-2. In NetFoundry console, in Services, create a service for the hello server.
-
-    The server domain name for the new service is "hello-netfoundry.default.svc". Your ziti-host pod will use cluster DNS to resolve the service name in the default namespace.
-
-    ![NetFoundry service for the hello web server](/assets/images/create-service-hello-netfoundry.png)
-
-3. Visit the hello server in the browser on your laptop!
-
-    [http://hello.netfoundry/](http://hello.netfoundry/)
-
 ## Troubleshooting
 
-If you made an adjustment to your NetFoundry network and you're waiting for the pod endpoint to notice then you might reduce the delay by deleting the pod. This will cause Kubernetes to re-create the pod, and you will not need to re-install the chart.
+If you made an adjustment to your Ziti network and you're waiting for the pod endpoint to notice then you might reduce the delay by deleting the pod. This will cause Kubernetes to re-create the pod, and you will not need to re-install the chart.
 
 ```bash
 ❯ kubectl get pods                           
@@ -193,7 +184,7 @@ ziti-host-dfcb98fcd-vjlww   1/1     Running   0          27m
 pod "ziti-host-dfcb98fcd-vjlww" deleted
 ```
 
-You may also inspect the endpoint tunneler `ziti-tunnel` log messages for clues if it is not working. An error like "NO_EDGE_ROUTERS_AVAILABLE" could mean you did not create the blanket edge router policy when you set up your NetFoundry network.
+You may also inspect the endpoint tunneler `ziti-tunnel` log messages for clues if it is not working. An error like "NO_EDGE_ROUTERS_AVAILABLE" could mean you did not create the blanket edge router policy when you set up your Ziti network.
 
 ```bash
 ❯ kubectl logs ziti-host-dfcb98fcd-vjlww | tail -
