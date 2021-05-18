@@ -9,17 +9,17 @@ toc: true
 classes: wide
 ---
 
-The demo script will create a complete NetFoundry Network that you may then extend for your own purposes. The following will be added to the NetFoundry Network that you specify:
+The demo script will create a complete NetFoundry network that you may then extend for your own purposes. The following will be added to the NetFoundry network that you specify:
 
 * AppWAN: "Welcome"
     * Services #welcomeWagon
-        * Fireworks Service
-        * Echo Service
-        * Weather Service
+        * Fireworks service
+        * Echo service
+        * Weather service
     * Endpoints #workFromAnywhere
         * Mobile1
         * Desktop1
-* Edge Routers #defaultRouters
+* edge routers #defaultRouters
     * Americas
 
 ## How it Works
@@ -47,7 +47,7 @@ cd ./netfoundry-demo
 # install
 pip3 install --upgrade --user netfoundry
 
-# Run the demo script to deploy global fabric and a handful of functioning Services
+# Run the demo script to deploy global fabric and a handful of functioning services
 python3 -m netfoundry.demo --network BibbidiBobbidiBoo
 
 # Delete the demo network
@@ -61,7 +61,7 @@ Make sure you have [Docker Engine](https://docs.docker.com/engine/install/).
 ```bash
 cd ./netfoundry-demo
 
-# define a Network name
+# define a network name
 NETWORK_NAME=BibbidiBobbidiBoo
 
 # Run the demo container (runs the demo script)
@@ -74,13 +74,13 @@ Install a tunneler on your device. For example, you could install the Ziti Deskt
 
 ### Fireworks Demo
 
-Touch or click to shoot off some fireworks. This demo shows that you are able to access a web site with an invented domain name that you control through your NetFoundry Network.
+Touch or click to shoot off some fireworks. This demo shows that you are able to access a web site with an invented domain name that you control through your NetFoundry network.
 
 [http://fireworks.netfoundry/](http://fireworks.netfoundry)
 
 ### IP Address Echo Demo
 
-Visit [http://eth0.me](http://eth0.me) and [http://echo.netfoundry/](http://echo.netfoundry/) in two separate web browser tabs. The IP addresses are different and this demonstrates that your HTTP request was sent to the same demo server by two different paths. This is important because your NetFoundry Network allows you to control where your traffic exits to the internet. If you visit eth0.me directly then you will see the ISP address where your device connects to the internet without NetFoundry. If you use the NetFoundry Service address then your connection occurs via the hosting Edge Router (an exit point for your Network).
+Visit [http://eth0.me](http://eth0.me) and [http://echo.netfoundry/](http://echo.netfoundry/) in two separate web browser tabs. The IP addresses are different and this demonstrates that your HTTP request was sent to the same demo server by two different paths. This is important because your NetFoundry network allows you to control where your traffic exits to the internet. If you visit eth0.me directly then you will see the ISP address where your device connects to the internet without NetFoundry. If you use the NetFoundry service address then your connection occurs via the hosting edge router (an exit point for your network).
 
 ## Run Additional Demo Servers
 
@@ -89,7 +89,7 @@ You may host additional, private demo servers with Docker. This will create a ha
 ```bash
 cd ./netfoundry-demo
 
-# Re-run the demo, additionally creating the private Services
+# Re-run the demo, additionally creating the private services
 python3 -m netfoundry.demo --network BibbidiBobbidiBoo --create-private
 
 # install Compose
@@ -108,7 +108,7 @@ When finished run `docker-compose down` to destroy the demo containers.
 
 ## Run a Linux Client Endpoint
 
-You may also wish to visit the demo servers on a Linux machine. The first step is to configure DNS to enable accessing the domain names in your Network. Your Linux computer must have 127.0.0.1 as the primary nameserver. [Know more about the Edge Tunneler CLI](https://support.netfoundry.io/hc/en-us/articles/360045177311).
+You may also wish to visit the demo servers on a Linux machine. The first step is to configure DNS to enable accessing the domain names in your network. Your Linux computer must have 127.0.0.1 as the primary nameserver. [Know more about the Edge Tunneler CLI](https://support.netfoundry.io/hc/en-us/articles/360045177311).
 
 1. In your terminal, change to the working directory.
 
@@ -118,7 +118,7 @@ You may also wish to visit the demo servers on a Linux machine. The first step i
 
 1. Create a Linux Client Endpoint
 
-Client Endpoints dial Services; hosting Endpoints bind Services.
+Client Endpoints dial services; hosting Endpoints bind services.
 
 ```bash
 python3 -m netfoundry.demo --network BibbidiBobbidiBoo --create-client
@@ -153,32 +153,32 @@ optional arguments:
   -n NETWORK, --network NETWORK
                         The name of your demo network
   -o ORGANIZATION, --organization ORGANIZATION
-                        The label of an alternative Organization (default is Org of caller)
+                        The label of an alternative organization (default is Org of caller)
   -g NETWORK_GROUP, --network-group NETWORK_GROUP
-                        The shortname of a Network Group (default is the first, typically singular, Group known to this Org)
+                        The shortname of a network group (default is the first, typically singular, Group known to this Org)
   -s {small,medium,large}, --network-size {small,medium,large}
-                        Billable Network size to create
+                        Billable network size to create
   -v VERSION, --network-version VERSION
-                        Network product version: "default", "latest", or semver
-  -p, --create-private  Also create private Endpoint-hosted Services for the optional Docker Compose portion of the quickstart
+                        network product version: "default", "latest", or semver
+  -p, --create-private  Also create private Endpoint-hosted services for the optional Docker Compose portion of the quickstart
   -c, --create-client   Also create a client Endpoint for the optional Linux portion of the quickstart
   --credentials CREDENTIALS
                         path to API account credentials JSON file overrides NETFOUNDRY_API_ACCOUNT
   --provider {AWS,AZURE,GCP,ALICLOUD,NETFOUNDRY,OCP}
-                        cloud provider to host Edge Routers
+                        cloud provider to host edge routers
   --regions {Americas,EuropeMiddleEastAfrica,AsiaPacific} [{Americas,EuropeMiddleEastAfrica,AsiaPacific} ...]
-                        space-separated one or more major geographic regions in which to place Edge Routers for overlay fabric
+                        space-separated one or more major geographic regions in which to place edge routers for overlay fabric
   --location-codes LOCATION_CODES [LOCATION_CODES ...]
-                        cloud location codes in which to host Edge Routers
+                        cloud location codes in which to host edge routers
   --proxy PROXY         'http://localhost:8080' 'socks5://localhost:9046'
 
 ```
 
 ## Troubleshooting
 
-If the private Services are unavailable and the client log shows "no terminators" the likely cause is that the exit container has not yet started hosting the Services that were just created. The solution is to wait a few minutes or run `docker-compose restart exit`.
+If the private services are unavailable and the client log shows "no terminators" the likely cause is that the exit container has not yet started hosting the services that were just created. The solution is to wait a few minutes or run `docker-compose restart exit`.
 
-You may inspect the logs from the container that is hosting the exit point to the demo Services with `ziti-tunnel`.
+You may inspect the logs from the container that is hosting the exit point to the demo services with `ziti-tunnel`.
 
 ```bash
 # inspect the logs for the hosting Endpoint

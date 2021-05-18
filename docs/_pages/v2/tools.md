@@ -25,13 +25,13 @@ Looking for [the Python guide](/guides/python/)?
 
 ### Postman
 
-* [PostMan Service Runner](https://github.com/netfoundry/developer-tools/raw/master/NetFoundryRunners.postman_collection.json)
-: create Services in bulk with PostMan
+* [PostMan service runner](https://github.com/netfoundry/developer-tools/raw/master/NetFoundryRunners.postman_collection.json)
+: create services in bulk with PostMan
 
 ## Scripts
 
 * [bulkInviteEndpoints.py](https://raw.githubusercontent.com/netfoundry/developer-tools/master/bulkInviteEndpoints.py)
-: create Endpoints and send the enrollment token to a list of email addresses
+: create endpoints and send the enrollment token to a list of email addresses
 
 ```bash
 # Supply email addresses one per line on standard input or use --invitees INVITEES_FILE
@@ -52,7 +52,7 @@ EOF
 ```
 
 * [bulkEditRoleAttributes.py](https://raw.githubusercontent.com/netfoundry/developer-tools/master/bulkEditRoleAttributes.py)
-: replace the role attributes on all Endpoints, Edge Routers, or Services; optionally limited to those that match a pattern
+: replace the role attributes on all endpoints, edge routers, or services; optionally limited to those that match a pattern
 
 ```bash
 python3 ./bulkEditRoleAttributes.py endpoints \

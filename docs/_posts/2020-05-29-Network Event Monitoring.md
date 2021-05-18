@@ -27,11 +27,11 @@ Subscribing to events via email is not yet available. [Let us know](/help/) if y
 
 ### Endpoint Availability
 
-A NetFoundry Network Administrator may want to observe when client and gateway endpoints' availability changes i.e. online status. To do this the following data returned in the search will be relevant.
+A NetFoundry network operator may want to observe when client and gateway endpoints' availability changes i.e. online status. To do this the following data returned in the search will be relevant.
 
-The data is retrieved from the underlying Network Transport technology with somewhat different nomenclature. This can be translated.
+The data is retrieved from the underlying network transport with somewhat different nomenclature. This can be translated.
 
-**VTC** represents any endpoint in the NetFoundry Network, primarily clients and gateways.
+**VTC** represents any endpoint in the NetFoundry network, primarily clients and gateways.
 
 The `commonName` or `resourceName` will help identify the endpoint. This is the meaningful label that was assigned when it was created.
 
@@ -52,13 +52,13 @@ Example
 }
 ```
 
-An example query of the Network Controller events is shown below. The data for network events can be queried based on time (up to 90 days stored on system), type, specific event, endpoint name.
+An example query of the network Controller events is shown below. The data for network events can be queried based on time (up to 90 days stored on system), type, specific event, endpoint name.
 
 To obtain notification of new endpoints (clients, gateways) coming online or going offline, software can utilized the API to periodically collect the Events filtered for VTC Offline, VTC Online.
 
 #### Endpoint Status Example
 
-This example requests the return of 10 (note:  "size" : 10, this can be modified to user's choice) Network controller raw events from the last 24 hours (Note: "@timestamp" : {"gte" : "now-24h","lte" : "now",) for the customer network id.  This is provided in the url also {organizationId} should be the UUID of the customer organization.
+This example requests the return of 10 (note:  "size" : 10, this can be modified to user's choice) network controller raw events from the last 24 hours (Note: "@timestamp" : {"gte" : "now-24h","lte" : "now",) for the customer network id.  This is provided in the url also {organizationId} should be the UUID of the customer organization.
 
 `POST /rest/v1/elastic/ncentityevent/82d70e3f-deda-469f-be1a-9c40561ede5d/_search/`
 
