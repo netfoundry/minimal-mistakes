@@ -59,10 +59,10 @@ endpoints = network.endpoints()   # call a method to get live results
 
 ### Network Groups
 
-A *network group* organizes networks for billing and administration purposes. *Roles* that grant permissions on a network are granted to an *identity* at the network level or network group level or both. An instance of `class NetworkGroup` represents a particular network group and may be used to find, create, and delete networks in that Group. Most users have only the default network group and it is selected automatically when there is only one.
+A *network group* organizes networks for billing and administration purposes. *Roles* that grant permissions on a network are granted to an *identity* at the network level or network group level or both. An instance of `class NetworkGroup` represents a particular network group and may be used to find, create, and delete networks in that group. Most users have only the default network group and it is selected automatically when there is only one.
 
 ```python
-# use Group as organization
+# use group as organization
 network_group = netfoundry.NetworkGroup(organization)
 network_name = 'ACME Net'
 created_network = network_group.create_network(name=network_name)
