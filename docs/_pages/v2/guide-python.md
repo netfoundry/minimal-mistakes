@@ -15,14 +15,14 @@ This overview defines *italicized* terms and essential concepts and introduces t
 
 ### Identities
 
-Users and API accounts are identities, and identities are members of an *organization*. Identities are granted permissions on *organizations*, *Networks*, and *network groups* by way of *role* assignments. 
+Users and API accounts are identities, and identities are members of an *organization*. Identities are granted permissions on *organizations*, *networks*, and *network groups* by way of *role* assignments. 
 <!-- TODO: Identities are managed through methods of `class Organization`. -->
 
 ### Roles
 
-Roles are sets of permissions that are granted to *identities* for *organizations*, *Networks*, and *network groups*. An example of a role assignment is "Network Admin - ACME Net" which grants permission to manage *Network* "ACME Net", but not to delete it nor grant new permissions.
+Roles are sets of permissions that are granted to *identities* for *organizations*, *networks*, and *network groups*. An example of a role assignment is "Network Admin - ACME Net" which grants permission to manage *network* "ACME Net", but not to delete it nor grant new permissions.
 
-The default roles for new users and API accounts are "organization admin" and "network group admin". Taken together, these default roles grant all permissions for the *organization* and *Networks* inside the *network group*. 
+The default roles for new users and API accounts are "organization admin" and "network group admin". Taken together, these default roles grant all permissions for the *organization* and *networks* inside the *network group*. 
 <!-- TODO: Roles are managed through methods of `class Organization`. -->
 
 ### Organizations
@@ -43,10 +43,10 @@ caller_identity = organization.caller                        # Who am I?
 
 ### Networks
 
-A NetFoundry Network contains the entities and policies that compose your AppWANs. An instance of `class Network` represents a particular Network. The Network may be selected by name or ID. This provides attributes and methods to describe and manage the Network. A Network is always a member of exactly one *network group*.
+A NetFoundry network contains the entities and policies that compose your AppWANs. An instance of `class Network` represents a particular network. The network may be selected by name or ID. This provides attributes and methods to describe and manage the network. A network is always a member of exactly one *network group*.
 
 ```python
-# use a Network
+# use a network
 network = netfoundry.network(network_group, network_id=created_network['id'])
 status = network.status           # read the status attribute
 endpoints = network.endpoints()   # call a method to get live results
@@ -59,7 +59,7 @@ endpoints = network.endpoints()   # call a method to get live results
 
 ### Network Groups
 
-A *network group* organizes Networks for billing and administration purposes. *Roles* that grant permissions on a Network are granted to an *identity* at the Network level or network group level or both. An instance of `class NetworkGroup` represents a particular network group and may be used to find, create, and delete Networks in that Group. Most users have only the default network group and it is selected automatically when there is only one.
+A *network group* organizes networks for billing and administration purposes. *Roles* that grant permissions on a network are granted to an *identity* at the network level or network group level or both. An instance of `class NetworkGroup` represents a particular network group and may be used to find, create, and delete networks in that Group. Most users have only the default network group and it is selected automatically when there is only one.
 
 ```python
 # use Group as organization
@@ -86,7 +86,7 @@ Installing the Python3 module is easy with `pip`.
 
 ## Demo Script
 
-A sample Python script is provided which uses this module to create a Network with a functioning service.
+A sample Python script is provided which uses this module to create a network with a functioning service.
 
 [Link to demo.py source file on the web](https://bitbucket.org/netfoundry/python-netfoundry/src/master/netfoundry/demo.py).
 
