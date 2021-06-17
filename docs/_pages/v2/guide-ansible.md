@@ -116,7 +116,7 @@ Here is a simple example. For more examples please see [the playbook included in
     register: endpoints
 
   - name: declare an endpoint-hosted service
-    netfoundry_service:
+    netfoundry_service_simple:
       name: HTTP Echo 1
       endpoints: 
       - Exit1
@@ -150,7 +150,7 @@ Here is a simple example. For more examples please see [the playbook included in
 
   # lastly, do tasks that depend on an async background task
   - name: declare a router-hosted service
-    netfoundry_service:
+    netfoundry_service_simple:
       name: HTTP Echo 2
       attributes: 
       - "#welcomeWagon"

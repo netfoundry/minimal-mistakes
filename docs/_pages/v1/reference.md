@@ -103,8 +103,29 @@ AWSCPEGW
 ❯ aws --region us-east-1 \
     ec2 describe-images \
       --owners aws-marketplace \
-      --filters "Name=product-code,Values=a4h9d0h56e7x0q6hlbii33kl8" \
+      --filters "Name=product-code,Values=eai0ozn6apmy1qwwd5on40ec7" \
       --query 'sort_by(Images, &CreationDate)[-1]'
+```
+
+```bash
+# or, for all regions!
+❯ aws --output text ec2 describe-regions | while read REG ENDPOINT OPTIN REGION; do 
+aws --region $REGION \   
+    ec2 describe-images \
+      --owners aws-marketplace \
+      --filters "Name=product-code,Values=eai0ozn6apmy1qwwd5on40ec7" \
+      --query 'sort_by(Images, &CreationDate)[-1]' | \
+        jq --arg region $REGION '{name: .Name, region: $region, id: .ImageId }'
+done
+```
+
+```
+# lookup the current product code by searching for the AMI ID for a particular region after subscribing in AWS Marketplace
+❯ aws --region us-east-1 \                                                          
+    ec2 describe-images \
+      --image-id ami-086671bb16f8f058b|jq -r '.Images[].ProductCodes[].ProductCodeId'
+eai0ozn6apmy1qwwd5on40ec7
+
 ```
 
 VCPEGW
