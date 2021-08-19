@@ -13,6 +13,12 @@ You may install our [Ansible Galaxy Collection](https://galaxy.ansible.com/netfo
 
 ## Before You Begin
 
+### Docker Setup
+
+A container image with the latest Ansible colletion already installed: `netfoundry/python:ansible`
+
+### Developer Workstation Setup
+
 Install the latest release of [the NetFoundry Python module](/guides/python).
 
 ```bash

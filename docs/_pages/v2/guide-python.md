@@ -84,6 +84,10 @@ Installing the Python3 module is easy with `pip`.
 ❯ pip install netfoundry
 ```
 
+## Docker
+
+A container image with the latest Python module already installed: `netfoundry/python:latest`
+
 ## Demo Script
 
 A sample Python script is provided which uses this module to create a network with a functioning service.
