@@ -8,10 +8,6 @@ toc: false
 
 *Miscellaneous Resources for NetFoundry API*
 
-## HelpAPI for BASH
-
-[HelpAPI](https://github.com/netfoundry/mop-bash-helpapi) is an interactive terminal console.
-
 ## Python Module
 
 [Python Package Index module](https://pypi.org/project/netfoundry/)
