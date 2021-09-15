@@ -66,10 +66,9 @@ The Helm chart will create a normal Kubernetes deployment pod running the Ziti L
     NAMESPACE: default
     STATUS: deployed
     REVISION: 1
-    NOTES:
-    1. This deployment does not provide an ingress / server port, only egress from the pod to any `serverEgress` destinations you configure in a Ziti network e.g. https://kubernetes.default.svc:443:
-    export POD_NAME=$(kubectl get pods --namespace default -l "app.kubernetes.io/name=ziti-host,app.kubernetes.io/instance=ziti-host" -o jsonpath="{.items[0].metadata.name}")
     ```
+
+3. For the purposes of this exercise you may ignore the NOTES section that is always printed by Helm after a successful install.
 
 Congratulations! Ziti is now running behind the scenes in your cluster, and you may now expose any of your cluster services. Next, we'll deploy a toy web app to expose with Ziti.
 
@@ -89,14 +88,15 @@ You may expose your cluster's services to your Ziti network.
     TEST SUITE: None
     ```
 
-2. Visit the hello server in the browser on your laptop!
+2. For the purposes of this exercise you may ignore the NOTES section that is always printed by Helm after a successful install.
+
+3. Visit the hello server in the browser on your laptop!
 
     [http://hello.netfoundry/](http://hello.netfoundry/)
 
-## Private Kubernetes API with Ziti
+## Create a Private Cluster Context with Ziti
 
 _You may skip this section if you are not interested in making the Kubernetes API private_
-
 
 1. In NetFoundry console, in Services, create a service like "k8s api server" for https://kubernetes.default.svc:443 hosted by the endpoint you created earlier e.g. "k8s pod endpoint". This host config URL reflects the cluster's default namespace using [cluster DNS](https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/).
     ![Ziti service for Kubernetes master API server](/assets/images/create-service-apiserver.png)
