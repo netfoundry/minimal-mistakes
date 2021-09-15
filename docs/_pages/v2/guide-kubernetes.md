@@ -80,7 +80,7 @@ You may expose your cluster's services to your Ziti network.
 1. Deploy a lightweight NetFoundry hello world web server on your cluster.
 
     ```bash
-    ❯ helm install hello-netfoundry netfoundry/hello-toy 
+    ❯ helm install hello-netfoundry netfoundry/hello-toy --set serviceDomainName=hello-netfoundry
     NAME: hello
     LAST DEPLOYED: Sat May  1 19:33:21 2021
     NAMESPACE: default
