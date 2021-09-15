@@ -1,6 +1,6 @@
 ## Audience
 
-This documentation is aimed at developers wishing to automate things they can already do with the [NetFoundry Web Console](https://nfconsole.io/). If you are looking for a general introduction to NetFoundry then the [Support Hub](https://support.netfoundry.io/hc/en-us) or the [main web site](https://netfoundry.io) are also places you could begin.
+This documentation is aimed at enabling devops practitioners to automate things they can already do with the [NetFoundry Web Console](https://nfconsole.io/) and to create integrations with the NetFoundry platform. If you are looking for a general introduction to NetFoundry then the [Support Hub](https://support.netfoundry.io/hc/en-us) or the [main web site](https://netfoundry.io) are places you could begin.
 
 ## Your Code, NetFoundry's API
 
