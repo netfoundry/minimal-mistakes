@@ -37,7 +37,7 @@ You will need a basic Ziti network to describe the services you wish to expose a
 3. Create an endpoint named "my laptop". This will be used to connect to any Kubernetes services you decide to expose. Download the enrollment token .jwt file to your laptop.
 4. In Services, create a service for the hello web server.
 
-    The server domain name for the new service is "hello-toy.default.svc". Your ziti-host pod will use [cluster DNS](https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/) to resolve the service name in the default namespace.
+    The server domain name for the new service is "hello-netfoundry.default.svc". Your ziti-host pod will use [cluster DNS](https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/) to resolve the service name in the default namespace.
 
     ![Ziti service for the hello web server](/assets/images/create-service-hello-netfoundry.png)
 5. In AppWANs, create an AppWAN authorizing `#all` endpoints to connect to `#all` services. This is for simplicity's sake and assumes you are the only operator of your network. You could instead define a more restrictive policy.
@@ -80,7 +80,7 @@ You may expose your cluster's services to your Ziti network.
 1. Deploy a lightweight NetFoundry hello world web server on your cluster.
 
     ```bash
-    ❯ helm install hello-netfoundry netfoundry/hello-toy 
+    ❯ helm install hello-netfoundry netfoundry/hello-toy --set serviceDomainName=hello-netfoundry
     NAME: hello
     LAST DEPLOYED: Sat May  1 19:33:21 2021
     NAMESPACE: default
