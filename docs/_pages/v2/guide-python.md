@@ -92,7 +92,7 @@ A container image with the latest Python module already installed: `netfoundry/p
 
 A sample Python script is provided which uses this module to create a network with a functioning service.
 
-[Link to demo.py source file on the web](https://bitbucket.org/netfoundry/python-netfoundry/src/master/netfoundry/demo.py).
+[Link to demo.py source file on the web](https://github.com/netfoundry/python-netfoundry/blob/main/netfoundry/demo.py).
 
 ```bash
 # or find the installed source file for demo.py under FILE heading of the built-in doc

@@ -101,7 +101,7 @@ docker run --rm -v $(pwd):/work -w /work appropriate/curl -L -o docker-compose.y
 
 In [the web console](https://nfconsole.io/login), share to an email address or scan to add one of the Endpoints. You could add the Endpoint identity to the Mobile Edge or Desktop Edge app linked in the email and console to then connect to the demo servers from anywhere the app is running.
 
-* Hello, World! Splash: [http://hello.netfoundry/](http://hello.netfoundry/) (netfoundry/railz)
+* Hello, World! Splash: [http://hello.netfoundry/](http://hello.netfoundry/) (netfoundry/hello-world-webpage)
 * REST Test: [http://httpbin.netfoundry/](http://httpbin.netfoundry/) (kennethreitz/httpbin)
 
 When finished run `docker-compose down` to destroy the demo containers.

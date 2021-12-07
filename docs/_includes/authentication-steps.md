@@ -14,7 +14,7 @@ where `{NETFOUNDRY_API_TOKEN}` is an expiring JSON Web Token (JWT) that you obta
 
 ## Get an API Account
 
-1. [Start a free trial](https://nfconsole.io/signup) if you need a login for NF Console
+1. [Sign up for the free tier](https://nfconsole.io/signup) if you need a login for NF Console
 2. [Log in to NF Console](https://nfconsole.io/login)
 3. In NF Console, navigate to "organization", "Manage API Account", and click <i class="fas fa-plus-circle"></i>
 4. Click the button to download "credentials.json"

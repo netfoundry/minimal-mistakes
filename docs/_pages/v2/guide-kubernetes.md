@@ -25,7 +25,7 @@ You will install Ziti as a normal pod deployment on your Kubernetes cluster with
 1. [Install `kubectl`, the command line interface for Kubernetes](https://kubernetes.io/docs/tasks/tools/)
 2. [Create a Kubernetes cluster with at least one worker node](https://kubernetes.io/docs/tutorials/kubernetes-basics/create-cluster/).
 3. [Install Helm, the package manager for Kubernetes](https://helm.sh/docs/intro/quickstart/).
-4. [Sign up for a free trial with NetFoundry](https://nfconsole.io/signup) if you wish to use the NetFoundry console to orchestrate your Ziti network (easiest).
+4. [Sign up for the free tier](https://nfconsole.io/signup) if you wish to use the NetFoundry console to orchestrate your Ziti network (easiest).
 
 ## Create a Ziti Network
 
