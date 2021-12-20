@@ -13,6 +13,21 @@ nonf(){
             MOPENV MOPURL
 }
 
+_set_python_executable(){
+    if which python3 &>/dev/null; then
+        PYBIN=$(which python3)
+    elif which python &>/dev/null; then
+        PYBIN=$(which python)
+    else
+        echo "ERROR: missing python executable in PATH" >&2
+        return 1
+    fi
+    if ! [[ -x "${PYBIN}" ]]; then
+        echo "ERROR: '${PYBIN}' is not executable" >&2
+        return 1
+    fi
+}
+
 _get_nf_token(){
     set -o pipefail
     [[ $# -eq 3 ]] || {
@@ -32,7 +47,7 @@ _get_nf_token(){
         ${oauth_url} \
         --header 'content-type: application/x-www-form-urlencoded' \
         --data "grant_type=client_credentials&scope=https%3A%2F%2Fgateway.${mop_env}.netfoundry.io%2F%2Fignore-scope" \
-            | python -c 'import json,sys;print(json.load(sys.stdin)["access_token"]);'
+            | ${PYBIN} -c 'import json,sys;print(json.load(sys.stdin)["access_token"]);'
     ) || return 1
     echo ${access_token}
 }
@@ -61,7 +76,7 @@ _get_api_account(){
     for TOKEN in NETFOUNDRY_CLIENT_ID NETFOUNDRY_PASSWORD NETFOUNDRY_OAUTH_URL; do
         printf 'export %s="%s"\n' \
             $TOKEN \
-            $(python -c '
+            $(${PYBIN} -c '
 import json,sys;
 varmap = {
     "NETFOUNDRY_CLIENT_ID": "clientId", 
@@ -72,6 +87,8 @@ print(json.load(sys.stdin)[varmap["'$TOKEN'"]]);
             ' < $NETFOUNDRY_API_ACCOUNT)
     done
 }
+
+_set_python_executable || return 1
 
 [[ ! -z ${NETFOUNDRY_CLIENT_ID:-} && ! -z ${NETFOUNDRY_PASSWORD:-} && ! -z ${NETFOUNDRY_OAUTH_URL:-} ]] && {
     echo "WARN: using API account from environment variables for $NETFOUNDRY_OAUTH_URL" >&2
