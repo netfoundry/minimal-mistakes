@@ -13,9 +13,13 @@ Google site search
 
  -->
 
+## Forum
+
+[The community forum](https://community.netfoundry.io/) is a place to give and receive help with the NetFoundry platform's web console, API, etc...
+
 ## Customer Support
 
-Send a help request to <support@netfoundry.io> or read more about contacting support in [Support Hub](https://support.netfoundry.io/hc/en-us/articles/360019471912-Contact-NetFoundry-Support).
+Learn more about contacting customer support in [Support Hub](https://support.netfoundry.io/hc/en-us/articles/360019471912-Contact-NetFoundry-Support).
 
 <!-- <button onclick="_chatlio.showOrHide();" data-chatlio-widget-button>Chat</button> -->
 
