@@ -11,11 +11,16 @@ classes: wide
 
 You may install our [Ansible Galaxy Collection](https://galaxy.ansible.com/netfoundry/platform). Which includes modules like `netfoundry_info` for creating a session and discovering networks.
 
+## Video Walkthrough
+{% include youtube.html id="OLo-Qi4DbvY" %}
+
 ## Before You Begin
 
 ### Docker Setup
 
-A container image with the latest Ansible colletion already installed: `netfoundry/python:ansible`
+A container image with the Ansible collection already installed: `netfoundry/ansible`
+
+[A Docker Compose file is provided](https://github.com/netfoundry/ansible-collection/blob/main/docker-compose.yml) to illustrate building and running this container.
 
 ### Developer Workstation Setup
 
