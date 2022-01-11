@@ -319,7 +319,6 @@ enrolled successfully. identity file written to: exit1.json
 0.17.2
 
 ❯ ./ziti-tunnel host --identity exit1.json
-
 ```
 
 ### Run the Linux Tunneler CLI as a Proxy
