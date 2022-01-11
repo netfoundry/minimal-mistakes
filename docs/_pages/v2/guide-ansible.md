@@ -64,7 +64,7 @@ ansible-doc netfoundry.platform.netfoundry_router
 ansible-doc netfoundry.platform.netfoundry_router_policy
 ```
 
-Here is a simple example. For more examples please see [the playbook included in the collection](https://github.com/netfoundry/developer-tools/blob/master/ansible_collections/netfoundry/platform/playbooks/example_playbook.yml). The default install path for this file is ~/.ansible/collections/ansible_collections/netfoundry/platform/playbooks/example_playbook.yml.
+Here is a simple example. For more examples please see [the playbook included in the collection](https://github.com/netfoundry/ansible-collection/blob/main/netfoundry.platform/playbooks/example_playbook.yml). The default install path for this file is ~/.ansible/collections/ansible_collections/netfoundry/platform/playbooks/example_playbook.yml.
 
 ```yaml
 {% raw %}
