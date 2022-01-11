@@ -22,6 +22,13 @@ A container image with the Ansible collection already installed: `netfoundry/ans
 
 [A Docker Compose file is provided](https://github.com/netfoundry/ansible-collection/blob/main/docker-compose.yml) to illustrate building and running this container.
 
+```bash
+docker-compose pull && \
+  NETFOUNDRY_API_ACCOUNT=~/.netfoundry/credentials.json \
+  NETFOUNDRY_DOWNLOADED_NETWORK=~/Downloads/downloaded_network.yml \
+    docker-compose run network_from_download
+```
+
 ### Developer Workstation Setup
 
 Install the latest release of [the NetFoundry Python module](/guides/python).

@@ -47,11 +47,14 @@ cd ./netfoundry-demo
 # install
 pip3 install --upgrade --user netfoundry
 
+# define a network name
+NETWORK_NAME=BibbidiBobbidiBoo
+
 # Run the demo script to deploy global fabric and a handful of functioning services
-python3 -m netfoundry.demo --network BibbidiBobbidiBoo
+python3 -m netfoundry.demo --network ${NETWORK_NAME}
 
 # Delete the demo network
-python3 -m netfoundry.demo delete --network BibbidiBobbidiBoo
+python3 -m netfoundry.demo delete --network ${NETWORK_NAME}
 ```
 
 ### Run the Demo with Docker
@@ -62,10 +65,14 @@ Make sure you have [Docker Engine](https://docs.docker.com/engine/install/).
 cd ./netfoundry-demo
 
 # define a network name
-NETWORK_NAME=BibbidiBobbidiBoo
+export NETWORK_NAME=BibbidiBobbidiBoo
 
 # Run the demo container (runs the demo script)
-docker run --rm -it -v $(pwd):/netfoundry -e NETWORK_NAME netfoundry/python:demo
+docker run \
+  --rm \
+  --volume ${PWD}/credentials.json:/netfoundry/credentials.json \
+  --env NETWORK_NAME \
+  netfoundry/python:demo
 ```
 
 ## Use the Demo Servers
@@ -90,13 +97,14 @@ You may host additional, private demo servers with Docker. This will create a ha
 cd ./netfoundry-demo
 
 # Re-run the demo, additionally creating the private services
-python3 -m netfoundry.demo --network BibbidiBobbidiBoo --create-private
+python3 -m netfoundry.demo --network ${NETWORK_NAME} --create-private
 
 # install Compose
 pip3 install --user docker-compose
 
 # download the Compose file with cURL and run Compose
-docker run --rm -v $(pwd):/work -w /work appropriate/curl -L -o docker-compose.yml https://raw.githubusercontent.com/netfoundry/developer-tools/master/docker/docker-compose.yml && docker-compose up --detach
+docker run --rm -v ${PWD}:/work appropriate/curl -Lo /work/docker-compose.yml https://raw.githubusercontent.com/netfoundry/developer-tools/master/docker/docker-compose.yml
+docker-compose up --detach
 ```
 
 In [the web console](https://nfconsole.io/login), share to an email address or scan to add one of the Endpoints. You could add the Endpoint identity to the Mobile Edge or Desktop Edge app linked in the email and console to then connect to the demo servers from anywhere the app is running.
@@ -121,7 +129,7 @@ You may also wish to visit the demo servers on a Linux machine. The first step i
 Client Endpoints dial services; hosting Endpoints bind services.
 
 ```bash
-python3 -m netfoundry.demo --network BibbidiBobbidiBoo --create-client
+python3 -m netfoundry.demo --network ${NETWORK_NAME} --create-client
 ```
 
 Within a few seconds the container `client` that was created by your earlier `docker-compose up` command  will have enrolled. You may now visit any of the aforementioned demo servers in a web browser or with a terminal command.
