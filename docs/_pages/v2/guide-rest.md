@@ -315,10 +315,10 @@ enrolled successfully. identity file written to: exit1.json
 {% include ziti-tunneler.md %}
 
 ```bash
-❯ ./ziti-tunneler version
+❯ ./ziti-tunnel version
 0.17.2
 
-❯ ./ziti/ziti-tunnel host --identity exit1.json
+❯ ./ziti-tunnel host --identity exit1.json
 
 ```
 
