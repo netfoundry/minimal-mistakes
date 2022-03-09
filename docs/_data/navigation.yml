@@ -55,6 +55,8 @@ v2guides:
         url: /guides/authentication/
       - title: "Quickstart Demo"
         url: /guides/demo/
+      - title: "Command-Line"
+        url: /guides/cli/
       - title: "Python Guide"
         url: /guides/python/
       - title: "Ansible Guide"
