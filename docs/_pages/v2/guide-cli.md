@@ -43,7 +43,7 @@ You may choose to add a line like this to your shell config to enable all future
 
 ## Grammar
 
-The CLI expects options, arguments, and sub-commands. The general options must precede the sub-command. The default sub-command is `login`. Sub-commands too expect options and arguments which must follow the sub-command. The sub-commands are generally verbs that act upon an object e.g. `edit endpoint`, `list endpoints`.
+The CLI expects options and sub-commands. The options must precede the sub-command. The default sub-command is `login`. Sub-commands also expect options which must follow the sub-command. The sub-commands are generally verbs that act upon an object. For example: `edit endpoint` or `list endpoints`.
 
 ```bash
 nfctl OPTIONS SUB_COMMAND
@@ -104,7 +104,7 @@ Answer in the affirmative without prompting for confirmation. Use this with caut
 nfctl --profile PROFILE
 ```
 
-Login profiles allow you to cache more than one login token concurrently. You must specify the same value for `nfctl --profile PROFILE` for every command that you wish to use a non-default profile. This behavior is not set in stone.
+Login profiles allow you to cache more than one login token concurrently. You must specify the same value for `nfctl --profile PROFILE` for every command that you wish to use a non-default profile. This behavior is not set in stone. See also the [logout](#logout) command.
 
 ## Sub-Commands
 
@@ -149,7 +149,7 @@ general.proxy: http://localhost:4321 -> None
 
 ### logout
 
-Delete any cached login token for the current login profile. This is useful for switching between API account identities.
+Delete any cached login token for the current login profile. This is useful for switching between API account identities. See also the [profile](#profile) option.
 
 ### login
 

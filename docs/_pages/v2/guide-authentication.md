@@ -20,14 +20,14 @@ Include the token in your request to the NetFoundry API. You could source the sh
 **HTTPie**
 
 ```bash
-❯ http GET https://gateway.production.netfoundry.io/core/v2/networks \
+http GET https://gateway.production.netfoundry.io/core/v2/networks \
   "Authorization: Bearer ${NETFOUNDRY_API_TOKEN}"
 ```
 
 **cURL**
 
 ```bash
-❯ curl https://gateway.production.netfoundry.io/core/v2/networks \
+curl https://gateway.production.netfoundry.io/core/v2/networks \
     --header "Authorization: Bearer ${NETFOUNDRY_API_TOKEN}"
 ```
 

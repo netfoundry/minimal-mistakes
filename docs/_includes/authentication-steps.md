@@ -1,6 +1,3 @@
-## Audience
-
-This is aimed at NetFoundry customers and [trial users](https://nfconsole.io/signup) who will use the API directly to augment and automate their use of the NF Console.
 
 ## Overview
 
@@ -22,8 +19,9 @@ where `{NETFOUNDRY_API_TOKEN}` is an expiring JSON Web Token (JWT) that you obta
     * project default: `./credentials.json`
     * user default: `~/.netfoundry/credentials.json`
     * device default: `/netfoundry/credentials.json`
+    * XDG config dir: e.g. `~/.config/netfoundry/credentials.json` on Linux
 
-You may override the default paths with an environment variable.
+You may override the default paths with an environment variable like this:
 
 ```bash
 NETFOUNDRY_API_ACCOUNT=~/Downloads/example-account.json
