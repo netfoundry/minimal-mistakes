@@ -110,7 +110,7 @@ Login profiles allow you to cache more than one login token concurrently. You mu
 
 ### config
 
-Interactively configure `nfctl`. Most of the OPTIONS to nfctl are also configuration directives and may be declared with `nfctl config` sub-command or added to the INI configuration file. The file location depends on your OS.
+Interactively configure `nfctl`. Most of the OPTIONS are also configuration directives and may be declared with `nfctl config` sub-command or added to the INI configuration file. The file location depends on your OS.
 
 ```bash
 ❯ nfctl config --help
@@ -147,6 +147,14 @@ general.proxy: http://localhost:4321 -> None
 ℹ Wrote configuration to /home/kbingham/.config/nfctl/nfctl.ini
 ```
 
+```powershell
+# recommended Windows configuration
+PS C:\Users\IEUser> nfctl.exe config general.color=False general.unicode=False
+general.color: True -> False
+general.unicode: True -> False
+ℹ Wrote configuration to 'C:\Users\IEUser\AppData\Local\NFCTL.EXE\nfctl.exe\nfctl.exe.ini'
+```
+
 ### logout
 
 Delete any cached login token for the current login profile. This is useful for switching between API account identities. See also the [profile](#profile) option.
@@ -166,6 +174,10 @@ Fetch a single resource as YAML or JSON from any of several resource domains of 
 nfctl --network NETWORK get network
 # or just the as=create representation which is useful for cloning
 nfctl --network NETWORK get network --accept create
+# or select the network with a query, even a deleted network
+nfctl get network name="ACME Net",status=DELETED
+# optionally filter for keys you're interested in
+nfctl get network id=4e601202-5260-425a-bdd0-677358bc3a7c --keys name,id,status
 ```
 
 ```bash
@@ -217,6 +229,8 @@ You may filter the output's columns with the `--keys k,k,k` option. This works f
 nfctl --network NETWORK list edge-routers
 # or query by provider
 nfctl --network NETWORK list edge-routers provider=AZURE
+# or filter results for only interesting keys
+nfctl --network NETWORK list edge-routers region=us-east-2 --keys name,id,status,provider
 ```
 
 ### create
