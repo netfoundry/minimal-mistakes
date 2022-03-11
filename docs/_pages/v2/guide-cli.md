@@ -46,7 +46,9 @@ You may choose to add a line like this to your shell config to enable all future
 The CLI expects options and sub-commands. The options must precede the sub-command. The default sub-command is `login`. Sub-commands also expect options which must follow the sub-command. The sub-commands are generally verbs that act upon an object. For example: `edit endpoint` or `list endpoints`.
 
 ```bash
-nfctl OPTIONS SUB_COMMAND
+nfctl GENERAL_OPTIONS SUB_COMMAND RESOURCE_TYPE SUB_OPTIONS
+# e.g.
+nfctl --network NETWORK list services --keys id,zitiId,name
 ```
 
 ## Options
