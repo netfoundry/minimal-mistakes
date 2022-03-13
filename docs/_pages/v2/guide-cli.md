@@ -15,18 +15,37 @@ The NetFoundry CLI `nfctl` is an interactive tool for MacOS, Windows, and Linux 
 
 ## Installation
 
-The CLI is bundled with [the NetFoundry Python module](/guides/python/).
+The CLI is bundled with [the NetFoundry Python3 module](/guides/python/).
 
 ```bash
-❯ pip install --quiet netfoundry
+# install in homedir: make sure to add it to your executable search PATH e.g.  ~/.local/bin or %APPDATA%\Python\bin
+❯ pip install --user netfoundry
+# or in a virtualenv (not as root)
+❯ pip install netfoundry
 ❯ nfctl --version
 v5.5.0
+```
+
+Please raise [a GitHub issue](https://github.com/netfoundry/python-netfoundry/issues) if you have trouble with installation. Let us know your OS and OS version and what went wrong.
+
+## Docker
+
+You may run `nfctl` with Docker instead of installing on your device.
+
+```bash
+❯ docker run \
+  --rm \
+  --volume ~/.netfoundry/nfziti-staging.json:/netfoundry/credentials.json \
+  netfoundry/python:latest nfctl login
+| domain       | summary                                                                                                                             |
+|--------------|-------------------------------------------------------------------------------------------------------------------------------------|
+| organization | "NF Ziti" (NFZITI) logged in as ACMETest (acmetest@netfoundry.io) until 01:51 GMT+0000 (T-3599s) |
 ```
 
 ## Upgrade
 
 ```bash
-❯ pip install --quiet --upgrade netfoundry
+❯ pip install --upgrade netfoundry
 ```
 
 ## Auto-Complete
