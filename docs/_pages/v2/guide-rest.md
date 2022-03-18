@@ -4,6 +4,7 @@ permalink: /guides/rest/
 redirect_from:
   - /v2/guides/hello-world/
   - /guides/hello-world/
+  - /Hello-AppWAN-HTTPie/ # redirect from prior blog permalink
 sidebar:
     nav: v2guides
 toc: true
