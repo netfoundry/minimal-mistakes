@@ -39,7 +39,9 @@ It was popular for a while to obscure the SSH server by configuring a non-standa
 Build systems, support engineers, admins, and developers were all using the SSH infrastructure every day. We came to realize that we would have to step this forward without too much disruption. Our fortress walls were composed of a fleet of Linux hosts, each running an OpenSSH server. They were locked down tight according to best practices but were still listening on the open internet. Going “dark” would mean the internet access we were using to reach the bastion hosts would no longer be available as soon as the firewall exceptions are removed, disallowing inbound 22/TCP.
 
 ![public bastion](/assets/images/zt-ssh-public-bastion.svg){: .align-center}
-*Before OpenZiti: depicts a bastion sheltering an SQL server from the internet.*
+<center><i>
+Before OpenZiti: depicts a bastion sheltering an SQL server from the internet
+</i></center>
 
 ## Enter the Dark Bastions
 
@@ -60,7 +62,9 @@ A neat feature of an OpenZiti tunneling app is its ability to discover OpenZiti 
 ```
 
 ![dark bastion](/assets/images/zt-ssh-dark-bastion.svg){: .align-center}
-*After adding OpenZiti to the bastion: depicts a now-invisible bastion sheltering an SQL server from the internet*
+<center><i>
+After adding OpenZiti to the bastion: depicts a now-invisible bastion sheltering an SQL server from the internet
+</i></center><br/>
 
 The final result here is that the bastions are invisible to the attacker who is viewing them from the internet or the subnet behind the wall. Our authorized devices continue using them normally after installing OpenZiti as signified by the ultraviolet zed badge. This has been a practically-painless change and is an enormous improvement. Every time we gain a new admin or support engineer we:
 
