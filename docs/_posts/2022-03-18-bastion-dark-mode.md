@@ -18,7 +18,7 @@ header:
 
 ## A Zero Trust Journey (ep.1)
 
-When we built the Netfoudry's platform, **we followed a typical bastion pattern**: the stack was a fortress, and you had to be inside to do all the fun stuff. At that early stage, **it wasn't yet feasible to use OpenZiti** to create the safe zone that we needed in which to develop the foundational infrastructure.
+When we built Netfoudry's platform, **we followed a typical bastion pattern**: the stack was a fortress, and you had to be inside to do all the fun stuff. At that early stage, **it wasn't yet feasible to use OpenZiti** to create the safe zone that we needed in which to develop the foundational infrastructure.
 
 When OpenZiti was ready, we started to look at how we could apply what we’d built and learned. We knew **we wanted to adopt the zero trust<sup>[_1_](#zerotrust)</sup> mindset** that had motivated the development of OpenZiti in the first place. We had one strong layer of defense directly exposed to the internet: a perimeter of bastions. We knew that lots of developers were facing the same problem: first, get it working, then try to make it secure by bolting-on armor. We knew bad things would happen if an attacker somehow slipped inside the fortress, but we didn’t want to impede day-to-day operations too much.
 
