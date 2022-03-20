@@ -26,7 +26,9 @@ OpenZiti was designed to solve this problem. With OpenZiti, it would become poss
 
 ## Isn’t Secure Shell…Secure?
 
-There are dimensions to “secure” worth mentioning. **The OpenZiti approach to zero trust<sup>[_3_](#zitiapproach)</sup> maturity is to secure the application instead of the network**. The best way to secure the application is to embed the OpenZiti SDK directly into your application. This brings strong identity and zero trust principles directly into the process space. We won’t get that far in this episode, but we will in a later post. We’ll start by securing the host device instead of the network. **Our immediate need was to remove our bastions from the open internet because active network scanning is the most common way to discover vulnerabilities<sup>[_4_](#activescanning)</sup>**. Those vulnerabilities are then exploited, data is compromised, and trust is broken. You can learn more in [How Do Ransomware Actors Find Victims](https://netfoundry.io/anvil/NFWP-HowdoRansomwareactorsfindvictimsPart1.pdf)? by NetFoundry’s chief of security, Mike Gorman. Eliminating the network attack surface makes this problem go away.
+There are dimensions to “secure” worth mentioning. **The OpenZiti approach to zero trust<sup>[_3_](#zitiapproach)</sup> maturity is to secure the application instead of the network**. The best way to secure the application is to embed the OpenZiti SDK directly into your application. This brings strong identity and zero trust principles directly into the process space. We won’t get that far in this episode, but we will in a later post. We’ll start by securing the host device instead of the network.
+
+**Our immediate need was to remove our bastions from the open internet because active network scanning is the most common way to discover vulnerabilities<sup>[_4_](#activescanning)</sup>**. Those vulnerabilities are then exploited, data is compromised, and trust is broken. You can learn more in [How Do Ransomware Actors Find Victims](https://netfoundry.io/anvil/NFWP-HowdoRansomwareactorsfindvictimsPart1.pdf)? by NetFoundry’s chief of security, Mike Gorman. Eliminating the network attack surface makes this problem go away.
 
 OpenSSH server has enjoyed a great security track record for the last few years. However, **internet exposure can still lead to problems like denial of service attacks, zero-day exploits, and insider misuse**. A bastion presents an attack surface analogous to the gate and walls of a fortress. If there’s one weakness then it will eventually be discovered.
 
@@ -70,7 +72,7 @@ After adding OpenZiti to the bastion: depicts a now-invisible bastion sheltering
 1. have them install a tunneler on their workstation
 1. add the appropriate attributes to their identity in the NetFoundry console to authorize bastion access.
 
-There’s still one not-so-zero-trust feature of the dark bastions diagram: the SQL server. It is still visible to their local network and therefore vulnerable if a malicious actor can get behind the wall. We’ll take a swing at that remaining vulnerability in a future episode.
+There’s still one not-so-zero-trust feature of the dark bastions diagram: the SQL server. It is still visible to its local network and therefore vulnerable if a malicious actor can get behind the wall. We’ll take a swing at that remaining vulnerability in a future episode.
 
 ## Footnotes
 
