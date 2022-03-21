@@ -12,7 +12,7 @@ toc: false
 classes: wide
 #last_updated: June 9, 2019
 header:
-    image: /assets/images/hourglass-header.jpg
+    image: /assets/images/dark-bastions-castle.jpg
 ---
 
 
