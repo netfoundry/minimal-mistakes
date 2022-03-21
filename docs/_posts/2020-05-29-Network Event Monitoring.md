@@ -9,7 +9,7 @@ tags:
 author: Dan
 excerpt: There are several types of metrics, events, and alarms backed by an Elasticsearch database to which requests may be forwarded after authentication by the NetFoundry API.
 toc: true
-last_updated: July 15, 2019
+last_modified_at: July 15, 2019
 ---
 
 ## Monitor for Network Events with the API

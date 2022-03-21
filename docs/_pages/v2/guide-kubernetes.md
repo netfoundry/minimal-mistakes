@@ -11,7 +11,7 @@ sidebar:
     nav: v2guides
 toc: true
 classes: wide
-#last_updated: June 9, 2019
+last_modified_at: June 9, 2019
 header:
     image: /assets/images/nfkubbiker.jpg
 ---

@@ -5,12 +5,12 @@ tags:
     - devops
     - zerotrust
     - bastion
-    - openssh
+    - openziti
     - ssh
 author: Ken
 toc: false
 classes: wide
-#last_updated: June 9, 2019
+last_modified_at: March 21, 2022
 header:
     image: /assets/images/dark-bastions-castle.jpg
 ---
