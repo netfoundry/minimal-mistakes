@@ -26,7 +26,7 @@ The CLI is bundled with [the NetFoundry Python3 module](/guides/python/).
 v5.5.0
 ```
 
-Please raise [a GitHub issue](https://github.com/netfoundry/python-netfoundry/issues) if you have trouble with installation. Let us know your OS and OS version and what went wrong.
+Please raise [a GitHub issue](https://github.com/netfoundry/python-netfoundry/issues) if you have trouble with installation. Let us know your OS version and what went wrong.
 
 ## Docker
 
@@ -35,7 +35,7 @@ You may run `nfctl` with Docker instead of installing on your device.
 ```bash
 ❯ docker run \
   --rm \
-  --volume ~/.netfoundry/nfziti-staging.json:/netfoundry/credentials.json \
+  --volume ~/.netfoundry/credentials.json:/netfoundry/credentials.json \
   netfoundry/python:latest nfctl login
 | domain       | summary                                                                                                                             |
 |--------------|-------------------------------------------------------------------------------------------------------------------------------------|
@@ -62,7 +62,7 @@ You may choose to add a line like this to your shell config to enable all future
 
 ## Grammar
 
-The CLI expects options and sub-commands. The options must precede the sub-command. The default sub-command is `login`. Sub-commands also expect options which must follow the sub-command. The sub-commands are generally verbs that act upon an object. For example: `edit endpoint` or `list endpoints`.
+The CLI expects options and sub-commands. The general options must precede the sub-command. The default sub-command is `login`. Sub-commands also expect their own options which must follow the sub-command. The sub-commands are generally verbs that act upon an object. For example: `edit endpoint` or `list endpoints`. If providing options and positional params to a sub-command the options must come first and the positionals last. Resource types and query params are examples of positional params.
 
 ```bash
 nfctl GENERAL_OPTIONS SUB_COMMAND RESOURCE_TYPE SUB_OPTIONS
@@ -80,7 +80,7 @@ I'll describe the most relevant options immediately below. Run `nfctl --help` to
 nfctl --credentials NETFOUNDRY_API_ACCOUNT
 ```
 
-You may supply an API account as a JSON file path to `nfctl --credentials NETFOUNDRY_API_ACCOUNT` in order to login. It is not strictly necessary to supply this option if you already have a non-expired login token. You may learn how to obtain an API account credentials file in [the authentication guide](/guides/authentication/#get-an-api-account).
+You may supply an API account as a JSON file path to `nfctl --credentials NETFOUNDRY_API_ACCOUNT` in order to login. It is not strictly necessary to supply this option if you already have a login token. You may learn how to obtain an API account credentials file in [the authentication guide](/guides/authentication/#get-an-api-account).
 
 ### verbose
 
@@ -147,7 +147,7 @@ optional arguments:
 ```
 
 ```bash
-# view current configurations that differ from defaults
+# view current configuration that differs from the default
 ❯ nfctl config 
 general.borders=False
 general.color=False
@@ -194,7 +194,7 @@ Fetch a single resource as YAML or JSON from any of several resource domains of 
 # download an entire network with embedded lists of resources
 nfctl --network NETWORK get network
 # or just the as=create representation which is useful for cloning
-nfctl --network NETWORK get network --accept create
+nfctl --network NETWORK get network --as create
 # or select the network with a query, even a deleted network
 nfctl get network name="ACME Net",status=DELETED
 # optionally filter for keys you're interested in
@@ -218,24 +218,6 @@ nfctl get organization
 nfctl get identity
 # get an identity by name if there's only one that starts with "Bob"
 nfctl get identity name=Bob%
-```
-
-```bash
-❯ nfctl get --help
-usage: nfctl get [-h] [-a {create,update}] [-k KEYS]
-                 {data-center,organization,network-group,network,network-controller,identity,host,endpoint,edge-router,edge-router-policy,app-wan,service,service-policy,service-edge-router-policy,posture-check,certificate-authority}
-                 [query]
-
-positional arguments:
-  {data-center,organization,network-group,network,network-controller,identity,host,endpoint,edge-router,edge-router-policy,app-wan,service,service-policy,service-edge-router-policy,posture-check,certificate-authority}
-                        type of resource
-  query                 id=UUIDv4 or query params as k=v,k=v comma-separated pairs
-
-optional arguments:
-  -h, --help            show this help message and exit
-  -a {create,update}, --accept {create,update}
-                        request the as=create or as=update form of the resource
-  -k KEYS, --keys KEYS  list of keys as a,b,c to print only selected keys (columns)
 ```
 
 ### list
