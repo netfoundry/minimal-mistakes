@@ -137,6 +137,17 @@ Login profiles allow you to cache more than one login token concurrently. You mu
 
 ## Sub-Commands
 
+* **[`config`](#config)**              read and write configuration settings.
+* **[`login`](#login)**               login to NetFoundry with a user token or API account credentials
+* **[`logout`](#logout)**              logout your identity for the current current profile
+* **[`get`](#get)**                 get a single resource by type and query
+* **[`list`](#list)**                find a collection of resources by type and query
+* **[`copy`](#copy)**                duplicate a resource
+* **[`create`](#create)**              create a resource from a file
+* **[`edit`](#edit)**                edit a resource with EDITOR
+* **[`delete`](#delete)**              delete a single resource by type and query
+* **[`demo`](#demo)**                create a functioning demo network
+
 ### config
 
 Interactively configure `nfctl`. Most of the OPTIONS are also configuration directives and may be declared with `nfctl config` sub-command or added to the INI configuration file. The file location depends on your OS.
@@ -184,13 +195,13 @@ general.unicode: True -> False
 ℹ Wrote configuration to 'C:\Users\IEUser\AppData\Local\NFCTL.EXE\nfctl.exe\nfctl.exe.ini'
 ```
 
-### logout
-
-Delete any cached login token for the current login profile. This is useful for switching between API account identities. See also the [profile](#profile) option.
-
 ### login
 
 This is the default sub-command and logs you in to a NetFoundry organization by fetching and caching a login token with your API account credentials. You must supply an API account as a JSON file path to `nfctl --credentials NETFOUNDRY_API_ACCOUNT` or as environment variables as described in [the authentication guide](/guides/authentication/#command-line-examples). You may also learn how to obtain an API account credentials file in [the authentication guide](/guides/authentication/#get-an-api-account).
+
+### logout
+
+Delete any cached login token for the current login profile. This is useful for switching between API account identities. See also the [profile](#profile) option.
 
 ### get
 
@@ -283,3 +294,13 @@ nfctl --network NETWORK delete service name="ACME Service"
 # or by ID
 nfctl --network NETWORK delete service id=8b3be67b-919c-4431-8cf8-b43cfe5fda46
 ```
+
+### demo
+
+The `nfctl demo` subcommand creates a few functioning services that are bound to NetFoundry-hosted routers in the created network. You could use this to quickly create a network on which to build out private services in addition to the public demo services that are created for the demo.
+
+```bash
+nfctl demo
+```
+
+The demo has [a standalone guide](/guides/demo/) with more ideas and tips!
