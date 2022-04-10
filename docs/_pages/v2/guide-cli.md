@@ -13,8 +13,6 @@ toc: true
 
 The NetFoundry CLI `nfctl` is an interactive tool for MacOS, Windows, and Linux and is useful for inspecting and configuring NetFoundry networks.
 
-Video Tour
-
 {% include youtube.html id="EFw3PIp4WEg" %}
 
 ## Installation
@@ -70,12 +68,12 @@ You may choose to add a line like this to your shell config to enable all future
 
 ## Grammar
 
-The CLI expects options and sub-commands. The general options must precede the sub-command. The default sub-command is `login`. Sub-commands also expect their own options which must follow the sub-command. The sub-commands are generally verbs that act upon an object. For example: `edit endpoint` or `list endpoints`. If providing options and positional params to a sub-command the options must come first and the positionals last. Resource types and query params are examples of positional params.
+The CLI expects options and sub-commands. The general options must precede the sub-command. The default sub-command is `login`. Sub-commands also expect their own options which must follow the sub-command. The sub-commands are generally verbs that act upon an object. For example: `edit endpoint` or `list endpoints`.
 
 ```bash
-nfctl GENERAL_OPTIONS SUB_COMMAND RESOURCE_TYPE SUB_OPTIONS
+nfctl GENERAL_OPTIONS SUB_COMMAND RESOURCE_TYPE FILTER_QUERY SUB_OPTIONS
 # e.g.
-nfctl --network NETWORK list services --keys id,zitiId,name
+nfctl --network NETWORK list services modelType=TunnelerToEdgeRouter --keys id,zitiId,name
 ```
 
 ## Options
@@ -205,38 +203,14 @@ Delete any cached login token for the current login profile. This is useful for 
 
 ### get
 
-Fetch a single resource as YAML or JSON from any of several resource domains of which `network` and `organization` are the most relevant. You must specify the singular form of the type of resource to get e.g. `nfctl get service`.
-
-#### Network Domain
+Fetch a single resource as YAML or JSON from any of several resource domains of which `network` and `organization` are the most relevant. Use tab-autocomplete to assist typing the singular form of any type of resource to get e.g. `nfctl get service`. To get a resource you need to provide the ID or a query for which there is exactly one result.
 
 ```bash
-# download an entire network with embedded lists of resources
-nfctl --network NETWORK get network
-# or just the as=create representation which is useful for cloning
-nfctl --network NETWORK get network --as create
-# or select the network with a query, even a deleted network
-nfctl get network name="ACME Net",status=DELETED
-# optionally filter for keys you're interested in
-nfctl get network id=4e601202-5260-425a-bdd0-677358bc3a7c --keys name,id,status
-```
-
-```bash
-# get an endpoint by name
-nfctl --network NETWORK get endpoint name="ACME Endpoint"
-```
-
-#### Organization Domain
-
-```bash
-# get caller organization
-nfctl get organization
-```
-
-```bash
-# get caller identity
-nfctl get identity
-# get an identity by name if there's only one that starts with "Bob"
-nfctl get identity name=Bob%
+nfctl get edge-router id=d1280fff-2b55-4e44-96a5-667b45a7c5b6
+# or
+nfctl get edge-router zitiId=uBvRZJDB0e
+# or
+nfctl get edge-router name="Router1"
 ```
 
 ### list
@@ -253,6 +227,20 @@ nfctl --network NETWORK list edge-routers
 nfctl --network NETWORK list edge-routers provider=AZURE
 # or filter results for only interesting keys
 nfctl --network NETWORK list edge-routers region=us-east-2 --keys name,id,status,provider
+```
+
+### copy
+
+You may duplicate any mutable resources with the `nfctl copy` command. First, be sure to configure your shell environment so that `EDITOR` variable points to your preferred editor. For example, VSCode users may assign in their `~/.bashrc` file like `export EDITOR='code --wait'`, and `nfctl` will honor this preference. The default is `vim`. The resource to copy is selected by writing a query that has exactly one result, just like `nfctl get` and `nfctl delete` commands.
+
+```bash
+nfctl copy edge-router id=d1280fff-2b55-4e44-96a5-667b45a7c5b6
+# or
+nfctl copy edge-router zitiId=uBvRZJDB0e
+# or
+nfctl copy edge-router name="Router1"
+# or
+nfctl copy edge-router name="Router_"  # assuming there's only one router named like "Router?"
 ```
 
 ### create
@@ -287,7 +275,7 @@ nfctl --network NETWORK edit service name="ACME Service"
 
 ### delete
 
-You may delete a resource in the network domain (in a particular network, or the network itself) by specifying the singular form of a resource type and a query that selects exactly one resource. You will be prompted to confirm unless you set `--yes` in the general config. Nothing will get deleted if this fails to match exatly one resource.
+You may delete a resource in the network domain (in a particular network, or the network itself) by specifying the singular form of a resource type and a query that selects exactly one resource. You will be prompted to confirm unless you set `--yes` in the general config. Nothing will get deleted if this fails to match exactly one resource.
 
 ```bash
 nfctl --network NETWORK delete service name="ACME Service"
