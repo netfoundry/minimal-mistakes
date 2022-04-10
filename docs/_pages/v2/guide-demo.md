@@ -9,7 +9,7 @@ toc: true
 classes: wide
 ---
 
-The CLI demo is built in to `nfctl` CLI and is run with `nfctl demo`. You may watch the demo running at the end of the video tour embedded in [the CLi guide](/guides/cli). The demo will create a few functioning services bound to NetFoundry-hosted routers. Here's an outline of the resources the demo will create.
+The CLI demo is built in to `nfctl` CLI and is run with `nfctl demo`. You may watch the demo running at the end of the video tour embedded in [the CLI guide](/guides/cli). The demo will create a few functioning services bound to NetFoundry-hosted routers. Here's an outline of the resources the demo will create.
 
 * AppWAN: "Welcome"
     * Services #welcomeWagon
@@ -27,7 +27,7 @@ You'll access the demo servers by adding the identity of one of the provided end
 
 Look in the web console for these endpoints and click on them to explore installation and enrollment instructions for your device's operating system.
 
-Once the endpoint identity has been added to your device's tunneler the demo servers will be reachable e.g. http://fireworks.netfoundry is a good demonstration of your normal web browser connecting to a Ziti service. Try http://echo.netfoundry from your terminal.
+Once the endpoint identity has been added to your device's tunneler the demo servers will be reachable e.g. [http://fireworks.netfoundry] is a good demonstration of your normal web browser connecting to a Ziti service. Try [http://echo.netfoundry] from your terminal.
 
 ## Before You Begin
 
@@ -51,12 +51,12 @@ pip install --upgrade --user netfoundry
 Run demo in network nfctl-demo-super-salmonberry (NFZITI) now? [y/n] 
 
  # delete the demo network
- $ nfctl delete network name=nfctl-demo%
+ $ nfctl delete network name=nfctl-demo-super-salmonberry
 ```
 
 ## Access the Demo Services
 
-Install a tunneler on your device. For example, you could install the Ziti Desktop Edge for MacOS and add the identity for the endpoint named "Desktop1" in the Desktop Edge app. The easiest way to obtain the endpoint software and the endpoint identity is to visit [the web console](https://nfconsole.io/login) and click on one of your endpoints. There you may scan the identity's QR code with Ziti Mobile Edge installed from the app store or download the identity as a JWT file to add to the Desktop Edge app.
+Install a tunneler on your device. For example, you could install the Ziti Desktop Edge for MacOS and add the identity for the endpoint named "Desktop" in the Desktop Edge app. The easiest way to obtain the endpoint software and the endpoint identity is to visit [the web console](https://nfconsole.io/login) and click on one of your endpoints. There you may scan the identity's QR code with Ziti Mobile Edge installed from the app store or download the identity as a JWT file to add to the Desktop Edge app.
 
 ### Fireworks Service
 
