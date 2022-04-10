@@ -13,6 +13,10 @@ toc: true
 
 The NetFoundry CLI `nfctl` is an interactive tool for MacOS, Windows, and Linux and is useful for inspecting and configuring NetFoundry networks.
 
+Video Tour
+
+{% include youtube.html id="EFw3PIp4WEg" %}
+
 ## Installation
 
 The CLI is bundled with [the NetFoundry Python3 module](/guides/python/).
@@ -48,17 +52,21 @@ You may run `nfctl` with Docker instead of installing on your device.
 ❯ pip install --upgrade netfoundry
 ```
 
-## Auto-Complete
+## Auto-Complete for BASH
 
-The CLI has built-in support for auto-complete in BASH, ZSH, FISH, and TCSH (limited). This is accomplished with `argcomplete` like so:
+Add this to your `~/.bashrc` file. This can also be done for Z-Shell, but you need `bashcompinit` [described here](https://kislyuk.github.io/argcomplete/#zsh-support).
 
+```bash
+eval "$(register-python-argcomplete nfctl)"
+```
+or
 ```bash
 source <(register-python-argcomplete nfctl)
 ```
 
 You may choose to add a line like this to your shell config to enable all future shells or run it at any time to configure that shell for auto-complete until exit.
 
-`nfctl` also supports [global tab auto-completion](https://github.com/kislyuk/argcomplete#global-completion) for BASH >=4.2 by way of `complete -D` should you desire to avoid configuring the shell entirely.
+`nfctl` also supports [global tab auto-completion](https://github.com/kislyuk/argcomplete#global-completion) by way of `argcomplete` for `argparse`. This works in BASH >=4.2 by way of `complete -D`.
 
 ## Grammar
 
