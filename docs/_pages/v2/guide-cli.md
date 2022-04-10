@@ -197,6 +197,69 @@ general.unicode: True -> False
 
 This is the default sub-command and logs you in to a NetFoundry organization by fetching and caching a login token with your API account credentials. You must supply an API account as a JSON file path to `nfctl --credentials NETFOUNDRY_API_ACCOUNT` or as environment variables as described in [the authentication guide](/guides/authentication/#command-line-examples). You may also learn how to obtain an API account credentials file in [the authentication guide](/guides/authentication/#get-an-api-account).
 
+The `nfctl login --eval` option causes the CLI to emit shell configuration for evaluation by the `eval` or `source` commands. This is useful for exporting an API token to your shell for use in other apps outside of the CLI. Check out [the REST examples](/guides/rest/) for ideas.
+
+```bash
+ $ nfsupport login --eval
+✔ Logged in profile 'nfsupport'
+# $ eval "$(nfsupport --credentials=credentials.json login --eval)"  # you could run this in any shell or ~/.bashrc to log in that shell
+export NETFOUNDRY_API_TOKEN="eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ik56UXpOelUxTlRRd05rUTBOa1U1TXpZMVF6azBOek5GTlRNNVFVVXlNVEpCUkVFNVJrVkJNZyJ9.eyJodHRwczovL25ldGZvdW5kcnkuaW8vdGVuYH50L2xhYmVsIjoiTkZTVVBQT1JUIiwiaHR0cHM6Ly9uZXRmb3VuZHJ5LmlvL2F1dGgwL2Nvbm5lY3Rpb25JZCI6Imdvb2dsZS1vYXV0aDIiLCJodHRwczovL25ldGZvdW5kcnkuaW8vb3JnYW5pemF0aW9uX2lkIj8iN2RlMmEyYmQtZjRiZC00YTg0LTlkMjItODEwMzM2NjZkOTVmIiwiaXNzIjoiaHR0cHM6Ly9uZXRmb3VuZHJ5LXByb2R1Y3Rpb24uYXV0aDAuY29tLyIsInN1YiI6Imdvb2dsZS1vYXV0aDJ8MTE2MDE0MzIwNjAyMDUzODg5Mjk0IiwiYXVkIjpbImh0dHBzOi8vZ2F0ZXdheS5wcm9kdWN0aW9uLm5ldGZvdW5kcnkuaW8vIiwiaHR0cHM6Ly9uZXRmb3VuZHJ5LXByb2R1Y3Rpb24uYXV0aDAuY29tL3VzZXJpbmZvIl0sImlhdCI69TY0OFU1MTc3NiwiZXhwIjoxNjQ5NTk0OTc2LCJhenAiOiJ1aVE2Y2pzUlg0RXBRSDlKN3RLTFRTSmgyY3g2b3ZWSyIsInNjb3BlIjoib3BlbmlkIHByb2ZpbGUgZW1haWwifQ.yrsH2cKj7unF4o9HnNRSM9aKB22brhmdxbKAJ7VvaIz9N2RfdrP54R45tjzFccA9MFU0kbm_lsgV2ewMjZVcUvfGiGFfKkNHSIClGmVsnAJFIbZDPe5-iseoT-naDaGiITqcS1EPKFssEjLfBmECdb17x4SpbFX77MrcIO_VTCjk2OuqjPRM-5wIGM2z0ouVt-aEQj4iNqkwUw5OntWnT0vGtFqoErMLmsCMavG18LEINTtqxCrRVwYOOAhsrRXV4e8yk1nsbFlJcmm6OTv4PbAxkx77dH6keoXeV8A2b73oS55e5bpFrs-ysxyJz6x_ci0cZynPqJuCIh2KlEZ2ZB"
+export NETFOUNDRY_API_ACCOUNT="/home/kbingham/.netfoundry/nfsupport.json"
+export NETFOUNDRY_ORGANIZATION="f86122fb-316b-4427-8c38-248165bf4504"
+# NETFOUNDRY_NETWORK not configured
+# NETFOUNDRY_NETWORK_GROUP not configured
+export MOPENV="production"
+export MOPURL="https://gateway.production.netfoundry.io/"
+eval "$(register-python-argcomplete nfsupport)"
+
+# helper function logs out from NetFoundry
+function nonf(){
+    unset   NETFOUNDRY_API_ACCOUNT NETFOUNDRY_API_TOKEN \
+            NETFOUNDRY_CLIENT_ID NETFOUNDRY_PASSWORD NETFOUNDRY_OAUTH_URL \
+            NETFOUNDRY_ORGANIZATION NETFOUNDRY_NETWORK NETFOUNDRY_NETWORK_GROUP \
+            MOPENV MOPURL
+}
+
+# helper function logs out from AWS
+function noaws(){
+    unset   AWS_SECURITY_TOKEN AWS_SESSION_TOKEN \
+            AWS_ACCESS_KEY AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY \
+            AWS_REGION AWS_DEFAULT_REGION AWS_SHARED_CREDENTIALS_FILE
+}
+
+ $ eval "$(nfsupport --credentials=credentials.json login --eval)" 
+
+ # now I may use the token outside the CLI in the current shell
+ $ http GET "https://gateway.$MOPENV.netfoundry.io/identity/v1/identities/self" \
+  "Authorization: Bearer ${NETFOUNDRY_API_TOKEN}"
+{
+  "id": "a8b42709-25c3-4380-a29d-315049e4db36",
+  "organizationId": "50a1bc9d-2818-43c7-af96-c477bcd3a008",
+  "auth0ClientId": null,
+  "awsCognitoClientId": "us-east-1_LOGnjznhw|5rg7jp4kordp1sjdkt2cob5g2b",
+  "authenticationUrl": "https://netfoundry-staging-mlvyyc.auth.us-east-1.amazoncognito.com/oauth2/token",
+  "name": "developer-tools-repo",
+  "contactEmail": "kenneth.bingham+kentest@netfoundry.io",
+  "description": "repo secret for testing the GitHub Actions workflow netfoundry-network-ansible",
+  "active": true,
+  "createdAt": {
+    "nano": 0,
+    "epochSecond": 1640237146
+  },
+  "updatedAt": null,
+  "deletedAt": null,
+  "email": "kenneth.bingham+kentest@netfoundry.io",
+  "tenantId": "50a1bc9d-2818-43c7-af96-c477bcd3a008",
+  "type": "ApiAccountIdentity"
+}
+
+ # I can destroy the token, etc configuration in this shell by exiting the shell or running the built-in helper function "nonf"
+ $ nonf
+
+ $ test -n "${NETFOUNDRY_API_ACCOUNT}" || echo nope
+nope
+```
+
 ### logout
 
 Delete any cached login token for the current login profile. This is useful for switching between API account identities. See also the [profile](#profile) option.
