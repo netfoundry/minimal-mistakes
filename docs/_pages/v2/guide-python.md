@@ -9,71 +9,13 @@ toc: true
 classes: wide
 ---
 
-## Overview
+The Python module `netfoundry` is a general-purpose library and thin wrapper for the NetFoundry platform API.
 
-This overview defines *italicized* terms and essential concepts and introduces the Python module classes you will use.
+## Help
 
-### Identities
+Free-tier subscribers can always ask for help with the Python module in [Community](https://community.netfoundry.io) or [GitHub](https://github.com/netfoundry/python-netfoundry/issues). Learn more [about contacting support](/help/).
 
-Users and API accounts are identities, and identities are members of an *organization*. Identities are granted permissions on *organizations*, *networks*, and *network groups* by way of *role* assignments. 
-<!-- TODO: Identities are managed through methods of `class Organization`. -->
-
-### Roles
-
-Roles are sets of permissions that are granted to *identities* for *organizations*, *networks*, and *network groups*. An example of a role assignment is "Network Admin - ACME Net" which grants permission to manage *network* "ACME Net", but not to delete it nor grant new permissions.
-
-The default roles for new users and API accounts are "organization admin" and "network group admin". Taken together, these default roles grant all permissions for the *organization* and *networks* inside the *network group*. 
-<!-- TODO: Roles are managed through methods of `class Organization`. -->
-
-### Organizations
-
-An organization contains identities. An instance of `class Organization` represents a particular organization. There is typically only one organization, and the organization of the caller's identity is used by default.
-
-```python
-# become identity in organization
-identity = 'credentials.json'                                # relative to PWD or in ~/.netfoundry or /netfoundry
-organization = netfoundry.Organization(credentials=identity) # use the calling identity's organization
-caller_identity = organization.caller                        # Who am I?
-```
-
-```bash
-# built-in docs
-❯ pydoc netfoundry.Organization
-```
-
-### Networks
-
-A NetFoundry network contains the entities and policies that compose your AppWANs. An instance of `class Network` represents a particular network. The network may be selected by name or ID. This provides attributes and methods to describe and manage the network. A network is always a member of exactly one *network group*.
-
-```python
-# use a network
-network = netfoundry.network(network_group, network_id=created_network['id'])
-status = network.status           # read the status attribute
-endpoints = network.endpoints()   # call a method to get live results
-```
-
-```bash
-# built-in docs
-❯ pydoc netfoundry.Network
-```
-
-### Network Groups
-
-A *network group* organizes networks for billing and administration purposes. *Roles* that grant permissions on a network are granted to an *identity* at the network level or network group level or both. An instance of `class NetworkGroup` represents a particular network group and may be used to find, create, and delete networks in that group. Most users have only the default network group and it is selected automatically when there is only one.
-
-```python
-# use group as organization
-network_group = netfoundry.NetworkGroup(organization)
-network_name = 'ACME Net'
-created_network = network_group.create_network(name=network_name)
-```
-
-```bash
-# built-in docs
-❯ pydoc netfoundry.NetworkGroup
-```
-
-## Installation
+## Install
 
 Installing the Python3 module is easy with `pip`.
 
@@ -81,22 +23,20 @@ Installing the Python3 module is easy with `pip`.
 : Python3 interface to the NetFoundry API
 
 ```bash
-❯ pip install netfoundry
+pip install netfoundry
 ```
 
 ## Docker
 
 A container image with the latest Python module already installed: `netfoundry/python:latest`
 
-## Demo Script
+## `nfctl demo`
 
-A sample Python script is provided which uses this module to create a network with a functioning service.
-
-[Link to demo.py source file on the web](https://github.com/netfoundry/python-netfoundry/blob/main/netfoundry/demo.py).
+The [NetFoundry CLI](/guides/cli) `nfctl` is an best of consuming the `netfoundry` Python module. The CLI has a built-in demo you can [run and read here](https://github.com/netfoundry/python-netfoundry/blob/main/netfoundry/ctl.py).
 
 ```bash
 # or find the installed source file for demo.py under FILE heading of the built-in doc
-❯ pydoc netfoundry.demo
+nfctl demo
 ```
 
-There's [a separate article here](/guides/demo/) all about using `demo.py` which is included with the module.
+There's [a separate article here](/guides/demo/) dedicated to this demo.
