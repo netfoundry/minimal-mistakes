@@ -32,7 +32,7 @@ A container image with the latest Python module already installed: `netfoundry/p
 
 ## `nfctl demo`
 
-The [NetFoundry CLI](/guides/cli) `nfctl` is an best of consuming the `netfoundry` Python module. The CLI has a built-in demo you can [run and read here](https://github.com/netfoundry/python-netfoundry/blob/main/netfoundry/ctl.py).
+The [NetFoundry CLI](/guides/cli) `nfctl` is an example of an application using the `netfoundry` Python module. The CLI has a built-in demo you can [run and read here](https://github.com/netfoundry/python-netfoundry/blob/main/netfoundry/ctl.py).
 
 ```bash
 # or find the installed source file for demo.py under FILE heading of the built-in doc
