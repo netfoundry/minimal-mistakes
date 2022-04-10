@@ -39,20 +39,23 @@ NETFOUNDRY_API_ACCOUNT=~/Downloads/example-account.json
 
 ## Get a Token in the Current Shell
 
-You can learn how to install and use the CLI `nfctl` [in this guide](/guides/cli).
+The most convenient way to get a token for your current shell is to run the NetFoundry CLI. You can learn how to install and use the CLI `nfctl` [in this guide](/guides/cli).
 
 ```bash
-eval "$(nfctl --credentials=credentials.json login --eval)
+eval "$(nfctl --credentials=credentials.json login --eval)"
 ```
 
 ### Generic Authentication Example
 
-You may override all other credentials sources e.g. the credentials JSON file
-specified by `NETFOUNDRY_API_ACCOUNT` by setting the following explicit
-variables. These show how the script above obtains the token. Use your API
-account (`clientId`, `password`, `authenticationUrl`) to obtain a temporary
-`access_token` from the identity provider. Here are examples for HTTPie and
-cURL to get you started.
+This will explain how to request an authentication token with HTTP. This
+example uses the three values that are included in an API account that you
+download from the console e.g. credentials.json to show how they are used with
+the identity provider to obtain a token. 
+
+Be aware that these three values will override all other credentials sources
+e.g. the credentials JSON file specified by `NETFOUNDRY_API_ACCOUNT` if you are
+working with a NetFoundry SDK. The rest of this example assumes you're working
+with raw REST calls, not an SDK. 
 
 ```bash
 NETFOUNDRY_CLIENT_ID=3tcm6to3qqfu78juj9huppk9g3
@@ -60,7 +63,7 @@ NETFOUNDRY_PASSWORD=149a7ksfj3t5lstg0pesun69m1l4k91d6h8m779l43q0ekekr782
 NETFOUNDRY_OAUTH_URL=https://netfoundry-production-xfjiye.auth.us-east-1.amazoncognito.com/oauth2/token
 ```
 
-**HTTPie**
+### HTTPie
 
 ```bash
 http --form --auth "${NETFOUNDRY_CLIENT_ID}:${NETFOUNDRY_PASSWORD}" \
@@ -69,7 +72,7 @@ http --form --auth "${NETFOUNDRY_CLIENT_ID}:${NETFOUNDRY_PASSWORD}" \
     "grant_type=client_credentials"
 ```
 
-**cURL**
+### cURL
 
 ```bash
 curl --user ${NETFOUNDRY_CLIENT_ID}:${NETFOUNDRY_PASSWORD} \
@@ -80,7 +83,25 @@ curl --user ${NETFOUNDRY_CLIENT_ID}:${NETFOUNDRY_PASSWORD} \
 
 Now that you have obtained a token here are [some examples of making REST API calls from the command-line](/guides/rest/). 
 
-### `nfctl login --eval`
+## Use the Token with the NetFoundry API
+
+Include the token in your request to the NetFoundry API. This assumes you used one of the examples above to assign `NETFOUNDRY_API_TOKEN` in your current shell environment.
+
+### HTTPie
+
+```bash
+http GET https://gateway.production.netfoundry.io/core/v2/networks \
+  "Authorization: Bearer ${NETFOUNDRY_API_TOKEN}"
+```
+
+### cURL
+
+```bash
+curl https://gateway.production.netfoundry.io/core/v2/networks \
+    --header "Authorization: Bearer ${NETFOUNDRY_API_TOKEN}"
+```
+
+### How it works: `nfctl login --eval`
 
 The `login --eval` command emits shell configuration including:
 
@@ -147,22 +168,3 @@ The above reveals the shell configuration that is emitted by the `login --eval` 
  $ test -n "${NETFOUNDRY_API_ACCOUNT}" || echo nope
 nope
 ```
-
-## Send a Request to the NetFoundry API
-
-Include the token in your request to the NetFoundry API. You could source the shell script above to make `NETFOUNDRY_API_TOKEN` available in the current shell.
-
-**HTTPie**
-
-```bash
-http GET https://gateway.production.netfoundry.io/core/v2/networks \
-  "Authorization: Bearer ${NETFOUNDRY_API_TOKEN}"
-```
-
-**cURL**
-
-```bash
-curl https://gateway.production.netfoundry.io/core/v2/networks \
-    --header "Authorization: Bearer ${NETFOUNDRY_API_TOKEN}"
-```
-
