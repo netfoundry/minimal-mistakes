@@ -42,14 +42,15 @@ NETFOUNDRY_API_ACCOUNT=~/Downloads/example-account.json
 You can learn how to install and use the CLI `nfctl` [in this guide](/guides/cli).
 
 ```bash
-source <(nfctl --credentials ~/Downloads/example-account.json login --eval)
+eval "$(nfctl --credentials=credentials.json login --eval)
 ```
 
-### Command-line Examples
+### Generic Authentication Example
 
-You may override all other credentials sources by setting the following
-explicit variables. These show how the script above obtains the token. Use your
-API account (`clientId`, `password`, `authenticationUrl`) to obtain a temporary
+You may override all other credentials sources e.g. the credentials JSON file
+specified by `NETFOUNDRY_API_ACCOUNT` by setting the following explicit
+variables. These show how the script above obtains the token. Use your API
+account (`clientId`, `password`, `authenticationUrl`) to obtain a temporary
 `access_token` from the identity provider. Here are examples for HTTPie and
 cURL to get you started.
 
@@ -77,7 +78,7 @@ curl --user ${NETFOUNDRY_CLIENT_ID}:${NETFOUNDRY_PASSWORD} \
     --data 'grant_type=client_credentials&scope=https%3A%2F%2Fgateway.production.netfoundry.io%2F%2Fignore-scope'
 ```
 
-Here are [some more examples of making REST API calls from the command-line](/guides/rest/). 
+Now that you have obtained a token here are [some examples of making REST API calls from the command-line](/guides/rest/). 
 
 ### `nfctl login --eval`
 
@@ -85,7 +86,7 @@ The `login --eval` command emits shell configuration including:
 
 1. authentication token that is honored by the CLI itself, the Ansible collection, and anything else that uses the NetFoundry Python module
 1. tab autocomplete for BASH (requires PyPi `argcomplete`, see [the CLI guide](/guides/cli/))
-1. helper functions for logging out of NetFoundry and AWS
+1. helper functions for logging the shell out of NetFoundry in case you don't want to simply close the shell
 
 
 ```bash
@@ -108,10 +109,15 @@ function nonf(){
             NETFOUNDRY_ORGANIZATION NETFOUNDRY_NETWORK NETFOUNDRY_NETWORK_GROUP \
             MOPENV MOPURL
 }
+```
 
+The above reveals the shell configuration that is emitted by the `login --eval` command, most notably the `NETFOUNDRY_API_TOKEN` environment variable that contains your expiring session token. Now let's look at how you'd actually use that configuration.
+
+```bash
+ # you could run this to configure a shell interatively, or add the same command to your runcom file e.g. ~/.bashrc
  $ eval "$(nfsupport --credentials=credentials.json login --eval)" 
 
- # now I may use the token outside the CLI in the current shell
+ # now I may use the token outside the CLI in the current shell or its child processes
  $ http GET "https://gateway.$MOPENV.netfoundry.io/identity/v1/identities/self" \
   "Authorization: Bearer ${NETFOUNDRY_API_TOKEN}"
 {
