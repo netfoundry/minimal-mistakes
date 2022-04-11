@@ -27,7 +27,7 @@ You'll access the demo servers by adding the identity of one of the provided end
 
 Look in the web console for these endpoints and click on them to explore installation and enrollment instructions for your device's operating system.
 
-Once the endpoint identity has been added to your device's tunneler the demo servers will be reachable e.g. [http://fireworks.netfoundry] is a good demonstration of your normal web browser connecting to a Ziti service. Try [http://echo.netfoundry] from your terminal.
+Once the endpoint identity has been added to your device's tunneler the demo servers will be reachable e.g. [http://fireworks.netfoundry/](http://fireworks.netfoundry) is a good demonstration of your normal web browser connecting to a Ziti service. Try [http://echo.netfoundry](http://echo.netfoundry) from your terminal.
 
 ## Before You Begin
 
