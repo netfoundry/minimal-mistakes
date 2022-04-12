@@ -5,8 +5,6 @@ redirect_from:
     - /v2/guides/ziti/
 ---
 
-NetFoundry is built with Ziti. Ziti is open-source software for building programmable, zero-trust networks. You can use Ziti SDK identities with your NetFoundry network. For example, you can embed Ziti in your custom app with the SDK so it can participate in a NetFoundry network directly without any external software or gateways. Your app will communicate with the Ziti fabric hosted by NetFoundry through the built-in Ziti libraries. If your app is a service this means it can be reached anywhere, from anywhere, by any endpoint you allow without a static public IP address. Your Zitified service is invisible except to your allowed endpoints.
+NetFoundry networks are OpenZiti networks. OpenZiti is open-source software for building programmable, application-embedded networks. You can use the OpenZiti Edge SDKs and Edge identities with any NetFoundry network. For example, you can embed Ziti in your custom app with the SDK so it can participate in a NetFoundry network directly without any external software agents or gateways. Your app will communicate with the OpenZiti fabric hosted by NetFoundry through the built-in open-source library. If your app is a service this means it is addressable by authorized peers from anywhere. Your "Zitified" service is invisible except to your allowed endpoints, and so it does not need to "listen" on any IP network, just the OpenZiti network.
 
-Visit the [Ziti web site](https://ziti.dev) to learn more about the Open Ziti project and SDKs.
-
-See [Hello, World!](/v2/guides/hello-world/) for a step-by-step example using Ziti with NetFoundry.
+Visit [OpenZiti Docs](https://openziti.github.io/) to learn more about the project, especially our SDK for your preferred programming language! Be sure to ask for it if you don't already see it.

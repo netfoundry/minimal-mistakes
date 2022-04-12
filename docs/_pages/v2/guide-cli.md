@@ -50,9 +50,9 @@ You may run `nfctl` with Docker instead of installing on your device.
 ❯ pip install --upgrade netfoundry
 ```
 
-## Auto-Complete for BASH
+## Auto-Complete
 
-Add this to your `~/.bashrc` file. This can also be done for Z-Shell, but you need `bashcompinit` [described here](https://kislyuk.github.io/argcomplete/#zsh-support).
+Tab auto-complete is enabled by adding the following to your `~/.bashrc` file. This also works for Z-Shell if you have `bashcompinit` [described here](https://kislyuk.github.io/argcomplete/#zsh-support).
 
 ```bash
 eval "$(register-python-argcomplete nfctl)"
@@ -173,15 +173,15 @@ general.proxy=http://localhost:4321
 
 ```bash
 # declare a new value for some directive
-❯ nfctl config general.proxy='http://localhost:4321'
-general.proxy: None -> http://localhost:4321
+❯ nfctl config general.credentials="ACME Net.json"
+general.proxy: None -> "ACME Net.json"
 ℹ Wrote configuration to /home/kbingham/.config/nfctl/nfctl.ini
 ```
 
 ```bash
 # unset a config directive by assigning "None" or delete from INI file
-❯ nfctl config general.proxy=None
-general.proxy: http://localhost:4321 -> None
+❯ nfctl config general.network=None
+general.proxy: "ACME Net.json" -> None
 ℹ Wrote configuration to /home/kbingham/.config/nfctl/nfctl.ini
 ```
 
