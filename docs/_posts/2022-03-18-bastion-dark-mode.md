@@ -10,9 +10,10 @@ tags:
 author: Ken
 toc: false
 classes: wide
-last_modified_at: March 21, 2022
+last_modified_at: June 14, 2022
 header:
     image: /assets/images/dark-bastions-castle.jpg
+canonical_url: https://netfoundry.io/bastion-dark-mode/
 ---
 
 
