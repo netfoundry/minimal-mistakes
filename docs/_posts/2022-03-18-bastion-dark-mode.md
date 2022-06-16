@@ -16,6 +16,7 @@ header:
 canonical_url: https://netfoundry.io/bastion-dark-mode/
 ---
 
+This post has moved and been updated in the new NF blog: https://netfoundry.io/bastion-dark-mode/
 
 ## A Zero Trust Journey (ep.1)
 
