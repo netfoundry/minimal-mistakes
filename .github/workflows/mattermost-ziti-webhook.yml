@@ -1,5 +1,5 @@
 name: mattermost-ziti-webhook
-on: 
+on:
   create:
   delete:
   issues:
@@ -13,10 +13,10 @@ on:
 
 jobs:
   mattermost-ziti-webhook:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     name: POST Webhook
     steps:
-    - uses: openziti/ziti-webhook-action@main
+    - uses: openziti/ziti-webhook-action@linux-runner
       if: github.repository_owner == 'netfoundry'
       with:
         ziti-id: ${{ secrets.ZITI_MATTERMOST_IDENTITY }}
