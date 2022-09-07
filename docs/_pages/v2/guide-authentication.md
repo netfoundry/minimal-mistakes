@@ -105,7 +105,7 @@ curl https://gateway.production.netfoundry.io/core/v2/networks \
 
 The `login --eval` command emits shell configuration including:
 
-1. authentication token that is honored by the CLI itself, the Ansible collection, and anything else that uses the NetFoundry Python module
+1. authentication token that is honored by the CLI and anything else that uses the NetFoundry Python module
 1. tab autocomplete for BASH (requires PyPi `argcomplete`, see [the CLI guide](/guides/cli/))
 1. helper functions for logging the shell out of NetFoundry in case you don't want to simply close the shell
 

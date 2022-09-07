@@ -27,13 +27,13 @@ feature_row:
     url: "/v2/guides/ziti/"
     btn_class: "btn--primary"
     btn_label: "LEARN MORE"
-  - image_path: /assets/images/ansible.jpg
-    alt: "Ansible"
-    title: "Ansible"
-    excerpt: "Declarative Network as Code"
-    url: "/guides/ansible/"
-    btn_class: "btn--primary"
-    btn_label: "LEARN MORE"
+  # - image_path: /assets/images/ansible.jpg
+  #   alt: "Ansible"
+  #   title: "Ansible"
+  #   excerpt: "Declarative Network as Code"
+  #   url: "/guides/ansible/"
+  #   btn_class: "btn--primary"
+  #   btn_label: "LEARN MORE"
 
 ---
 

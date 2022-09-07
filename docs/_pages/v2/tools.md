@@ -4,6 +4,7 @@ permalink: /tools/
 redirect_from:
     - /v2/tools/
 toc: false
+published: false
 ---
 
 *Miscellaneous Resources for NetFoundry API*

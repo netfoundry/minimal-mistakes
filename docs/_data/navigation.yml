@@ -16,8 +16,8 @@ main:
   - title: "Help"
     url: /help/
     description: "Get Support"
-  
-    
+
+
 # v2 horizontal nav
 main2:
   - title: "Guides"
@@ -25,16 +25,16 @@ main2:
     description: "intro, manuals, tutorials"
   - title: "Reference"
     url: /reference/
-  - title: "Blog"
-    url: /blog/
-    description: "What's new?"
-  - title: "Tools"
-    url: /tools/
-    description: "Power User Kit"
+  # - title: "Blog"
+  #   url: /blog/
+  #   description: "What's new?"
+  # - title: "Tools"
+  #   url: /tools/
+  #   description: "Power User Kit"
   - title: "Help"
     url: /help/
     description: "Get Support"
-    
+
 # guides sidebar
 v1guides:
   - title: Guides
@@ -59,8 +59,8 @@ v2guides:
         url: /guides/cli/
       - title: "Python Guide"
         url: /guides/python/
-      - title: "Ansible Guide"
-        url: /guides/ansible/
+      # - title: "Ansible Guide"
+      #   url: /guides/ansible/
       - title: "Kubernetes Guide"
         url: /guides/kubernetes/
       - title: "REST Examples"

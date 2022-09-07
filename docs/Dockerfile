@@ -1,4 +1,4 @@
-FROM jekyll/jekyll:pages
+FROM jekyll/jekyll:latest
 
 VOLUME /site
 
@@ -20,6 +20,7 @@ RUN gem install jekyll-watch && \
     gem install json && \
     gem install bigdecimal
 #RUN gem install bundler
+RUN mkdir -m0777 /_site
 
 
 # TODO seal before ship to optimize storage

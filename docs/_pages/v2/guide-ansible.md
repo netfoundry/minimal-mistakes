@@ -7,6 +7,7 @@ sidebar:
     nav: v2guides
 toc: false
 classes: wide
+published: false
 ---
 
 You may install our [Ansible Galaxy Collection](https://galaxy.ansible.com/netfoundry/platform). Which includes modules like `netfoundry_info` for creating a session and discovering networks.
