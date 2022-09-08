@@ -81,6 +81,29 @@ curl --user ${NETFOUNDRY_CLIENT_ID}:${NETFOUNDRY_PASSWORD} \
     --data 'grant_type=client_credentials&scope=https%3A%2F%2Fgateway.production.netfoundry.io%2F%2Fignore-scope'
 ```
 
+### NodeJS
+
+```
+const authUrl = "https://netfoundry-staging-mlvyyc.auth.us-east-1.amazoncognito.com/oauth2/token"
+const clientId = process.env.NF_CLIENT_ID
+const clientSecret = process.env.NF_CLIENT_SECRET
+
+async function getCognitoAuthToken() {
+    const token = `${clientId}:${clientSecret}`;
+    const encodedToken = Buffer.from(token).toString('base64');
+
+    let configData = "grant_type=client_credentials";
+
+    response = await axios.post(authUrl, configData, {
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Authorization': 'Basic '+ encodedToken
+        }
+    })
+    return response.data.access_token
+}
+```
+
 Now that you have obtained a token here are [some examples of making REST API calls from the command-line](/guides/rest/). 
 
 ## Use the Token with the NetFoundry API
@@ -99,6 +122,20 @@ http GET https://gateway.production.netfoundry.io/core/v2/networks \
 ```bash
 curl https://gateway.production.netfoundry.io/core/v2/networks \
     --header "Authorization: Bearer ${NETFOUNDRY_API_TOKEN}"
+```
+
+### NodeJS
+
+```
+async function getNetworks(accessToken) {
+    await axios.get("https://gateway.production.netfoundry.io/core/v2/networks", {
+        headers: {
+            "Authorization": "Bearer " + accessToken
+        }
+    }).then(response => {
+        console.log('\nResponse data:  ',response.data)
+    })
+}
 ```
 
 ### How it works: `nfctl login --eval`
