@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     name: POST Webhook
     steps:
-    - uses: openziti/ziti-webhook-action@linux-runner
+    - uses: openziti/ziti-webhook-action@main
       if: github.repository_owner == 'netfoundry'
       with:
         ziti-id: ${{ secrets.ZITI_MATTERMOST_IDENTITY }}
