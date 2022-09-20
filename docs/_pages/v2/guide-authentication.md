@@ -84,7 +84,7 @@ curl --user ${NETFOUNDRY_CLIENT_ID}:${NETFOUNDRY_PASSWORD} \
 ### NodeJS
 
 ```javascript
-const NETFOUNDRY_OAUTH_URL = "https://netfoundry-staging-mlvyyc.auth.us-east-1.amazoncognito.com/oauth2/token"
+const NETFOUNDRY_OAUTH_URL = process.env.NETFOUNDRY_OAUTH_URL
 const NETFOUNDRY_CLIENT_ID = process.env.NETFOUNDRY_CLIENT_ID
 const NETFOUNDRY_PASSWORD = process.env.NETFOUNDRY_PASSWORD
 
