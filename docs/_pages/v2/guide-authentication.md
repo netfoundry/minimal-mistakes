@@ -83,18 +83,18 @@ curl --user ${NETFOUNDRY_CLIENT_ID}:${NETFOUNDRY_PASSWORD} \
 
 ### NodeJS
 
-```
-const authUrl = "https://netfoundry-staging-mlvyyc.auth.us-east-1.amazoncognito.com/oauth2/token"
-const clientId = process.env.NF_CLIENT_ID
-const clientSecret = process.env.NF_CLIENT_SECRET
+```javascript
+const NETFOUNDRY_OAUTH_URL = "https://netfoundry-staging-mlvyyc.auth.us-east-1.amazoncognito.com/oauth2/token"
+const NETFOUNDRY_CLIENT_ID = process.env.NETFOUNDRY_CLIENT_ID
+const NETFOUNDRY_PASSWORD = process.env.NETFOUNDRY_PASSWORD
 
 async function getCognitoAuthToken() {
-    const token = `${clientId}:${clientSecret}`;
+    const token = `${NETFOUNDRY_CLIENT_ID}:${NETFOUNDRY_PASSWORD}`;
     const encodedToken = Buffer.from(token).toString('base64');
 
     let configData = "grant_type=client_credentials";
 
-    response = await axios.post(authUrl, configData, {
+    response = await axios.post(NETFOUNDRY_OAUTH_URL, configData, {
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
             'Authorization': 'Basic '+ encodedToken
