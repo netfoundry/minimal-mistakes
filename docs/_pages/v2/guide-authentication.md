@@ -126,7 +126,7 @@ curl https://gateway.production.netfoundry.io/core/v2/networks \
 
 ### NodeJS
 
-```
+```javascript
 async function getNetworks(accessToken) {
     await axios.get("https://gateway.production.netfoundry.io/core/v2/networks", {
         headers: {
