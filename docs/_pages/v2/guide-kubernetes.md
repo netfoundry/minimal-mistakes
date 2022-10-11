@@ -37,7 +37,7 @@ You will need a basic Ziti network to describe the services you wish to expose a
 3. Create an endpoint named "my laptop". This will be used to connect to any Kubernetes services you decide to expose. Download the enrollment token .jwt file to your laptop.
 4. In Services, create a service for the hello web server.
 
-    The server domain name for the new service is "hello-netfoundry.default.svc". Your ziti-host pod will use [cluster DNS](https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/) to resolve the service name in the default namespace.
+    The server domain name for the new service is "hello.default.svc". Your ziti-host pod will use [cluster DNS](https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/) to resolve the service name in the default namespace.
 
     ![Ziti service for the hello web server](/assets/images/create-service-hello-netfoundry.png)
 5. In AppWANs, create an AppWAN authorizing `#all` endpoints to connect to `#all` services. This is for simplicity's sake and assumes you are the only operator of your network. You could instead define a more restrictive policy.
@@ -53,14 +53,20 @@ The Helm chart will create a normal Kubernetes deployment pod running the Ziti L
 1. Add NetFoundry charts repo to Helm.
 
     ```bash
-    ❯ helm repo add netfoundry https://netfoundry.github.io/charts/                                                                                               
-    "netfoundry" has been added to your repositories                         
+    ❯ helm repo add openziti https://openziti.github.io/helm-charts/                                                                                               
+    "openziti" has been added to your repositories                         
     ```
 
-2. Install the chart
+1. Enroll the Identity
 
     ```bash
-    ❯ helm install ziti-host netfoundry/ziti-host --set-file enrollmentToken="k8s pod endpoint.jwt"
+    docker run --rm --volume /tmp:/mnt openziti/quickstart /openziti/ziti-bin/ziti edge enroll "/mnt/k8s pod endpoint.jwt"
+    ```
+
+1. Install the chart
+
+    ```bash
+    helm install ziti-host openziti/ziti-host --set-file zitiIdentity="/tmp/k8s pod endpoint.json"
     NAME: ziti-host
     LAST DEPLOYED: Mon Apr 26 12:19:05 2021
     NAMESPACE: default
@@ -68,18 +74,16 @@ The Helm chart will create a normal Kubernetes deployment pod running the Ziti L
     REVISION: 1
     ```
 
-3. For the purposes of this exercise you may ignore the NOTES section that is always printed by Helm after a successful install.
-
 Congratulations! Ziti is now running behind the scenes in your cluster, and you may now expose any of your cluster services. Next, we'll deploy a toy web app to expose with Ziti.
 
 ## Expose Cluster Services with Ziti
 
 You may expose your cluster's services to your Ziti network.
 
-1. Deploy a lightweight NetFoundry hello world web server on your cluster.
+1. Deploy a lightweight OpenZiti hello world web server on your cluster.
 
     ```bash
-    ❯ helm install hello-netfoundry netfoundry/hello-toy --set serviceDomainName=hello-netfoundry
+    ❯ helm install hello-netfoundry openziti/hello-toy --set serviceDomainName=hello
     NAME: hello
     LAST DEPLOYED: Sat May  1 19:33:21 2021
     NAMESPACE: default
