@@ -11,15 +11,15 @@ toc: true
 ### Network Orchestration Platform API
 
 [Swagger UI](./core){: .btn .btn--info .btn--x-large}
-[AsciiDoc](https://gateway.production.netfoundry.io/core/v2/docs/index.html){: .btn .btn--info .btn--x-large}
+[AsciiDoc](https://gateway.production.netfoundry.io/core/v2/docs/index.html){: .btn .btn--info .btn--x-large}{:target="_blank"}
 
 ### Identity API
 
-[AsciiDoc](https://gateway.production.netfoundry.io/identity/v1/docs/index.html){: .btn .btn--info .btn--x-large}
+[AsciiDoc](https://gateway.production.netfoundry.io/identity/v1/docs/index.html){: .btn .btn--info .btn--x-large}{:target="_blank"}
 
 ### Permissions API
 
-[AsciiDoc](https://gateway.production.netfoundry.io/auth/v1/docs/index.html){: .btn .btn--info .btn--x-large}
+[AsciiDoc](https://gateway.production.netfoundry.io/auth/v1/docs/index.html){: .btn .btn--info .btn--x-large}{:target="_blank"}
 
 ## Concepts
 
