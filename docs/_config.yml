@@ -81,12 +81,7 @@ social:
     - "https://www.facebook.com/netfoundry"
 
 # Analytics
-analytics:
-  provider               : "google-gtag" # false (default), "google", "google-universal", "custom"
-  google:
-    tracking_id          : "UA-166998862-1" # Replace this with your ID, or delete
-    anonymize_ip         : true
-
+google_analytics: G-XZCJBSHKV1
 
 # Site Author
 author:
