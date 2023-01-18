@@ -10,7 +10,7 @@ toc: true
 
 ### Network Orchestration Platform API
 
-[Core v2](https://gateway.production.netfoundry.io/core/v2/docs/index.html){: .btn .btn--info .btn--x-large}
+[Core v2](./core){: .btn .btn--info .btn--x-large}
 
 ### Identity API
 
