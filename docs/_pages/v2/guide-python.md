@@ -39,4 +39,4 @@ The [NetFoundry CLI](/guides/cli) `nfctl` is an example of an application using 
 nfctl demo
 ```
 
-There's [a separate article here](/guides/demo/) dedicated to this demo.
+There's [a separate article here](./guide-demo.md) dedicated to this demo.
