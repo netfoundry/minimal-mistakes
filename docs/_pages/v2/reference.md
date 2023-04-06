@@ -10,14 +10,25 @@ toc: true
 
 ### Network Orchestration Platform API
 
+The Network Orchestration Platform API is the primary programming interface to the CloudZiti platform. It is a RESTful API that provides a set of resources and methods to manage CloudZiti Networks.
+
+The Swagger UI page provides a graphical, interactive playground for the API and is generated from [the OpenAPI 3.0 specification](https://gateway.production.netfoundry.io/core/v2/docs/openapi-v3.yaml).
+
 [Swagger UI](./core){: .btn .btn--info .btn--x-large}
+
+The AsciiDoc documentation web site has some of the same information as the Swagger UI. This is a text-based reference format with examples.
+
 [AsciiDoc](https://gateway.production.netfoundry.io/core/v2/docs/index.html){: .btn .btn--info .btn--x-large}{:target="_blank"}
 
 ### Identity API
 
+The Identity API is part of the CloudZiti platform, and provides a RESTful interface to manage identities and organizations.
+
 [AsciiDoc](https://gateway.production.netfoundry.io/identity/v1/docs/index.html){: .btn .btn--info .btn--x-large}{:target="_blank"}
 
 ### Permissions API
+
+The Permissions API is part of the CloudZiti platform, and provides a RESTful interface to manage permissions objects such as roles.
 
 [AsciiDoc](https://gateway.production.netfoundry.io/auth/v1/docs/index.html){: .btn .btn--info .btn--x-large}{:target="_blank"}
 
