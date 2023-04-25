@@ -195,9 +195,18 @@ general.unicode: True -> False
 
 ### login
 
-This is the default sub-command and logs you in to a NetFoundry organization by fetching and caching a login token with your API account credentials. You must supply an API account as a JSON file path to `nfctl --credentials NETFOUNDRY_API_ACCOUNT` or as environment variables as described in [the authentication guide](/guides/authentication/#command-line-examples). You may also learn how to obtain an API account credentials file in [the authentication guide](/guides/authentication/#get-an-api-account).
+#### Obtain a token with a credentials file
+
+`login` is the default sub-command and logs you in to a NetFoundry organization by fetching and caching a login token with your API account credentials. You must supply an API account as a JSON file path to `nfctl --credentials NETFOUNDRY_API_ACCOUNT` or as environment variables as described in [the authentication guide](/guides/authentication/#command-line-examples). You may also learn how to obtain an API account credentials file in [the authentication guide](/guides/authentication/#get-an-api-account).
 
 The `nfctl login --eval` option causes the CLI to emit shell configuration for evaluation by the `eval` or `source` commands. This is useful for exporting an API token to your shell for use in other apps outside of the CLI. Check out [the REST examples](/guides/rest/) for ideas. There are more details about using `login --eval` to authenticate via the shell environment in [the authentication guide](/guides/authentication).
+
+#### Logging in with a user token without a credentials file
+
+You can run the `login` command without a credentials file if you already have a token. There are three ways to supply your token to the `login` command.
+
+1. Supply the token as the value of the `NETFOUNDRY_API_TOKEN` environment variable.
+1. If you do not supply a token in advance the CLI will interactively prompt you for it.
 
 ### logout
 
