@@ -60,7 +60,7 @@ The Helm chart will create a normal Kubernetes deployment pod running the Ziti L
 1. Enroll the Identity
 
     ```bash
-    docker run --rm --volume /tmp:/mnt openziti/quickstart /var/openziti/ziti-bin/ziti edge enroll "/mnt/k8s pod endpoint.jwt"
+    docker run --rm --volume /tmp:/mnt openziti/ziti-cli edge enroll "/mnt/k8s pod endpoint.jwt"
     ```
 
 1. Install the chart
