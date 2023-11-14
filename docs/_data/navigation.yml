@@ -53,6 +53,8 @@ v2guides:
         url: /guides/introduction/
       - title: "Authentication"
         url: /guides/authentication/
+      - title: "Authorization"
+        url: /guides/authorization/
       - title: "Quickstart Demo"
         url: /guides/demo/
       - title: "Command-Line"
