@@ -9,7 +9,7 @@ toc: true
 classes: wide
 ---
 
-Accounts come in two flavors: `User` and `ApiAccount`. Either may be authorized for any "resource action," which are privileges that are scoped to a type of resource. Learn more about CloudZiti authorization in the [Authorization API reference](https://gateway.$MOPENV.netfoundry.io/auth/v1/docs/index.html).
+Accounts come in two flavors: `User` and `ApiAccount`. Either may be authorized for any "resource action," which are privileges that are scoped to a type of resource. Learn more about CloudZiti authorization in the [Authorization API reference](https://gateway.production.netfoundry.io/auth/v1/docs/index.html).
 
 ## Grant a Resource Action to an Identity with REST
 
@@ -31,7 +31,7 @@ You may skip using this CLI step if you set environment variable `NETFOUNDRY_API
 
 ### Steps
 
-1. Find the ID of the account you wish to grant a resource action to. You can find the ID of your own account by running `nfctl get identity`. You can find the ID of another account by running `nfctl list identities` for [using the Identity API](https://gateway.$MOPENV.netfoundry.io/identity/v1/docs/index.html). As an example, let's use our own account ID.
+1. Find the ID of the account you wish to grant a resource action to. You can find the ID of your own account by running `nfctl get identity`. You can find the ID of another account by running `nfctl list identities` for [using the Identity API](https://gateway.production.netfoundry.io/identity/v1/docs/index.html). As an example, let's use our own account ID.
 
     ```bash
     ACCOUNT=$(
