@@ -51,7 +51,7 @@ You may skip using this CLI step if you set environment variable `NETFOUNDRY_API
     )
     ```
 
-1. Find the ID of the resource action to grant.
+1. Find the ID of the resource action to grant. This will filter for action code `update-reset-mfa`.
 
     ```bash
     RESOURCE_ACTION=$(
