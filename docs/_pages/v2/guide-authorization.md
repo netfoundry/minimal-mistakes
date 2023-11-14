@@ -35,7 +35,7 @@ You may skip using this CLI step if you set environment variable `NETFOUNDRY_API
 
     ```bash
     ACCOUNT=$(
-      http GET "https://gateway.$MOPENV.netfoundry.io/identity/v1/identities" \
+      http GET "https://gateway.${MOPENV}.netfoundry.io/identity/v1/identities" \
         "Authorization: Bearer ${NETFOUNDRY_API_TOKEN}" \
       | jq -r '.[]|select(.email == "alice@example.com")|.id'
     )
@@ -45,7 +45,7 @@ You may skip using this CLI step if you set environment variable `NETFOUNDRY_API
 
     ```bash
     RESOURCE_TYPE=$(
-      http GET "https://gateway.$MOPENV.netfoundry.io/auth/v1/resource-types" \
+      http GET "https://gateway.${MOPENV}.netfoundry.io/auth/v1/resource-types" \
         "Authorization: Bearer ${NETFOUNDRY_API_TOKEN}" \
       | jq -r '.[]|select(.code == "user-identity")|.id'
     )
@@ -55,7 +55,7 @@ You may skip using this CLI step if you set environment variable `NETFOUNDRY_API
 
     ```bash
     RESOURCE_ACTION=$(
-      http GET "https://gateway.$MOPENV.netfoundry.io/auth/v1/resource-actions?resourceTypeId=${RESOURCE_TYPE}" \
+      http GET "https://gateway.${MOPENV}.netfoundry.io/auth/v1/resource-actions?resourceTypeId=${RESOURCE_TYPE}" \
         "Authorization: Bearer ${NETFOUNDRY_API_TOKEN}" \
       | jq -r '.[]|select(.code == "update-reset-mfa")|.id'
     )
@@ -64,7 +64,7 @@ You may skip using this CLI step if you set environment variable `NETFOUNDRY_API
 1. Grant the action to the identity on the resource type with the network scope.
 
     ```bash
-    http POST https://gateway.$MOPENV.netfoundry.io/auth/v1/identity-resource-actions \
+    http POST https://gateway.${MOPENV}.netfoundry.io/auth/v1/identity-resource-actions \
       "Authorization: Bearer ${NETFOUNDRY_API_TOKEN}" \
       identityId=${ACCOUNT} \
       resourceActionId=${RESOURCE_ACTION} \
@@ -74,6 +74,6 @@ You may skip using this CLI step if you set environment variable `NETFOUNDRY_API
 1. Verify the action is now granted.
 
     ```bash
-    http GET "https://gateway.$MOPENV.netfoundry.io/auth/v1/grants?resourceActionId=${RESOURCE_ACTION}&identityId=${ACCOUNT}" \
+    http GET "https://gateway.${MOPENV}.netfoundry.io/auth/v1/grants?resourceActionId=${RESOURCE_ACTION}&identityId=${ACCOUNT}" \
       "Authorization: Bearer ${NETFOUNDRY_API_TOKEN}"
     ```
