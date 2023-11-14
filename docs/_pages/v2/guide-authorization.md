@@ -68,7 +68,7 @@ You may skip using this CLI step if you set environment variable `NETFOUNDRY_API
       "Authorization: Bearer ${NETFOUNDRY_API_TOKEN}" \
       identityId=${ACCOUNT} \
       resourceActionId=${RESOURCE_ACTION} \
-      path=io.netfoundry.network
+      path=[]
     ```
 
 1. Verify the action is now granted.
