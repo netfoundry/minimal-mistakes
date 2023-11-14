@@ -31,7 +31,7 @@ You may skip using this CLI step if you set environment variable `NETFOUNDRY_API
 
 ### Steps
 
-1. Find the ID of the account you wish to grant a resource action to. You can find the ID of your own account by running `nfctl get identity`. You can find the ID of another account by running `nfctl list identities` for [using the Identity API](https://gateway.production.netfoundry.io/identity/v1/docs/index.html). As an example, let's use our own account ID.
+1. Find the ID of the account you wish to grant a resource action to. You can find the ID of your own account by running `nfctl get identity`. You can find the ID of another account by running `nfctl list identities` for [using the Identity API](https://gateway.production.netfoundry.io/identity/v1/docs/index.html). Let's find Alice's account ID.
 
     ```bash
     ACCOUNT=$(
