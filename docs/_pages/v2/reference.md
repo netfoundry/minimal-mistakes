@@ -26,11 +26,16 @@ The Identity API is part of the CloudZiti platform, and provides a RESTful inter
 
 [AsciiDoc](https://gateway.production.netfoundry.io/identity/v1/docs/index.html){: .btn .btn--info .btn--x-large}{:target="_blank"}
 
-### Permissions API
+### Authorization API
 
-The Permissions API is part of the CloudZiti platform, and provides a RESTful interface to manage permissions objects such as roles.
+The Authorization API is part of the CloudZiti platform, and provides a RESTful interface to grant actions to identities on resource types.
 
 [AsciiDoc](https://gateway.production.netfoundry.io/auth/v1/docs/index.html){: .btn .btn--info .btn--x-large}{:target="_blank"}
+
+#### Grant an Action to an Identity
+
+* [Reference section about granting an action to an identity](https://gateway.production.netfoundry.io/auth/v1/docs/index.html#resources-identity-resource-actions-create-identity-resource-action)
+* [REST guide to granting an action to an identity](/guides/authorization)
 
 ## Concepts
 
